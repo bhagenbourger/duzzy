@@ -1,0 +1,12 @@
+dependencies {
+    testImplementation project(":cli")
+    testImplementation project(":core")
+    testImplementation project(":plugin-avro")
+    testImplementation project(":plugin-hdfs")
+    testImplementation project(":plugin-kafka")
+    testImplementation project(":plugin-parquet")
+    testImplementation project(":tests")
+
+    testImplementation 'info.picocli:picocli:4.7.6'
+    testImplementation 'org.apache.avro:avro:1.12.0'
+}

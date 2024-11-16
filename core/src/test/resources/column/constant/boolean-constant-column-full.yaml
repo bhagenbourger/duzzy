@@ -1,0 +1,5 @@
+---
+identifier: "io.duzzy.plugin.column.constant.BooleanConstantColumn"
+name: unit
+nullRate: 0
+value: false

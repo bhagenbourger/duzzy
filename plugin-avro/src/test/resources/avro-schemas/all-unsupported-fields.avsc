@@ -1,0 +1,20 @@
+{
+  "namespace": "example.avro",
+  "type": "record",
+  "name": "User",
+  "fields": [
+    {"name": "decimal_field", "type": {"type": "bytes", "logicalType": "decimal", "precision": 4, "scale": 2}},
+    {"name": "time_millis_field", "type": {"type": "int", "logicalType": "time-millis"}},
+    {"name": "time_micros_field", "type": {"type": "long", "logicalType": "time-micros"}},
+    {"name": "local_timestamp_millis_field", "type": {"type": "long", "logicalType": "local-timestamp-millis"}},
+    {"name": "local_timestamp_micros_field", "type": {"type": "long", "logicalType": "local-timestamp-micros"}},
+    {"name": "enum_field", "type": {"name": "enum_type", "type": "enum", "symbols" : ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]}},
+    {"name": "duration_field", "type": {"name":"duration_type", "type": "fixed", "logicalType": "duration", "size": 12}},
+    {"name": "record_field", "type": {"name": "record_field", "type": "record", "fields": []}},
+    {"name": "array_field", "type": {"name": "array_field",  "type": "array", "items": "string", "default": []}},
+    {"name": "map_field", "type": {"type": "map", "values": "long", "default": {}}},
+    {"name": "fixed_field", "type": {"name": "fixed_field", "type": "fixed", "size": 16}},
+    {"name": "null_field", "type": "null"},
+    {"name": "bytes_field", "type": "bytes"}
+  ]
+}

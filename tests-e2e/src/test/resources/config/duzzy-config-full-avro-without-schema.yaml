@@ -1,0 +1,16 @@
+---
+columns:
+  - query_selector: "name=string_field"
+    identifier: "io.duzzy.plugin.column.constant.StringListConstantColumn"
+    parameters:
+      values: ["Rome", "Paris", "London", "Madrid"]
+  - query_selector: "type=int"
+    identifier: "io.duzzy.plugin.column.increment.IntegerIncrementColumn"
+    parameters:
+      start: 100
+      step: 2
+sink:
+  identifier: "io.duzzy.plugin.sink.LocalFileSink"
+  filename: "build/avro-without-schema-with-config-result.avro"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.AvroWithoutSchemaSerializer"

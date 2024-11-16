@@ -1,0 +1,6 @@
+[
+  {
+    "name": "io.duzzy.plugin.sink.KafkaSink",
+    "allPublicConstructors": true
+  }
+]

@@ -1,0 +1,5 @@
+
+---
+identifier: "io.duzzy.plugin.serializer.XmlSerializer"
+rootTag: myRoot
+rowTag: myRow

@@ -1,0 +1,12 @@
+---
+columns:
+  - query_selector: "name=city"
+    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
+    parameters:
+      min_length: 3
+      max_length: 20
+sink:
+  identifier: "io.duzzy.plugin.sink.LocalFileSink"
+  filename: "build/test.xml"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.XmlSerializer"

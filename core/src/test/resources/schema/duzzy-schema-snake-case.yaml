@@ -1,0 +1,5 @@
+---
+columns:
+  - name: city
+    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
+    null_rate: 1

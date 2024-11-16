@@ -1,0 +1,66 @@
+package io.duzzy.plugin.serializer;
+
+import io.duzzy.core.Serializer;
+import io.duzzy.core.column.Column;
+import io.duzzy.plugin.column.increment.IntegerIncrementColumn;
+import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.io.BinaryDecoder;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DecoderFactory;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.io.*;
+import java.util.List;
+
+import static io.duzzy.core.parser.Parser.YAML_MAPPER;
+import static io.duzzy.tests.Data.*;
+import static io.duzzy.tests.Helper.getFromResources;
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class AvroWithoutSchemaSerializerTest {
+
+    @Test
+    void parsedFromYaml() throws IOException {
+        final File serializerFile = getFromResources(getClass(), "serializer/avro-without-schema-serializer.yaml");
+        final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+
+        assertThat(serializer).isInstanceOf(AvroWithoutSchemaSerializer.class);
+    }
+
+    @Test
+    void writeWithDefaultValues() throws IOException {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        final List<Column<?>> columns = List.of(
+                new IntegerIncrementColumn(KEY_C1, null,null,null,null),
+                new AlphanumericRandomColumn(KEY_C2, null)
+        );
+
+        final AvroWithoutSchemaSerializer avroWithoutSchemaSerializer =
+                new AvroWithoutSchemaSerializer(null, null);
+        avroWithoutSchemaSerializer.init(outputStream, columns);
+        avroWithoutSchemaSerializer.writeAll(getDataOne());
+        avroWithoutSchemaSerializer.writeAll(getDataTwo());
+
+        final DatumReader<GenericData.Record> reader = new GenericDatumReader<>();
+        reader.setSchema(avroWithoutSchemaSerializer.getSchema());
+        final BinaryDecoder decoder = DecoderFactory
+                .get()
+                .binaryDecoder(new ByteArrayInputStream(outputStream.toByteArray()), null);
+        GenericData.Record record = reader.read(null, decoder);
+        assertThat(record.get(KEY_C1)).isEqualTo(INTEGER_ONE);
+        assertThat(record.get(KEY_C2).toString()).isEqualTo(STRING_ONE);
+
+        record = reader.read(null, decoder);
+        assertThat(record.get(KEY_C1)).isEqualTo(INTEGER_TWO);
+        assertThat(record.get(KEY_C2).toString()).isEqualTo(STRING_TWO);
+
+        Assertions.assertThrows(EOFException.class, () -> reader.read(null, decoder));
+    }
+
+    //TODO: add test about schema
+    //TODO: add test about writeUnit
+    //TODO: add test about specified values
+}

@@ -1,0 +1,10 @@
+---
+columns:
+  - name: city
+    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
+sink:
+  identifier: "io.duzzy.plugin.sink.ConsoleSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.XmlSerializer"
+    rootTag: countries
+    rowTag: country

@@ -1,0 +1,5 @@
+---
+identifier: "io.duzzy.plugin.column.constant.FloatConstantColumn"
+name: unit
+nullRate: 0
+value: 1

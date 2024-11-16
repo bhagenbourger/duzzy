@@ -1,0 +1,94 @@
+---
+columns:
+  - name: booleanConstant
+    identifier: "io.duzzy.plugin.column.constant.BooleanConstantColumn"
+    nullRate: 0.5
+    value: false
+  - name: doubleConstant
+    identifier: "io.duzzy.plugin.column.constant.DoubleConstantColumn"
+    nullRate: 0.5
+    value: 1.1
+  - name: floatConstant
+    identifier: "io.duzzy.plugin.column.constant.FloatConstantColumn"
+    nullRate: 0.5
+    value: 2.2
+  - name: instantConstant
+    identifier: "io.duzzy.plugin.column.constant.IntegerConstantColumn"
+    nullRate: 0.5
+    value: 42
+  - name: longConstant
+    identifier: "io.duzzy.plugin.column.constant.LongConstantColumn"
+    nullRate: 0.5
+    value: 12
+  - name: stringConstant
+    identifier: "io.duzzy.plugin.column.constant.StringConstantColumn"
+    nullRate: 0.5
+    value: myConstant
+  - name: stringListConstant
+    identifier: "io.duzzy.plugin.column.constant.StringListConstantColumn"
+    nullRate: 0.5
+    values: ["one", "two", "three"]
+  - name: stringWeightedListConstant
+    identifier: "io.duzzy.plugin.column.constant.StringWeightedListConstantColumn"
+    nullRate: 0.5
+    values:
+    - value: first
+      weight: 1
+    - value: second
+      weight: 2
+    - value: third
+      weight: 3
+  - name: doubleIncrement
+    identifier: "io.duzzy.plugin.column.increment.DoubleIncrementColumn"
+    nullRate: 0.5
+    start: 500
+    step: 0.3
+  - name: floatIncrement
+    identifier: "io.duzzy.plugin.column.increment.FloatIncrementColumn"
+    nullRate: 0.5
+    start: 50
+    step: 0.1
+  - name: integerIncrement
+    identifier: "io.duzzy.plugin.column.increment.IntegerIncrementColumn"
+    nullRate: 0.5
+    start: 10
+    step: 3
+  - name: longIncrement
+    identifier: "io.duzzy.plugin.column.increment.LongIncrementColumn"
+    nullRate: 0.5
+    start: 100
+    step: 10
+  - name: alphanumericRandom
+    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
+    nullRate: 0.5
+    minLength: 20
+    maxLength: 25
+  - name: booleanRandom
+    identifier: "io.duzzy.plugin.column.random.BooleanRandomColumn"
+    nullRate: 0.5
+  - name: doubleRandom
+    identifier: "io.duzzy.plugin.column.random.DoubleRandomColumn"
+    nullRate: 0.5
+    min: 0.5
+    max: 1.5
+  - name: floatRandom
+    identifier: "io.duzzy.plugin.column.random.FloatRandomColumn"
+    nullRate: 0.5
+    min: 500.5
+    max: 550.1
+  - name: integerRandom
+    identifier: "io.duzzy.plugin.column.random.IntegerRandomColumn"
+    nullRate: 0.5
+    min: 50
+    max: 100
+  - name: longRandom
+    identifier: "io.duzzy.plugin.column.random.LongRandomColumn"
+    nullRate: 0.5
+    min: 1000
+    max: 10000
+sink:
+  identifier: "io.duzzy.plugin.sink.ConsoleSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+rows: 42
+seed: 1234

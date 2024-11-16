@@ -1,0 +1,58 @@
+plugins {
+    id 'application'
+    id 'org.graalvm.buildtools.native' version '0.10.3'
+}
+
+application {
+    mainClass = "io.duzzy.cli.App"
+}
+
+jar.enabled = false
+build.enabled = false
+
+graalvmNative {
+    binaries.configureEach {
+        resources.autodetect()
+    }
+    toolchainDetection = false
+    testSupport = true
+}
+
+dependencies {
+    implementation project(":cli")
+    implementation project(":plugin-avro")
+    implementation project(":plugin-hdfs")
+    implementation project(":plugin-kafka")
+    implementation project(":plugin-parquet")
+}
+
+allprojects {
+    apply plugin: 'java'
+
+    group = 'io.duzzy'
+    version = 'unspecified'
+    //version = '1.0-SNAPSHOT'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+
+    dependencies {
+        testImplementation project(":tests")
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.assertj:assertj-core:3.26.3'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

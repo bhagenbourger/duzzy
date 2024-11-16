@@ -1,0 +1,126 @@
+[
+  {
+    "name": "io.duzzy.core.DuzzySchema",
+    "allPublicMethods": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.core.config.DuzzyConfig",
+    "allPublicMethods": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.core.config.DuzzyConfigColumn",
+    "allPublicMethods": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.core.DuzzyResult",
+    "allPublicMethods": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.sink.ConsoleSink",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.sink.LocalFileSink",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.serializer.CsvSerializer",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.serializer.JsonSerializer",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.serializer.XmlSerializer",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.BooleanConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.DoubleConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.FloatConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.IntegerConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.LongConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.StringConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.StringListConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.constant.StringWeightedListConstantColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.increment.DoubleIncrementColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.increment.FloatIncrementColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.increment.IntegerIncrementColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.increment.LongIncrementColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.AlphanumericRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.BooleanRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.DoubleRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.FloatRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.InstantRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.IntegerRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.LocalDateRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.LongRandomColumn",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.column.random.UUIDRandomColumn",
+    "allPublicConstructors": true
+  }
+]

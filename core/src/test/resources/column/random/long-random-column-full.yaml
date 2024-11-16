@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.column.random.LongRandomColumn"
+name: age
+nullRate: 0
+min: 0
+max: 150

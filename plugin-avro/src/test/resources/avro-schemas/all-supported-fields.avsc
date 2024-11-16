@@ -1,0 +1,23 @@
+{
+  "namespace": "example.avro",
+  "type": "record",
+  "name": "User",
+  "fields": [
+    {"name": "string_field", "type": "string"},
+    {"name": "int_field", "type": "int"},
+    {"name": "long_field", "type": "long"},
+    {"name": "float_field", "type": "float"},
+    {"name": "double_field", "type": "double"},
+    {"name": "boolean_field", "type": "boolean"},
+    {"name": "nullable_str", "type": ["string", "null"]},
+    {"name": "nullable_int",  "type": ["int", "null"]},
+    {"name": "nullable_long",  "type": ["long", "null"]},
+    {"name": "nullable_float",  "type": ["float", "null"]},
+    {"name": "nullable_double",  "type": ["double", "null"]},
+    {"name": "nullable_boolean",  "type": ["boolean", "null"]},
+    {"name": "uuid_field", "type": {"type": "string", "logicalType": "uuid"}},
+    {"name": "date_field", "type": {"type": "int", "logicalType": "date"}},
+    {"name": "timestamp_millis_field", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "timestamp_micros_field", "type": {"type": "long", "logicalType": "timestamp-micros"}}
+  ]
+}

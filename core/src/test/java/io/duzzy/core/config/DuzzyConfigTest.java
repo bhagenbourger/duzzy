@@ -1,0 +1,40 @@
+package io.duzzy.core.config;
+
+import io.duzzy.core.column.ColumnType;
+import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
+import io.duzzy.plugin.sink.LocalFileSink;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
+import static io.duzzy.tests.Helper.getFromResources;
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class DuzzyConfigTest {
+
+    @Test
+    void shouldParsedFromYamlFile() throws IOException {
+        final File duzzyConfigFile = getFromResources(getClass(), "config/duzzy-config-full.yaml");
+        final DuzzyConfig duzzyConfig = DuzzyConfig.fromFile(duzzyConfigFile);
+
+        assertThat(duzzyConfig.columns()).hasSize(1);
+        assertThat(duzzyConfig.columns().getFirst().querySelector())
+                .isEqualTo("name=city");
+        assertThat(duzzyConfig.columns().getFirst().identifier())
+                .isEqualTo("io.duzzy.plugin.column.random.AlphanumericRandomColumn");
+        assertThat(duzzyConfig.columns().getFirst().parameters())
+                .isEqualTo(Map.of("min_length", 3, "max_length", 20));
+        assertThat(duzzyConfig.sink()).isInstanceOf(LocalFileSink.class);
+    }
+
+    @Test
+    void shouldFindColumn() throws IOException {
+        final File duzzyConfigFile = getFromResources(getClass(), "config/duzzy-config-full.yaml");
+        final DuzzyConfig duzzyConfig = DuzzyConfig.fromFile(duzzyConfigFile);
+
+        assertThat(duzzyConfig.findColumn("city", ColumnType.STRING, "name", "city").get())
+                .isInstanceOf(AlphanumericRandomColumn.class);
+    }
+}

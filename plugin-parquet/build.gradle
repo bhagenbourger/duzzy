@@ -1,0 +1,8 @@
+dependencies {
+    compileOnly project(":core")
+
+    implementation 'org.apache.parquet:parquet-avro:1.14.3'
+    implementation 'org.apache.hadoop:hadoop-client:3.4.1'
+
+    testImplementation project(":core")
+}

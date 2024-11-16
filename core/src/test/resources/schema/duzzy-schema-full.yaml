@@ -1,0 +1,12 @@
+---
+columns:
+  - name: city
+    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
+    minLength: 20
+    maxLength: 25
+sink:
+  identifier: "io.duzzy.plugin.sink.ConsoleSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+rows: 42
+seed: 1234

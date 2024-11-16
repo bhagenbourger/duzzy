@@ -1,0 +1,14 @@
+[
+  {
+    "name": "io.duzzy.plugin.serializer.AvroWithoutSchemaSerializer",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.serializer.AvroWithSchemaSerializer",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.parser.AvroSchemaParser",
+    "allPublicConstructors": true
+  }
+]
