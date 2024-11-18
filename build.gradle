@@ -18,6 +18,11 @@ graalvmNative {
     testSupport = true
 }
 
+startScripts {
+    unixStartScriptGenerator.template = resources.text.fromFile('start-script/duzzyUnixStartScript.txt')
+    windowsStartScriptGenerator.template = resources.text.fromFile('start-script/duzzyWindowsStartScript.txt')
+}
+
 dependencies {
     implementation project(":cli")
     implementation project(":plugin-avro")

@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.graalvm.buildtools.native' version '0.10.3'
+}
+
+group = 'io.duzzy.external.plugin'
+version = 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+graalvmNative {
+    binaries {
+        main {
+            imageName = "libConsoleSink"
+            sharedLibrary = true
+            useFatJar = false
+        }
+    }
+    binaries.configureEach {
+        resources.autodetect()
+    }
+    toolchainDetection = false
+    testSupport = true
+}
+
+dependencies {
+    implementation project(":core")
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

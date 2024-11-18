@@ -1,0 +1,4 @@
+sink:
+  identifier: "io.duzzy.external.plugin.sink.ConsoleSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
