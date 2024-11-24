@@ -29,7 +29,7 @@ public class AppTest {
   void shouldPrintHelp() {
     final String help = """
         Usage: duzzy [-hV] [-c=File] [-f=File] [-o=OutputFormat] [-p=Class] [-r=Long]
-                     [-s=Long]
+                     [-s=Long] [COMMAND]
           -c, --config-file=File   Config file used to enrich the schema
           -f, --schema-file=File   Schema source file
           -h, --help               Show this help message and exit.
@@ -42,6 +42,8 @@ public class AppTest {
           -r, --rows=Long          Number of rows to generate
           -s, --seed=Long          Seed used to generate
           -V, --version            Print version information and exit.
+        Commands:
+          doc  Print Duzzy documentation
         """;
 
     final App app = new App();
@@ -254,5 +256,19 @@ public class AppTest {
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
         .startsWith("\n\nDuzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
+  }
+
+  @Test
+  void generateDoc() {
+    final App app = new App();
+    final CommandLine cmd = new CommandLine(app);
+
+    final StringWriter sw = new StringWriter();
+    cmd.setOut(new PrintWriter(sw));
+
+    final int exitCode = cmd.execute("doc");
+
+    assertThat(exitCode).isEqualTo(0);
+    assertThat(sw.toString()).isEqualTo("");
   }
 }
