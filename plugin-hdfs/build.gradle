@@ -1,7 +1,11 @@
 dependencies {
+    annotationProcessor project(":documentation-processor")
     compileOnly project(":core")
+    compileOnly project(":documentation-processor")
 
-    implementation 'org.apache.hadoop:hadoop-client:3.4.1'
+    implementation 'org.apache.hadoop:hadoop-client:3.4.0'
 
     testImplementation project(":core")
+    testImplementation project(":tests")
+    testCompileOnly project(':documentation-processor')
 }

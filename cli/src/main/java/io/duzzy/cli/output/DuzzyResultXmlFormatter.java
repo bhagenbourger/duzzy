@@ -1,17 +1,18 @@
-package io.duzzy.cli;
+package io.duzzy.cli.output;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DuzzyResultJsonFormatter implements DuzzyResultFormatter {
+public class DuzzyResultXmlFormatter implements DuzzyResultFormatter {
 
-  private static final Logger logger = LoggerFactory.getLogger(DuzzyResultJsonFormatter.class);
+  private static final Logger logger = LoggerFactory.getLogger(DuzzyResultXmlFormatter.class);
 
-  private static final ObjectMapper MAPPER = new ObjectMapper()
+  private static final ObjectMapper MAPPER = new XmlMapper()
       .registerModule(new JavaTimeModule());
 
   @Override
@@ -20,7 +21,7 @@ public class DuzzyResultJsonFormatter implements DuzzyResultFormatter {
       return MAPPER.writer().writeValueAsString(duzzyResult);
     } catch (JsonProcessingException e) {
       logger.warn(
-          "An error occurred while formatting result in JSON, fallback on raw strategy",
+          "An error occurred while formatting result in XML, fallback on raw strategy",
           e
       );
       return duzzyResult.toString();

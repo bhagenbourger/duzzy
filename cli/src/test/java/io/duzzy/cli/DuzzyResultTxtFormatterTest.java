@@ -2,6 +2,7 @@ package io.duzzy.cli;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.duzzy.cli.output.DuzzyResultTxtFormatter;
 import io.duzzy.core.DuzzyResult;
 import java.time.Duration;
 import org.junit.jupiter.api.Test;

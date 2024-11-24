@@ -1,0 +1,29 @@
+# Duzzy components
+
+## Parser
+A `parser`is a component that parses the input schema and produces a `DuzzySchema` by combining the input schema and duzzy config.
+
+### io.duzzy.plugin.parser.SqlParser  
+Identifier: io.duzzy.plugin.parser.SqlParser  
+Description: SQL parser: parse SQL schema to DuzzySchema  
+Module: io.duzzy.core
+
+## Serializer
+A serializer is a component that enables to specify how data are formatted.
+
+### io.duzzy.plugin.serializer.SqlSerializer  
+Identifier: io.duzzy.plugin.serializer.SqlSerializer  
+Description: Serialize data in SQL  
+Module: io.duzzy.core  
+
+Parameters: 
+  - Name: table_name
+    Aliases: tableName, table-name
+    Description: The name of the table to insert data  
+
+Example: 
+```
+---
+identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+table_name: "my_table"
+```

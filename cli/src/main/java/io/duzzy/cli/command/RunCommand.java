@@ -1,7 +1,7 @@
 package io.duzzy.cli.command;
 
 import io.duzzy.cli.App;
-import io.duzzy.cli.OutputFormat;
+import io.duzzy.cli.output.OutputFormat;
 import io.duzzy.core.Duzzy;
 import io.duzzy.core.DuzzyResult;
 import java.io.File;

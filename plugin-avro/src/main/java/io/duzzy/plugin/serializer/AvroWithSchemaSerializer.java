@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.AvroSerializer;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +15,34 @@ import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumWriter;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.serializer.AvroWithSchemaSerializer",
+    description = "Serialize data to Avro, schema is written with data",
+    module = "io.duzzy.plugin-avro",
+    duzzyType = DuzzyType.SERIALIZER,
+    parameters = {
+        @Parameter(
+            name = "name",
+            description = "The name of the record"
+        ),
+        @Parameter(
+            name = "namespace",
+            description = "The namespace that qualifies the name"
+        ),
+        @Parameter(
+            name = "schema_file",
+            description = "The Avro schema file",
+            aliases = {"schemaFile", "schema-file"}
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.serializer.AvroWithSchemaSerializer"
+        name: "avro-with-schema"
+        namespace: "io.duzzy.plugin.serializer"
+        schema_file: "schema.avsc"
+        """
+)
 public class AvroWithSchemaSerializer extends AvroSerializer<DataFileWriter<GenericData.Record>> {
 
   @JsonCreator

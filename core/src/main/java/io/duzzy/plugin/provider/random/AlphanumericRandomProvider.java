@@ -3,10 +3,37 @@ package io.duzzy.plugin.provider.random;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.ProviderUtil;
 import io.duzzy.core.provider.corrupted.StringCorruptedProvider;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.provider.random.AlphanumericRandomProvider",
+    description = "Provide a random alphanumeric value",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.PROVIDER,
+    parameters = {
+        @Parameter(
+            name = "min_length",
+            aliases = {"minLength", "min-length"},
+            description = "The minimum length of the generated value"
+        ),
+        @Parameter(
+            name = "max_length",
+            aliases = {"maxLength", "max-length"},
+            description = "The maximum length of the generated value"
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
+        min_length: 10
+        max_length: 15
+        """
+)
 public class AlphanumericRandomProvider implements StringCorruptedProvider {
 
   private final int minLength;

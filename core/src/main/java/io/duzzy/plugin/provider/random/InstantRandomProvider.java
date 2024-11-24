@@ -2,10 +2,39 @@ package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import java.time.Instant;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.provider.random.InstantRandomProvider",
+    description = "Provide a random instant value",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.PROVIDER,
+    parameters = {
+        @Parameter(
+            name = "min",
+            description = """
+                The minimum instant value, \
+                must be a string that represents a valid instant, inclusive"""
+        ),
+        @Parameter(
+            name = "max",
+            description = """
+                The maximum instant value, \
+                must be a string that represents a valid instant, exclusive"""
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.provider.random.InstantRandomProvider"
+        min: "2020-01-01T00:00:00Z"
+        max: "2021-01-01T00:00:00Z"
+        """
+)
 public final class InstantRandomProvider implements Provider<Instant> {
 
   private static final Long DEFAULT_MAX = 253402300800000L; //9999-12-31 + 1 day

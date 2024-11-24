@@ -12,10 +12,46 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
 import java.io.IOException;
 import java.io.OutputStream;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.serializer.CsvSerializer",
+    description = "Serialize data in CSV",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.SERIALIZER,
+    parameters = {
+        @Parameter(
+            name = "quote_char",
+            aliases = {"quoteChar", "quote-char"},
+            description = "The character used to quote values",
+            defaultValue = "'"
+        ),
+        @Parameter(
+            name = "column_separator",
+            aliases = {"columnSeparator", "column-separator"},
+            description = "The character used to separate columns",
+            defaultValue = ";"
+        ),
+        @Parameter(
+            name = "line_separator",
+            aliases = {"lineSeparator", "line-separator"},
+            description = "The character used to separate lines",
+            defaultValue = "|"
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.serializer.CsvSerializer"
+        columnSeparator: ";"
+        lineSeparator: "|"
+        quoteChar: "'"
+        """
+)
 public class CsvSerializer extends Serializer<SequenceWriter> {
 
   private static final CsvMapper MAPPER = (CsvMapper) new CsvMapper()
@@ -24,7 +60,6 @@ public class CsvSerializer extends Serializer<SequenceWriter> {
   private final Character quoteChar;
   private final Character columnSeparator;
   private final String lineSeparator;
-
 
   @JsonCreator
   public CsvSerializer(

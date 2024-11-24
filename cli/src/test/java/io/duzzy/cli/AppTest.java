@@ -1,6 +1,7 @@
 package io.duzzy.cli;
 
 import static io.duzzy.tests.Helper.getFromResources;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
@@ -11,7 +12,6 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.apache.avro.Schema;
@@ -22,6 +22,8 @@ import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DecoderFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import picocli.CommandLine;
 
 public class AppTest {
@@ -33,6 +35,7 @@ public class AppTest {
       Commands:
         run     Generate your test data
         plugin  Manage your plugins
+        doc     Print Duzzy documentation
       """;
   private static final String RUN_ACTION = "run";
   private static final String SCHEMA_FILE_OPTION =
@@ -78,11 +81,11 @@ public class AppTest {
     final CommandLine cmd = new CommandLine(app);
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute();
     assertThat(exitCode).isEqualTo(0);
-    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo(HELP);
+    assertThat(outputStreamCaptor.toString(UTF_8)).isEqualTo(HELP);
   }
 
   @Test
@@ -97,7 +100,7 @@ public class AppTest {
     cmd.setOut(new PrintWriter(sw));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute(
         RUN_ACTION,
@@ -115,7 +118,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
-    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
+    assertThat(outputStreamCaptor.toString(UTF_8))
         .startsWith(RESULT_STARTS_WITH)
         .endsWith(RESULT_ENDS_WITH);
   }
@@ -132,7 +135,7 @@ public class AppTest {
     cmd.setOut(new PrintWriter(sw));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute(
         RUN_ACTION,
@@ -150,7 +153,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
-    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
+    assertThat(outputStreamCaptor.toString(UTF_8))
         .startsWith(RESULT_STARTS_WITH)
         .endsWith(RESULT_ENDS_WITH);
   }
@@ -167,7 +170,7 @@ public class AppTest {
     cmd.setOut(new PrintWriter(sw));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute(
         RUN_ACTION,
@@ -185,7 +188,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
-    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
+    assertThat(outputStreamCaptor.toString(UTF_8))
         .startsWith(RESULT_STARTS_WITH)
         .endsWith(RESULT_ENDS_WITH);
   }
@@ -199,7 +202,7 @@ public class AppTest {
     cmd.setOut(new PrintWriter(sw));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute(
         RUN_ACTION,
@@ -227,7 +230,7 @@ public class AppTest {
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
-      assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
+      assertThat(outputStreamCaptor.toString(UTF_8))
           .startsWith(RESULT_STARTS_WITH)
           .endsWith(RESULT_ENDS_WITH);
     }
@@ -242,7 +245,7 @@ public class AppTest {
     cmd.setOut(new PrintWriter(sw));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute(
         RUN_ACTION,
@@ -271,7 +274,7 @@ public class AppTest {
 
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
-    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
+    assertThat(outputStreamCaptor.toString(UTF_8))
         .startsWith(RESULT_STARTS_WITH)
         .endsWith(RESULT_ENDS_WITH);
   }
@@ -285,12 +288,12 @@ public class AppTest {
     cmd.setOut(new PrintWriter(sw));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
 
     final int exitCode = cmd.execute("plugin");
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
-    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo("""
+    assertThat(outputStreamCaptor.toString(UTF_8)).isEqualTo("""
         Usage: plugin [-hV] [COMMAND]
         Manage your plugins
           -h, --help      Show this help message and exit.
@@ -320,5 +323,35 @@ public class AppTest {
           -s, --source=String   Url or local path to the plugin
           -V, --version         Print version information and exit.
         """);
+  }
+  
+  @ParameterizedTest
+  @CsvSource({
+      "doc, doc/doc.txt",
+      "doc -t=PARSER, doc/doc-parser.txt",
+      "doc -i=sql, doc/doc-sql.txt",
+      "doc -m=plugin-avro, doc/doc-avro.txt",
+      "doc -t=PARSER -i=sql -m=core, doc/doc-parser-sql.txt"
+  })
+  void generateDoc(String command, String result) throws IOException {
+    final App app = new App();
+    final CommandLine cmd = new CommandLine(app);
+
+    final StringWriter sw = new StringWriter();
+    cmd.setOut(new PrintWriter(sw));
+
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, UTF_8));
+
+    final int exitCode = cmd.execute(command.split(" "));
+
+    assertThat(exitCode).isEqualTo(0);
+    assertThat(sw.toString()).isEqualTo("");
+
+    final File file = getFromResources(getClass(), result);
+    try (final FileInputStream input = new FileInputStream(file)) {
+      final String doc = new String(input.readAllBytes(), UTF_8);
+      assertThat(outputStreamCaptor.toString(UTF_8)).isEqualTo(doc);
+    }
   }
 }
