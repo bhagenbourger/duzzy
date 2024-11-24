@@ -24,7 +24,7 @@ public class DuzzyE2ETest {
     void shouldPrintHelp() {
         final String help = """
                 Usage: duzzy [-hV] [-c=File] [-f=File] [-o=OutputFormat] [-p=Class] [-r=Long]
-                             [-s=Long]
+                             [-s=Long] [COMMAND]
                   -c, --config-file=File   Config file used to enrich the schema
                   -f, --schema-file=File   Schema source file
                   -h, --help               Show this help message and exit.
@@ -37,6 +37,8 @@ public class DuzzyE2ETest {
                   -r, --rows=Long          Number of rows to generate
                   -s, --seed=Long          Seed used to generate
                   -V, --version            Print version information and exit.
+                Commands:
+                  doc  Print Duzzy documentation
                 """;
 
         final App app = new App();
@@ -95,7 +97,7 @@ public class DuzzyE2ETest {
         assertThat(sw.toString()).isEqualTo("");
         assertThat(result).isEqualTo(expected);
         assertThat(outputStreamCaptor.toString())
-                .startsWith("\n\nDuzzy generated 3 rows in PT0")
+                .startsWith("\n\nDuzzy generated 3 rows in PT")
                 .endsWith("S with seed 1234\n");
     }
 
@@ -204,7 +206,7 @@ public class DuzzyE2ETest {
             assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
             assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
             assertThat(outputStreamCaptor.toString())
-                    .startsWith("\n\nDuzzy generated 3 rows in PT0")
+                    .startsWith("\n\nDuzzy generated 3 rows in PT")
                     .endsWith("S with seed 1234\n");
         }
     }
