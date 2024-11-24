@@ -1,12 +1,16 @@
 package io.duzzy.cli;
 
+import io.duzzy.cli.doc.DocMarkdownFormatter;
+import io.duzzy.cli.output.OutputFormat;
 import io.duzzy.core.Duzzy;
 import io.duzzy.core.DuzzyResult;
+import io.duzzy.core.documentation.DuzzyDoc;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 @Command(name = "duzzy", mixinStandardHelpOptions = true, version = "1.0")
@@ -53,6 +57,11 @@ public class App implements Callable<Integer> {
             description = "Output format, supported values: ${COMPLETION-CANDIDATES}"
     )
     OutputFormat outputFormat = OutputFormat.RAW;
+
+    @Command(name = "doc", description = "Print Duzzy documentation")
+    void subCommandDocMethod() throws IOException {
+        System.out.println(DocMarkdownFormatter.format(new DuzzyDoc().generate()));
+    }
 
     public static void main(String[] args) {
         System.exit(new CommandLine(new App()).execute(args));

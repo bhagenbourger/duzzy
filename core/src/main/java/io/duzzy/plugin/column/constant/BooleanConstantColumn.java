@@ -5,9 +5,36 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.column.ConstantColumn;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 
 import java.util.Objects;
 
+@Documentation(
+        identifier = "io.duzzy.plugin.column.constant.BooleanConstantColumn",
+        description = "Boolean constant column always return value",
+        duzzyType = DuzzyType.COLUMN,
+        parameters = {
+                @Parameter(
+                        name = "null_rate",
+                        aliases = {"nullRate", "null-rate"},
+                        description = "Rate of null values, between 0 and 1",
+                        defaultValue = "0"
+                ),
+                @Parameter(
+                        name = "value",
+                        description = "The constant value, must be a boolean"
+                )
+        },
+        example = """
+                ---
+                identifier: "io.duzzy.plugin.column.constant.BooleanConstantColumn"
+                name: unit
+                null_rate: 0
+                value: false
+                """
+)
 public class BooleanConstantColumn extends ConstantColumn<Boolean> {
 
     @JsonCreator

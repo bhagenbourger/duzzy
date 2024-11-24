@@ -1,5 +1,6 @@
 package io.duzzy.plugin.serializer;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -23,8 +24,12 @@ public class XmlSerializer extends Serializer<XMLCustomStreamWriter> {
 
     @JsonCreator
     public XmlSerializer(
-            @JsonProperty("rootTag") String rootTag,
-            @JsonProperty("rowTag") String rowTag
+            @JsonProperty("rootTag")
+            @JsonAlias({"root_tag", "root-tag"})
+            String rootTag,
+            @JsonProperty("rowTag")
+            @JsonAlias({"row_tag", "row-tag"})
+            String rowTag
     ) {
         this.rootTag = rootTag == null ? DEFAULT_ROOT_TAG : rootTag;
         this.mapper = (XmlMapper) new XmlMapper()
