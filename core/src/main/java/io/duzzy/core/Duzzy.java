@@ -43,18 +43,18 @@ public class Duzzy {
         //TODO: Log a WARN if parser is instance of DuzzySchemaParser.class and DuzzyConfig is not null
         // => DuzzyConf is useless with DuzzySchemaParser
 
-        return generate(getDuzzySchema(getParser(), getDuzzyConfig()));
+        return generate(getDuzzyContext(getParser(), getDuzzyConfig()));
     }
 
     private DuzzyConfig getDuzzyConfig() throws IOException {
         return config != null ? DuzzyConfig.fromFile(config) : null;
     }
 
-    private DuzzySchema getDuzzySchema(
+    private DuzzyContext getDuzzyContext(
             Parser parser,
             DuzzyConfig duzzyConfig
     ) throws IOException {
-        return (schema == null ? DuzzySchema.DEFAULT : parser.parse(schema, duzzyConfig))
+        return (schema == null ? DuzzyContext.DEFAULT : parser.parse(schema, duzzyConfig))
                 .withSeed(this.seed)
                 .withRows(this.rows)
                 .withSink(duzzyConfig == null ? null : duzzyConfig.sink());
@@ -74,16 +74,16 @@ public class Duzzy {
                         .newInstance() : new DuzzySchemaParser();
     }
 
-    private static DuzzyResult generate(DuzzySchema duzzySchema) throws IOException {
-        final Sink sink = duzzySchema.sink();
-        sink.init(duzzySchema);
+    private static DuzzyResult generate(DuzzyContext duzzyContext) throws IOException {
+        final Sink sink = duzzyContext.sink();
+        sink.init(duzzyContext);
         final Long start = Instant.now().toEpochMilli();
-        for (Long index = 0L; index < duzzySchema.rows(); index++) {
-            final Long rowId = computeRowId(duzzySchema.seed(), index);
+        for (Long index = 0L; index < duzzyContext.rows(); index++) {
+            final Long rowId = computeRowId(duzzyContext.seed(), index);
             final ColumnContext columnContext = new ColumnContext(new Random(rowId), rowId, index);
             sink.write(
                     new DataItems(
-                            duzzySchema
+                            duzzyContext
                                     .columns()
                                     .stream()
                                     .map(c -> new DataItem(
@@ -100,8 +100,8 @@ public class Duzzy {
 
         return new DuzzyResult(
                 Duration.of(end - start, ChronoUnit.MILLIS),
-                duzzySchema.rows(),
-                duzzySchema.seed()
+                duzzyContext.rows(),
+                duzzyContext.seed()
         );
     }
 

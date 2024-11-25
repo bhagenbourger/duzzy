@@ -1,9 +1,9 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.schema.DuzzySchema;
-import io.duzzy.core.serializer.Serializer;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.column.Column;
 import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import org.apache.avro.generic.GenericRecord;
@@ -54,10 +54,10 @@ public class ParquetSerializerTest {
                         List.of(new AlphanumericRandomProvider())
                 )
         );
-        final DuzzySchema duzzySchema = new DuzzySchema(null, columns, null, null, null);
+        final DuzzyContext duzzyContext = new DuzzyContext(null, columns, null, null, null);
 
         final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null);
-        parquetSerializer.init(outputStream, duzzySchema);
+        parquetSerializer.init(outputStream, duzzyContext);
         parquetSerializer.writeAll(getDataOne());
         parquetSerializer.writeAll(getDataTwo());
         parquetSerializer.close();

@@ -1,6 +1,6 @@
 package io.duzzy.plugin.sink;
 
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class ConsoleSinkTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-        consoleSink.init(DuzzySchema.DEFAULT);
+        consoleSink.init(DuzzyContext.DEFAULT);
         consoleSink.write(getDataOne());
         consoleSink.write(getDataTwo());
         consoleSink.write(getDataOne());

@@ -3,9 +3,8 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.column.Column;
 import io.duzzy.core.sink.Sink;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -13,7 +12,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 
 public class KafkaSink extends Sink {
@@ -33,7 +31,7 @@ public class KafkaSink extends Sink {
     }
 
     @Override
-    public void init(DuzzySchema duzzySchema) {
+    public void init(DuzzyContext duzzySchema) {
 
     }
 

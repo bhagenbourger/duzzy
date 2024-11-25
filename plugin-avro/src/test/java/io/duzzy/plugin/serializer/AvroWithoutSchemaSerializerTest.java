@@ -1,8 +1,8 @@
 package io.duzzy.plugin.serializer;
 
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.column.Column;
 import io.duzzy.core.provider.ColumnType;
-import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
@@ -49,11 +49,11 @@ public class AvroWithoutSchemaSerializerTest {
                         List.of(new AlphanumericRandomProvider())
                 )
         );
-        final DuzzySchema duzzySchema = new DuzzySchema(null, columns, null, null, null);
+        final DuzzyContext duzzyContext = new DuzzyContext(null, columns, null, null, null);
 
         final AvroWithoutSchemaSerializer avroWithoutSchemaSerializer =
                 new AvroWithoutSchemaSerializer(null, null);
-        avroWithoutSchemaSerializer.init(outputStream, duzzySchema);
+        avroWithoutSchemaSerializer.init(outputStream, duzzyContext);
         avroWithoutSchemaSerializer.writeAll(getDataOne());
         avroWithoutSchemaSerializer.writeAll(getDataTwo());
 

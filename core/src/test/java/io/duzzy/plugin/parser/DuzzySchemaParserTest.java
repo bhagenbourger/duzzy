@@ -1,6 +1,6 @@
 package io.duzzy.plugin.parser;
 
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.provider.ColumnType;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.serializer.JsonSerializer;
@@ -19,54 +19,54 @@ public class DuzzySchemaParserTest {
     @Test
     void parsedFromYaml() throws IOException {
         final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-full.yaml");
-        final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+        final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-        assertThat(duzzySchema).isInstanceOf(DuzzySchema.class);
-        assertThat(duzzySchema.columns()).hasSize(1);
-        assertThat(duzzySchema.columns().getFirst().name()).isEqualTo("city");
-        assertThat(duzzySchema.columns().getFirst().columnType()).isEqualTo(ColumnType.STRING);
-        assertThat(duzzySchema.columns().getFirst().nullRate()).isEqualTo(0f);
-        assertThat(duzzySchema.columns().getFirst().providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
-        assertThat(duzzySchema.sink()).isInstanceOf(ConsoleSink.class);
-        assertThat(duzzySchema.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
-        assertThat(duzzySchema.rows()).isEqualTo(42L);
-        assertThat(duzzySchema.seed()).isEqualTo(1234L);
+        assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
+        assertThat(duzzyContext.columns()).hasSize(1);
+        assertThat(duzzyContext.columns().getFirst().name()).isEqualTo("city");
+        assertThat(duzzyContext.columns().getFirst().columnType()).isEqualTo(ColumnType.STRING);
+        assertThat(duzzyContext.columns().getFirst().nullRate()).isEqualTo(0f);
+        assertThat(duzzyContext.columns().getFirst().providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
+        assertThat(duzzyContext.sink()).isInstanceOf(ConsoleSink.class);
+        assertThat(duzzyContext.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
+        assertThat(duzzyContext.rows()).isEqualTo(42L);
+        assertThat(duzzyContext.seed()).isEqualTo(1234L);
     }
 
     @Test
     void parsedFromYamlHasDefaultValues() throws IOException {
         final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema.yaml");
-        final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+        final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-        assertThat(duzzySchema).isInstanceOf(DuzzySchema.class);
-        assertThat(duzzySchema.columns()).hasSize(1);
-        assertThat(duzzySchema.columns().getFirst().name()).isEqualTo("city");
-        assertThat(duzzySchema.columns().getFirst().columnType()).isEqualTo(ColumnType.STRING);
-        assertThat(duzzySchema.columns().getFirst().nullRate()).isEqualTo(0f);
-        assertThat(duzzySchema.columns().getFirst().providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
-        assertThat(duzzySchema.sink()).isInstanceOf(ConsoleSink.class);
-        assertThat(duzzySchema.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
-        assertThat(duzzySchema.rows()).isEqualTo(10L);
-        assertThat(duzzySchema.seed()).isNotNull();
+        assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
+        assertThat(duzzyContext.columns()).hasSize(1);
+        assertThat(duzzyContext.columns().getFirst().name()).isEqualTo("city");
+        assertThat(duzzyContext.columns().getFirst().columnType()).isEqualTo(ColumnType.STRING);
+        assertThat(duzzyContext.columns().getFirst().nullRate()).isEqualTo(0f);
+        assertThat(duzzyContext.columns().getFirst().providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
+        assertThat(duzzyContext.sink()).isInstanceOf(ConsoleSink.class);
+        assertThat(duzzyContext.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
+        assertThat(duzzyContext.rows()).isEqualTo(10L);
+        assertThat(duzzyContext.seed()).isNotNull();
     }
 
     @Test
     void parsedFromYamlShouldBeCaseInsensitive() throws IOException {
         final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-case-insensitive.yaml");
-        final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+        final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-        assertThat(duzzySchema).isInstanceOf(DuzzySchema.class);
-        assertThat(duzzySchema.columns()).hasSize(1);
-        assertThat(duzzySchema.columns().getFirst().value(DEFAULT)).isNotNull();
+        assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
+        assertThat(duzzyContext.columns()).hasSize(1);
+        assertThat(duzzyContext.columns().getFirst().value(DEFAULT)).isNotNull();
     }
 
     @Test
     void parsedFromYamlShouldBeAbleToReadSnakeCase() throws IOException {
         final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-snake-case.yaml");
-        final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+        final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-        assertThat(duzzySchema).isInstanceOf(DuzzySchema.class);
-        assertThat(duzzySchema.columns()).hasSize(1);
-        assertThat(duzzySchema.columns().getFirst().value(DEFAULT)).isNotNull();
+        assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
+        assertThat(duzzyContext.columns()).hasSize(1);
+        assertThat(duzzyContext.columns().getFirst().value(DEFAULT)).isNotNull();
     }
 }

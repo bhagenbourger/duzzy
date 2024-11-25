@@ -1,9 +1,9 @@
 package io.duzzy.core.serializer;
 
 import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.column.Column;
-import io.duzzy.core.schema.DuzzySchema;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,14 +13,14 @@ import java.util.List;
 public abstract class Serializer<W extends Closeable> implements Plugin {
 
     private W writer;
-    private DuzzySchema duzzySchema;
+    private DuzzyContext duzzyContext;
 
     protected abstract W buildWriter(OutputStream outputStream) throws IOException;
 
     protected abstract void write(DataItems data, W writer) throws IOException;
 
-    public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
-        this.duzzySchema = duzzySchema;
+    public void init(OutputStream outputStream, DuzzyContext duzzyContext) throws IOException {
+        this.duzzyContext = duzzyContext;
         this.writer = buildWriter(outputStream);
     }
 
@@ -43,11 +43,7 @@ public abstract class Serializer<W extends Closeable> implements Plugin {
         }
     }
 
-    protected List<Column> getColumns() {
-        return duzzySchema.columns();
-    }
-
-    protected DuzzySchema getDuzzySchema() {
-        return duzzySchema;
+    protected DuzzyContext getDuzzyContext() {
+        return duzzyContext;
     }
 }

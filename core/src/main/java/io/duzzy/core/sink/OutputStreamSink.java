@@ -1,13 +1,11 @@
 package io.duzzy.core.sink;
 
 import io.duzzy.core.DataItems;
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.column.Column;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 public abstract class OutputStreamSink extends Sink {
 
@@ -19,8 +17,8 @@ public abstract class OutputStreamSink extends Sink {
     }
 
     @Override
-    public void init(DuzzySchema duzzySchema) throws IOException {
-        this.serializer.init(outputStream, duzzySchema);
+    public void init(DuzzyContext duzzyContext) throws IOException {
+        this.serializer.init(outputStream, duzzyContext);
     }
 
     @Override

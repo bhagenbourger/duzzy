@@ -1,11 +1,11 @@
 package io.duzzy.plugin.parser;
 
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.column.Column;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.ColumnType;
 import io.duzzy.core.provider.Provider;
-import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.provider.random.*;
 import io.duzzy.plugin.schema.AvroInputSchema;
 import org.apache.avro.LogicalType;
@@ -23,7 +23,7 @@ public class AvroSchemaParser implements Parser {
     private static final String TYPE = "type";
 
     @Override
-    public DuzzySchema parse(File file, DuzzyConfig duzzyConfig) throws IOException {
+    public DuzzyContext parse(File file, DuzzyConfig duzzyConfig) throws IOException {
         final Schema avroSchema = new Schema.Parser().parse(file);
         if (avroSchema.hasFields()) {
             final List<Column> columns = avroSchema
@@ -31,9 +31,9 @@ public class AvroSchemaParser implements Parser {
                     .stream()
                     .map(f -> AvroSchemaParser.parse(f, duzzyConfig))
                     .toList();
-            return new DuzzySchema(new AvroInputSchema(avroSchema), columns, null, null, null);
+            return new DuzzyContext(new AvroInputSchema(avroSchema), columns, null, null, null);
         }
-        return new DuzzySchema(new AvroInputSchema(avroSchema), null, null, null, null);
+        return new DuzzyContext(new AvroInputSchema(avroSchema), null, null, null, null);
     }
 
     private static Column parse(Schema.Field field, DuzzyConfig duzzyConfig) {
