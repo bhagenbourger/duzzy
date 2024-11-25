@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.Serializer;
+import io.duzzy.core.serializer.Serializer;
 
 import java.io.IOException;
 import java.io.OutputStream;

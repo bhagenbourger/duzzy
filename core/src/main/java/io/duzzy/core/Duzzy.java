@@ -3,6 +3,7 @@ package io.duzzy.core;
 import io.duzzy.core.column.ColumnContext;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.parser.DuzzySchemaParser;
 import org.apache.commons.codec.digest.MurmurHash3;
@@ -75,7 +76,7 @@ public class Duzzy {
 
     private static DuzzyResult generate(DuzzySchema duzzySchema) throws IOException {
         final Sink sink = duzzySchema.sink();
-        sink.init(duzzySchema.columns());
+        sink.init(duzzySchema);
         final Long start = Instant.now().toEpochMilli();
         for (Long index = 0L; index < duzzySchema.rows(); index++) {
             final Long rowId = computeRowId(duzzySchema.seed(), index);
@@ -86,8 +87,8 @@ public class Duzzy {
                                     .columns()
                                     .stream()
                                     .map(c -> new DataItem(
-                                            c.getName(),
-                                            c.getColumnType(),
+                                            c.name(),
+                                            c.columnType(),
                                             c.value(columnContext)
                                     ))
                                     .toList()

@@ -1,6 +1,0 @@
----
-identifier: "io.duzzy.plugin.column.random.FloatRandomColumn"
-name: weight
-nullRate: 0
-min: 50
-max: 100

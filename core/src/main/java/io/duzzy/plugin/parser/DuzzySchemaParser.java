@@ -1,6 +1,6 @@
 package io.duzzy.plugin.parser;
 
-import io.duzzy.core.DuzzySchema;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
 

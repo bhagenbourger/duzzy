@@ -1,0 +1,9 @@
+---
+identifier: "io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider"
+values:
+  - value: one
+    weight: 1
+  - value: two
+    weight: 2
+  - value: three
+    weight: 3

@@ -1,6 +1,6 @@
 [
   {
-    "name": "io.duzzy.core.DuzzySchema",
+    "name": "io.duzzy.core.schema.DuzzySchema",
     "allPublicMethods": true,
     "allPublicConstructors": true
   },
@@ -11,7 +11,6 @@
   },
   {
     "name": "io.duzzy.core.config.DuzzyConfigColumn",
-    "allPublicMethods": true,
     "allPublicConstructors": true
   },
   {
@@ -40,87 +39,91 @@
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.BooleanConstantColumn",
+    "name": "io.duzzy.core.column.Column",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.DoubleConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.BooleanConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.FloatConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.DoubleConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.IntegerConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.FloatConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.LongConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.IntegerConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.StringConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.LongConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.StringListConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.StringConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.constant.StringWeightedListConstantColumn",
+    "name": "io.duzzy.plugin.provider.constant.StringListConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.increment.DoubleIncrementColumn",
+    "name": "io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.increment.FloatIncrementColumn",
+    "name": "io.duzzy.plugin.provider.increment.DoubleIncrementProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.increment.IntegerIncrementColumn",
+    "name": "io.duzzy.plugin.provider.increment.FloatIncrementProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.increment.LongIncrementColumn",
+    "name": "io.duzzy.plugin.provider.increment.IntegerIncrementProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.AlphanumericRandomColumn",
+    "name": "io.duzzy.plugin.provider.increment.LongIncrementProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.BooleanRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.AlphanumericRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.DoubleRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.BooleanRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.FloatRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.DoubleRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.InstantRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.FloatRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.IntegerRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.InstantRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.LocalDateRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.IntegerRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.LongRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.LocalDateRandomProvider",
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.column.random.UUIDRandomColumn",
+    "name": "io.duzzy.plugin.provider.random.LongRandomProvider",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.provider.random.UUIDRandomProvider",
     "allPublicConstructors": true
   }
 ]

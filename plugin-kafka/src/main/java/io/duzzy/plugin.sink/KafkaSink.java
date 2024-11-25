@@ -3,7 +3,8 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.Serializer;
+import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.column.Column;
 import io.duzzy.core.sink.Sink;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -32,7 +33,7 @@ public class KafkaSink extends Sink {
     }
 
     @Override
-    public void init(List<Column<?>> columns) {
+    public void init(DuzzySchema duzzySchema) {
 
     }
 

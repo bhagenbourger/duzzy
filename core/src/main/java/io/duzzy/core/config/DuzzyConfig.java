@@ -1,14 +1,12 @@
 package io.duzzy.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.duzzy.core.column.Column;
-import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.parser.Parser;
+import io.duzzy.core.provider.Provider;
 import io.duzzy.core.sink.Sink;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,32 +22,25 @@ public record DuzzyConfig(
         return Parser.YAML_MAPPER.readValue(file, DuzzyConfig.class);
     }
 
-    public Optional<Column<?>> findColumn(
-            String columnName,
-            ColumnType columnType,
+    public Optional<Provider<?>> findProvider(
             String key,
             String value
     ) {
-        //TODO: what if columns if null?
+        //TODO: what if columns is null?
         return columns()
                 .stream()
                 .filter(c -> c.querySelectorMatcher(key, value))
                 .findFirst()
-                .map(e -> buildColumn(columnName, columnType, e));
+                .map(DuzzyConfig::buildProvider);
     }
 
-    private static Column<?> buildColumn(
-            String columnName,
-            ColumnType columnType,
+    private static Provider<?> buildProvider(
             DuzzyConfigColumn duzzyConfigColumn
     ) {
-        final HashMap<String, Object> map = new HashMap<>(duzzyConfigColumn.parameters());
-        map.put(NAME, columnName);
-        map.put(COLUMN_TYPE, columnType);
         try {
             return OBJECT_MAPPER.convertValue(
-                    map,
-                    Class.forName(duzzyConfigColumn.identifier()).asSubclass(Column.class)
+                    duzzyConfigColumn.parameters(),
+                    Class.forName(duzzyConfigColumn.identifier()).asSubclass(Provider.class)
             );
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

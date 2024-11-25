@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
+name: city
+nullRate: 0
+minLength: 6
+maxLength: 8

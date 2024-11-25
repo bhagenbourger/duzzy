@@ -3,7 +3,7 @@ package io.duzzy.plugin.serializer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.Serializer;
+import io.duzzy.core.serializer.Serializer;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
@@ -59,13 +59,13 @@ public class ParquetSerializer extends Serializer<ParquetWriter<GenericData.Reco
                 .namespace(namespace)
                 .fields();
         getColumns().forEach(c -> {
-            switch (c.getColumnType()) {
-                case INTEGER -> fields.name(c.getName()).type().intType().noDefault();
-                case LONG -> fields.name(c.getName()).type().longType().noDefault();
-                case FLOAT -> fields.name(c.getName()).type().floatType().noDefault();
-                case DOUBLE -> fields.name(c.getName()).type().doubleType().noDefault();
-                case BOOLEAN -> fields.name(c.getName()).type().booleanType().noDefault();
-                case STRING -> fields.name(c.getName()).type().stringType().noDefault();
+            switch (c.columnType()) {
+                case INTEGER -> fields.name(c.name()).type().intType().noDefault();
+                case LONG -> fields.name(c.name()).type().longType().noDefault();
+                case FLOAT -> fields.name(c.name()).type().floatType().noDefault();
+                case DOUBLE -> fields.name(c.name()).type().doubleType().noDefault();
+                case BOOLEAN -> fields.name(c.name()).type().booleanType().noDefault();
+                case STRING -> fields.name(c.name()).type().stringType().noDefault();
                 default -> throw new UnsupportedOperationException(
                         "Column type is not supported"
                 );

@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.provider.increment.LongIncrementProvider"
+name: identifier
+nullRate: 0
+start: 100
+step: 10

@@ -1,12 +1,12 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.Serializer;
+import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.Serializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
 import static io.duzzy.tests.Data.getDataOne;
@@ -30,7 +30,7 @@ public class XmlSerializerTest {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
-        xmlSerializer.init(outputStream, List.of());
+        xmlSerializer.init(outputStream, DuzzySchema.DEFAULT);
         xmlSerializer.writeAll(getDataOne());
         xmlSerializer.writeAll(getDataTwo());
         xmlSerializer.close();
@@ -45,7 +45,7 @@ public class XmlSerializerTest {
 
         final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
         final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
-        xmlSerializer.init(outputStream, List.of());
+        xmlSerializer.init(outputStream, DuzzySchema.DEFAULT);
         xmlSerializer.writeAll(getDataOne());
         xmlSerializer.writeAll(getDataTwo());
         xmlSerializer.close();

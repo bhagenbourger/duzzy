@@ -1,7 +1,7 @@
 ---
 columns:
   - query_selector: "name=city"
-    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
+    identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
     parameters:
       min_length: 3
       max_length: 20

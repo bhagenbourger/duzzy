@@ -1,9 +1,7 @@
 package io.duzzy.plugin.parser;
 
-import io.duzzy.core.DuzzySchema;
-import io.duzzy.core.Plugin;
 import io.duzzy.core.column.Column;
-import io.duzzy.core.config.DuzzyConfig;
+import io.duzzy.core.schema.DuzzySchema;
 import org.apache.avro.AvroTypeException;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +14,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AvroSchemaParserTest {
 
-    private static final DuzzySchema DEFAULT_DUMMY_SCHEMA = new DuzzySchema(null, null, null, null);
-
     @Test
     void avroSchemaToDuzzySchema() throws IOException {
         final File avroSchema = getFromResources(getClass(), "avro-schemas/all-supported-fields.avsc");
@@ -25,56 +21,56 @@ public class AvroSchemaParserTest {
 
         assertThat(duzzySchema.columns()).hasSize(16);
         assertThat(duzzySchema.columns().getFirst())
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("string_field", "io.duzzy.plugin.column.random.AlphanumericRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("string_field", "io.duzzy.plugin.provider.random.AlphanumericRandomProvider");
         assertThat(duzzySchema.columns().get(1))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("int_field", "io.duzzy.plugin.column.random.IntegerRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("int_field", "io.duzzy.plugin.provider.random.IntegerRandomProvider");
         assertThat(duzzySchema.columns().get(2))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("long_field", "io.duzzy.plugin.column.random.LongRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("long_field", "io.duzzy.plugin.provider.random.LongRandomProvider");
         assertThat(duzzySchema.columns().get(3))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("float_field", "io.duzzy.plugin.column.random.FloatRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("float_field", "io.duzzy.plugin.provider.random.FloatRandomProvider");
         assertThat(duzzySchema.columns().get(4))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("double_field", "io.duzzy.plugin.column.random.DoubleRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("double_field", "io.duzzy.plugin.provider.random.DoubleRandomProvider");
         assertThat(duzzySchema.columns().get(5))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("boolean_field", "io.duzzy.plugin.column.random.BooleanRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("boolean_field", "io.duzzy.plugin.provider.random.BooleanRandomProvider");
         assertThat(duzzySchema.columns().get(6))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("nullable_str", "io.duzzy.plugin.column.random.AlphanumericRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("nullable_str", "io.duzzy.plugin.provider.random.AlphanumericRandomProvider");
         assertThat(duzzySchema.columns().get(7))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("nullable_int", "io.duzzy.plugin.column.random.IntegerRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("nullable_int", "io.duzzy.plugin.provider.random.IntegerRandomProvider");
         assertThat(duzzySchema.columns().get(8))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("nullable_long", "io.duzzy.plugin.column.random.LongRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("nullable_long", "io.duzzy.plugin.provider.random.LongRandomProvider");
         assertThat(duzzySchema.columns().get(9))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("nullable_float", "io.duzzy.plugin.column.random.FloatRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("nullable_float", "io.duzzy.plugin.provider.random.FloatRandomProvider");
         assertThat(duzzySchema.columns().get(10))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("nullable_double", "io.duzzy.plugin.column.random.DoubleRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("nullable_double", "io.duzzy.plugin.provider.random.DoubleRandomProvider");
         assertThat(duzzySchema.columns().get(11))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("nullable_boolean", "io.duzzy.plugin.column.random.BooleanRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("nullable_boolean", "io.duzzy.plugin.provider.random.BooleanRandomProvider");
         assertThat(duzzySchema.columns().get(12))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("uuid_field", "io.duzzy.plugin.column.random.UUIDRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("uuid_field", "io.duzzy.plugin.provider.random.UUIDRandomProvider");
         assertThat(duzzySchema.columns().get(13))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("date_field", "io.duzzy.plugin.column.random.LocalDateRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("date_field", "io.duzzy.plugin.provider.random.LocalDateRandomProvider");
         assertThat(duzzySchema.columns().get(14))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("timestamp_millis_field", "io.duzzy.plugin.column.random.InstantRandomColumn");
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("timestamp_millis_field", "io.duzzy.plugin.provider.random.InstantRandomProvider");
         assertThat(duzzySchema.columns().get(15))
-                .extracting(Column::getName, Plugin::getIdentifier)
-                .containsExactly("timestamp_micros_field", "io.duzzy.plugin.column.random.InstantRandomColumn");
-        assertThat(duzzySchema.sink().getIdentifier()).isEqualTo(DEFAULT_DUMMY_SCHEMA.sink().getIdentifier());
-        assertThat(duzzySchema.rows()).isEqualTo(DEFAULT_DUMMY_SCHEMA.rows());
-        assertThat(duzzySchema.seed()).isNotEqualTo(DEFAULT_DUMMY_SCHEMA.seed());
+                .extracting(Column::name, c -> c.providers().getFirst().getIdentifier())
+                .containsExactly("timestamp_micros_field", "io.duzzy.plugin.provider.random.InstantRandomProvider");
+        assertThat(duzzySchema.sink().getIdentifier()).isEqualTo(DuzzySchema.DEFAULT.sink().getIdentifier());
+        assertThat(duzzySchema.rows()).isEqualTo(DuzzySchema.DEFAULT.rows());
+        assertThat(duzzySchema.seed()).isNotEqualTo(DuzzySchema.DEFAULT.seed());
     }
 
     @Test
@@ -90,10 +86,10 @@ public class AvroSchemaParserTest {
         final File avroSchema = getFromResources(getClass(), "avro-schemas/empty-fields.avsc");
         final DuzzySchema duzzySchema = new AvroSchemaParser().parse(avroSchema, null);
 
-        assertThat(duzzySchema.columns()).isEqualTo(DEFAULT_DUMMY_SCHEMA.columns());
-        assertThat(duzzySchema.sink().getIdentifier()).isEqualTo(DEFAULT_DUMMY_SCHEMA.sink().getIdentifier());
-        assertThat(duzzySchema.rows()).isEqualTo(DEFAULT_DUMMY_SCHEMA.rows());
-        assertThat(duzzySchema.seed()).isNotEqualTo(DEFAULT_DUMMY_SCHEMA.seed());
+        assertThat(duzzySchema.columns()).isEqualTo(DuzzySchema.DEFAULT.columns());
+        assertThat(duzzySchema.sink().getIdentifier()).isEqualTo(DuzzySchema.DEFAULT.sink().getIdentifier());
+        assertThat(duzzySchema.rows()).isEqualTo(DuzzySchema.DEFAULT.rows());
+        assertThat(duzzySchema.seed()).isNotEqualTo(DuzzySchema.DEFAULT.seed());
     }
 
     @Test

@@ -1,9 +1,11 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.Serializer;
 import io.duzzy.core.column.Column;
-import io.duzzy.plugin.column.increment.IntegerIncrementColumn;
-import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
+import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.Serializer;
+import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
+import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.tests.Data;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.SeekableByteArrayInput;
@@ -34,14 +36,25 @@ public class AvroWithSchemaSerializerTest {
     void writeWithDefaultValues() throws IOException {
         final String expectedSchema = "{\"type\":\"record\",\"name\":\"name\",\"namespace\":\"namespace\",\"fields\":[{\"name\":\"c1\",\"type\":\"int\"},{\"name\":\"c2\",\"type\":\"string\"}]}";
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final List<Column<?>> columns = List.of(
-                new IntegerIncrementColumn("c1", null,null,null,null),
-                new AlphanumericRandomColumn("c2", null)
+        final List<Column> columns = List.of(
+                new Column(
+                        "c1",
+                        ColumnType.INTEGER,
+                        null,
+                        List.of(new IntegerIncrementProvider(null, null))
+                ),
+                new Column(
+                        "c2",
+                        ColumnType.STRING,
+                        null,
+                        List.of(new AlphanumericRandomProvider())
+                )
         );
+        final DuzzySchema duzzySchema = new DuzzySchema(null, columns, null, null, null);
 
         final AvroWithSchemaSerializer avroWithSchemaSerializer =
                 new AvroWithSchemaSerializer(null, null);
-        avroWithSchemaSerializer.init(outputStream, columns);
+        avroWithSchemaSerializer.init(outputStream, duzzySchema);
         avroWithSchemaSerializer.writeAll(Data.getDataOne());
         avroWithSchemaSerializer.writeAll(Data.getDataTwo());
         avroWithSchemaSerializer.close();
