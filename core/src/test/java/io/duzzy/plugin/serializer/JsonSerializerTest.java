@@ -1,6 +1,6 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.serializer.Serializer;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ public class JsonSerializerTest {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final JsonSerializer jsonSerializer = new JsonSerializer();
-        jsonSerializer.init(outputStream, DuzzySchema.DEFAULT);
+        jsonSerializer.init(outputStream, DuzzyContext.DEFAULT);
         jsonSerializer.writeAll(getDataOne());
         jsonSerializer.writeAll(getDataTwo());
 

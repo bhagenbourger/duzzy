@@ -58,7 +58,7 @@ public class ParquetSerializer extends Serializer<ParquetWriter<GenericData.Reco
                 .record(name)
                 .namespace(namespace)
                 .fields();
-        getColumns().forEach(c -> {
+        getDuzzyContext().columns().forEach(c -> {
             switch (c.columnType()) {
                 case INTEGER -> fields.name(c.name()).type().intType().noDefault();
                 case LONG -> fields.name(c.name()).type().longType().noDefault();

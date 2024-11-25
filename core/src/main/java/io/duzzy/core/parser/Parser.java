@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.config.DuzzyConfig;
 
 import java.io.File;
@@ -22,5 +22,5 @@ public interface Parser {
             .registerModule(new PluginModule())
             .registerModule(new JavaTimeModule());
 
-    DuzzySchema parse(File file, DuzzyConfig duzzyConfig) throws IOException;
+    DuzzyContext parse(File file, DuzzyConfig duzzyConfig) throws IOException;
 }
