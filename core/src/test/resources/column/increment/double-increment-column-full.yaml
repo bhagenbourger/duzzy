@@ -1,6 +1,0 @@
----
-identifier: "io.duzzy.plugin.column.increment.DoubleIncrementColumn"
-name: identifier
-nullRate: 0
-start: 100
-step: 0.5

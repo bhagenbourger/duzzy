@@ -1,12 +1,12 @@
 package io.duzzy.plugin.sink;
 
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static io.duzzy.tests.Data.getDataOne;
 import static io.duzzy.tests.Data.getDataTwo;
@@ -25,7 +25,7 @@ public class HdfsSinkTest {
                 null,
                 filename
         );
-        hdfsSink.init(List.of());
+        hdfsSink.init(DuzzySchema.DEFAULT);
         hdfsSink.write(getDataOne());
         hdfsSink.write(getDataTwo());
         hdfsSink.close();

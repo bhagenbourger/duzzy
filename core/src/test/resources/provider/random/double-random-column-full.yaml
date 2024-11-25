@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.provider.random.DoubleRandomProvider"
+name: weight
+nullRate: 0
+min: 50
+max: 100

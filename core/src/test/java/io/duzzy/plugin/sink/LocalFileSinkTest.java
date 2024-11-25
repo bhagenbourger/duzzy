@@ -1,5 +1,6 @@
 package io.duzzy.plugin.sink;
 
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
 import static io.duzzy.tests.Data.getDataOne;
@@ -33,7 +33,7 @@ public class LocalFileSinkTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         final LocalFileSink localFileSink = new LocalFileSink(new JsonSerializer(), filename);
-        localFileSink.init(List.of());
+        localFileSink.init(DuzzySchema.DEFAULT);
         localFileSink.write(getDataOne());
         localFileSink.write(getDataTwo());
         localFileSink.write(getDataTwo());

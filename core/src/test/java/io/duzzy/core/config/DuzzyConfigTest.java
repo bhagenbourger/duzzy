@@ -1,7 +1,6 @@
 package io.duzzy.core.config;
 
-import io.duzzy.core.column.ColumnType;
-import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
+import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.sink.LocalFileSink;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ public class DuzzyConfigTest {
         assertThat(duzzyConfig.columns().getFirst().querySelector())
                 .isEqualTo("name=city");
         assertThat(duzzyConfig.columns().getFirst().identifier())
-                .isEqualTo("io.duzzy.plugin.column.random.AlphanumericRandomColumn");
+                .isEqualTo("io.duzzy.plugin.provider.random.AlphanumericRandomProvider");
         assertThat(duzzyConfig.columns().getFirst().parameters())
                 .isEqualTo(Map.of("min_length", 3, "max_length", 20));
         assertThat(duzzyConfig.sink()).isInstanceOf(LocalFileSink.class);
@@ -34,7 +33,7 @@ public class DuzzyConfigTest {
         final File duzzyConfigFile = getFromResources(getClass(), "config/duzzy-config-full.yaml");
         final DuzzyConfig duzzyConfig = DuzzyConfig.fromFile(duzzyConfigFile);
 
-        assertThat(duzzyConfig.findColumn("city", ColumnType.STRING, "name", "city").get())
-                .isInstanceOf(AlphanumericRandomColumn.class);
+        assertThat(duzzyConfig.findProvider("name", "city").get())
+                .isInstanceOf(AlphanumericRandomProvider.class);
     }
 }

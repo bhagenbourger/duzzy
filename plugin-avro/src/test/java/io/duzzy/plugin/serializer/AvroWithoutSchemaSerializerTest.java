@@ -1,9 +1,11 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.Serializer;
 import io.duzzy.core.column.Column;
-import io.duzzy.plugin.column.increment.IntegerIncrementColumn;
-import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
+import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.Serializer;
+import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
+import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.io.BinaryDecoder;
@@ -33,14 +35,25 @@ public class AvroWithoutSchemaSerializerTest {
     @Test
     void writeWithDefaultValues() throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final List<Column<?>> columns = List.of(
-                new IntegerIncrementColumn(KEY_C1, null,null,null,null),
-                new AlphanumericRandomColumn(KEY_C2, null)
+        final List<Column> columns = List.of(
+                new Column(
+                        KEY_C1,
+                        ColumnType.INTEGER,
+                        null,
+                        List.of(new IntegerIncrementProvider(null, null))
+                ),
+                new Column(
+                        KEY_C2,
+                        ColumnType.STRING,
+                        null,
+                        List.of(new AlphanumericRandomProvider())
+                )
         );
+        final DuzzySchema duzzySchema = new DuzzySchema(null, columns, null, null, null);
 
         final AvroWithoutSchemaSerializer avroWithoutSchemaSerializer =
                 new AvroWithoutSchemaSerializer(null, null);
-        avroWithoutSchemaSerializer.init(outputStream, columns);
+        avroWithoutSchemaSerializer.init(outputStream, duzzySchema);
         avroWithoutSchemaSerializer.writeAll(getDataOne());
         avroWithoutSchemaSerializer.writeAll(getDataTwo());
 

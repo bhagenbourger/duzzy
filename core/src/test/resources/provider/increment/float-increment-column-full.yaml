@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.provider.increment.FloatIncrementProvider"
+name: identifier
+nullRate: 0
+start: 100
+step: 0.5

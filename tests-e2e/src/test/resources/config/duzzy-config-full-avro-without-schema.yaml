@@ -1,11 +1,11 @@
 ---
 columns:
   - query_selector: "name=string_field"
-    identifier: "io.duzzy.plugin.column.constant.StringListConstantColumn"
+    identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
     parameters:
       values: ["Rome", "Paris", "London", "Madrid"]
   - query_selector: "type=int"
-    identifier: "io.duzzy.plugin.column.increment.IntegerIncrementColumn"
+    identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
     parameters:
       start: 100
       step: 2

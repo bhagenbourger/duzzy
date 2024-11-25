@@ -1,52 +1,30 @@
 package io.duzzy.core.column;
 
-import io.duzzy.core.Plugin;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.provider.Provider;
 
-import java.util.Objects;
+import java.util.List;
 
-public abstract class Column<T> implements Plugin {
+public record Column(
+        @JsonProperty("name") String name,
+        @JsonProperty("column_type") @JsonAlias({"columnType", "column-type"}) ColumnType columnType,
+        @JsonProperty("null_rate") @JsonAlias({"nullRate", "null-rate"}) Float nullRate,
+        @JsonProperty("providers") List<Provider<?>> providers
+) {
 
-    protected static final Float DEFAULT_NULL_RATE = 0f;
-
-    private final String name;
-    private final ColumnType columnType;
-    private final Float nullRate;
-
-    public Column(String name, ColumnType columnType, Float nullRate) {
-        assert name != null : "Column name can't be null in column " + getIdentifier();
-        assert columnType != null : "Column type can't be null in column " + getIdentifier();
-        assert nullRate == null || (nullRate >= 0 && nullRate <= 1) : "Column nullRate must be between 0 and 1 in colum " + name;
-        this.name = name;
-        this.columnType = columnType;
-        this.nullRate = nullRate == null ? DEFAULT_NULL_RATE : nullRate;
+    public Column {
+        assert name != null && !name.isEmpty() : "Column name can't be null or empty";
+        assert columnType != null : "Column type can't be null";
+        assert nullRate == null || (nullRate >= 0 && nullRate <= 1) : "Column nullRate must be between 0 and 1";
+        assert providers != null && !providers.isEmpty() : "Providers can't be null or empty";
+        nullRate = nullRate == null ? DEFAULT_NULL_RATE : nullRate;
     }
 
-    public T value(ColumnContext columnContext) {
-        if (columnContext.random().nextFloat(0, 1) < nullRate) {
-            return null;
-        } else {
-            return computeValue(columnContext);
-        }
+    public Object value(ColumnContext columnContext) {
+        return providers().getFirst().value(columnContext);
     }
 
-    protected abstract T computeValue(ColumnContext columnContext);
-
-    public String getName() {
-        return name;
-    }
-
-    public ColumnType getColumnType() {
-        return columnType;
-    }
-
-    public Float getNullRate() {
-        return nullRate;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, columnType, nullRate);
-    }
+    private static final Float DEFAULT_NULL_RATE = 0f;
 }
-
-

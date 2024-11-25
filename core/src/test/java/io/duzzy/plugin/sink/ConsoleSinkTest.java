@@ -1,11 +1,11 @@
 package io.duzzy.plugin.sink;
 
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.util.List;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
 import static io.duzzy.tests.Data.getDataOne;
@@ -30,7 +30,7 @@ public class ConsoleSinkTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-        consoleSink.init(List.of());
+        consoleSink.init(DuzzySchema.DEFAULT);
         consoleSink.write(getDataOne());
         consoleSink.write(getDataTwo());
         consoleSink.write(getDataOne());

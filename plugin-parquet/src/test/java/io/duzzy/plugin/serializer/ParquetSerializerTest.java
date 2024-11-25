@@ -1,9 +1,11 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.Serializer;
+import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.column.Column;
-import io.duzzy.plugin.column.increment.IntegerIncrementColumn;
-import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
+import io.duzzy.core.provider.ColumnType;
+import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
+import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.hadoop.fs.Path;
 import org.apache.parquet.avro.AvroParquetReader;
@@ -38,13 +40,24 @@ public class ParquetSerializerTest {
     void writeWithDefaultValues() throws IOException {
         final File file = createTempFile(getClass().getSimpleName());
         final OutputStream outputStream = new FileOutputStream(file);
-        final List<Column<?>> columns = List.of(
-                new IntegerIncrementColumn(KEY_C1, null, null, null, null),
-                new AlphanumericRandomColumn(KEY_C2, null)
+        final List<Column> columns = List.of(
+                new Column(
+                        KEY_C1,
+                        ColumnType.INTEGER,
+                        null,
+                        List.of(new IntegerIncrementProvider(null, null))
+                ),
+                new Column(
+                        KEY_C2,
+                        ColumnType.STRING,
+                        null,
+                        List.of(new AlphanumericRandomProvider())
+                )
         );
+        final DuzzySchema duzzySchema = new DuzzySchema(null, columns, null, null, null);
 
         final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null);
-        parquetSerializer.init(outputStream, columns);
+        parquetSerializer.init(outputStream, duzzySchema);
         parquetSerializer.writeAll(getDataOne());
         parquetSerializer.writeAll(getDataTwo());
         parquetSerializer.close();

@@ -1,9 +1,11 @@
 ---
 columns:
   - name: city
-    identifier: "io.duzzy.plugin.column.random.AlphanumericRandomColumn"
-    minLength: 20
-    maxLength: 25
+    column_type: STRING
+    providers:
+      - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
+        minLength: 20
+        maxLength: 25
 sink:
   identifier: "io.duzzy.plugin.sink.ConsoleSink"
   serializer:

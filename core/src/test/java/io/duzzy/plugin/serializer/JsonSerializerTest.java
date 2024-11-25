@@ -1,12 +1,12 @@
 package io.duzzy.plugin.serializer;
 
-import io.duzzy.core.Serializer;
+import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.Serializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
 import static io.duzzy.tests.Data.getDataOne;
@@ -30,7 +30,7 @@ public class JsonSerializerTest {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final JsonSerializer jsonSerializer = new JsonSerializer();
-        jsonSerializer.init(outputStream, List.of());
+        jsonSerializer.init(outputStream, DuzzySchema.DEFAULT);
         jsonSerializer.writeAll(getDataOne());
         jsonSerializer.writeAll(getDataTwo());
 

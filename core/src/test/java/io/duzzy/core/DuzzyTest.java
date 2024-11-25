@@ -21,16 +21,16 @@ public class DuzzyTest {
             InstantiationException,
             IllegalAccessException {
         final String expected = """
-                {"city":"xO7KVnF2g9"}
-                {"city":"zJL0NaCYFQq8D"}
-                {"city":"KTMudD284TdRIw"}
-                {"city":"1NqREw1ypIG"}
-                {"city":"2sGlywJG43F"}
-                {"city":"67YDIVwXtX"}
-                {"city":"E1lt67oJ6Ne"}
-                {"city":"IsUgerpfGgWRl3H"}
-                {"city":"rBw98FAPe1"}
-                {"city":"Lri7KqkjVTcL0"}""";
+                {"city":"ixO7KVnF2g9v"}
+                {"city":"fzJL0NaCYFQ"}
+                {"city":"KTMudD284TdR"}
+                {"city":"1NqREw1ypI"}
+                {"city":"12sGlywJG43"}
+                {"city":"367YDIVwXtX"}
+                {"city":"aE1lt67oJ6Neu"}
+                {"city":"wIsUgerpfGgW"}
+                {"city":"WrBw98FAPe1AiT"}
+                {"city":"uLri7KqkjVTcL0"}""";
         final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
 
@@ -75,16 +75,16 @@ public class DuzzyTest {
             IllegalAccessException {
         final String expected = "<?xml version='1.0' encoding='UTF-8'?>" +
                 "<countries>" +
-                "<country><city>xO7KVnF2g9</city></country>" +
-                "<country><city>zJL0NaCYFQq8D</city></country>" +
-                "<country><city>KTMudD284TdRIw</city></country>" +
-                "<country><city>1NqREw1ypIG</city></country>" +
-                "<country><city>2sGlywJG43F</city></country>" +
-                "<country><city>67YDIVwXtX</city></country>" +
-                "<country><city>E1lt67oJ6Ne</city></country>" +
-                "<country><city>IsUgerpfGgWRl3H</city></country>" +
-                "<country><city>rBw98FAPe1</city></country>" +
-                "<country><city>Lri7KqkjVTcL0</city></country>" +
+                "<country><city>ixO7KVnF2g9v</city></country>" +
+                "<country><city>fzJL0NaCYFQ</city></country>" +
+                "<country><city>KTMudD284TdR</city></country>" +
+                "<country><city>1NqREw1ypI</city></country>" +
+                "<country><city>12sGlywJG43</city></country>" +
+                "<country><city>367YDIVwXtX</city></country>" +
+                "<country><city>aE1lt67oJ6Neu</city></country>" +
+                "<country><city>wIsUgerpfGgW</city></country>" +
+                "<country><city>WrBw98FAPe1AiT</city></country>" +
+                "<country><city>uLri7KqkjVTcL0</city></country>" +
                 "</countries>";
         final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));

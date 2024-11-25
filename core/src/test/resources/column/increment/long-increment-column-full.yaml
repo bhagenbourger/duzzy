@@ -1,6 +1,0 @@
----
-identifier: "io.duzzy.plugin.column.increment.LongIncrementColumn"
-name: identifier
-nullRate: 0
-start: 100
-step: 10

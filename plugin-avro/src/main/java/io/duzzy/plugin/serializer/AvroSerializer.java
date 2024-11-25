@@ -2,7 +2,7 @@ package io.duzzy.plugin.serializer;
 
 import io.duzzy.core.DataItem;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.Serializer;
+import io.duzzy.core.serializer.Serializer;
 import org.apache.avro.LogicalTypes;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
@@ -34,37 +34,37 @@ abstract class AvroSerializer<W extends Closeable> extends Serializer<W> {
                 .namespace(namespace)
                 .fields();
         getColumns().forEach(c -> {
-            switch (c.getColumnType()) {
-                case INTEGER -> fields.name(c.getName()).type().intType().noDefault();
-                case INTEGER_NULLABLE -> fields.name(c.getName()).type().nullable().intType().noDefault();
-                case LONG -> fields.name(c.getName()).type().longType().noDefault();
-                case LONG_NULLABLE -> fields.name(c.getName()).type().nullable().longType().noDefault();
-                case FLOAT -> fields.name(c.getName()).type().floatType().noDefault();
-                case FLOAT_NULLABLE -> fields.name(c.getName()).type().nullable().floatType().noDefault();
-                case DOUBLE -> fields.name(c.getName()).type().doubleType().noDefault();
-                case DOUBLE_NULLABLE -> fields.name(c.getName()).type().nullable().doubleType().noDefault();
-                case BOOLEAN -> fields.name(c.getName()).type().booleanType().noDefault();
-                case BOOLEAN_NULLABLE -> fields.name(c.getName()).type().nullable().booleanType().noDefault();
-                case STRING -> fields.name(c.getName()).type().stringType().noDefault();
-                case STRING_NULLABLE -> fields.name(c.getName()).type().nullable().stringType().noDefault();
+            switch (c.columnType()) {
+                case INTEGER -> fields.name(c.name()).type().intType().noDefault();
+                case INTEGER_NULLABLE -> fields.name(c.name()).type().nullable().intType().noDefault();
+                case LONG -> fields.name(c.name()).type().longType().noDefault();
+                case LONG_NULLABLE -> fields.name(c.name()).type().nullable().longType().noDefault();
+                case FLOAT -> fields.name(c.name()).type().floatType().noDefault();
+                case FLOAT_NULLABLE -> fields.name(c.name()).type().nullable().floatType().noDefault();
+                case DOUBLE -> fields.name(c.name()).type().doubleType().noDefault();
+                case DOUBLE_NULLABLE -> fields.name(c.name()).type().nullable().doubleType().noDefault();
+                case BOOLEAN -> fields.name(c.name()).type().booleanType().noDefault();
+                case BOOLEAN_NULLABLE -> fields.name(c.name()).type().nullable().booleanType().noDefault();
+                case STRING -> fields.name(c.name()).type().stringType().noDefault();
+                case STRING_NULLABLE -> fields.name(c.name()).type().nullable().stringType().noDefault();
                 case UUID -> fields
-                        .name(c.getName())
+                        .name(c.name())
                         .type(LogicalTypes.uuid().addToSchema(Schema.create(Schema.Type.STRING)))
                         .noDefault();
                 case DATE -> fields
-                        .name(c.getName())
+                        .name(c.name())
                         .type(LogicalTypes.date().addToSchema(Schema.create(Schema.Type.INT)))
                         .noDefault();
                 case TIMESTAMP_MILLIS -> fields
-                        .name(c.getName())
+                        .name(c.name())
                         .type(LogicalTypes.timestampMillis().addToSchema(Schema.create(Schema.Type.LONG)))
                         .noDefault();
                 case TIMESTAMP_MICROS -> fields
-                        .name(c.getName())
+                        .name(c.name())
                         .type(LogicalTypes.timestampMicros().addToSchema(Schema.create(Schema.Type.LONG)))
                         .noDefault();
                 default -> throw new UnsupportedOperationException(
-                        "Column type " + c.getColumnType() + " is not supported"
+                        "Column type " + c.columnType() + " is not supported"
                 );
             }
         });

@@ -1,7 +1,5 @@
 package io.duzzy.core.config;
 
-import io.duzzy.core.column.Column;
-import io.duzzy.plugin.column.random.AlphanumericRandomColumn;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

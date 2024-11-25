@@ -1,6 +1,0 @@
----
-identifier: "io.duzzy.plugin.column.increment.IntegerIncrementColumn"
-name: identifier
-nullRate: 0
-start: 100
-step: 10
