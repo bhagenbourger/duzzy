@@ -6,6 +6,7 @@ import io.duzzy.core.provider.ColumnType;
 import io.duzzy.core.provider.Provider;
 
 import java.util.List;
+import java.util.Objects;
 
 public record Column(
         @JsonProperty("name") String name,
@@ -13,6 +14,8 @@ public record Column(
         @JsonProperty("null_rate") @JsonAlias({"nullRate", "null-rate"}) Float nullRate,
         @JsonProperty("providers") List<Provider<?>> providers
 ) {
+
+    private static final Float DEFAULT_NULL_RATE = 0f;
 
     public Column {
         assert name != null && !name.isEmpty() : "Column name can't be null or empty";
@@ -23,8 +26,11 @@ public record Column(
     }
 
     public Object value(ColumnContext columnContext) {
-        return providers().getFirst().value(columnContext);
+        if (!Objects.equals(nullRate(), DEFAULT_NULL_RATE)
+                && columnContext.random().nextFloat(0f, 1f) < nullRate) {
+            return null;
+        } else {
+            return providers().getFirst().value(columnContext);
+        }
     }
-
-    private static final Float DEFAULT_NULL_RATE = 0f;
 }
