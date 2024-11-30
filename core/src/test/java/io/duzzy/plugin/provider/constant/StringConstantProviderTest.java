@@ -46,4 +46,11 @@ public class StringConstantProviderTest {
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo("myValue");
     }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final String value = new StringConstantProvider("myValue")
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo("Od`");
+    }
 }

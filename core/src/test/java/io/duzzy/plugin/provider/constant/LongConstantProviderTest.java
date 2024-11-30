@@ -46,4 +46,11 @@ public class LongConstantProviderTest {
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo(3L);
     }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Long value = new LongConstantProvider(3L)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(-4964420948893066024L);
+    }
 }

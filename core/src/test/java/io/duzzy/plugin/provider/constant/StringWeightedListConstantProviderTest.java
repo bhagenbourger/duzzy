@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.constant;
 
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
-import io.duzzy.core.provider.WeightedItem;
+import io.duzzy.core.provider.constant.WeightedItem;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -59,6 +59,13 @@ public class StringWeightedListConstantProviderTest {
         final String value = new StringWeightedListConstantProvider(VALUES)
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo("three");
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final String value = new StringWeightedListConstantProvider(VALUES)
+                .corruptedValue(new ColumnContext(new Random(999L), 1L, 1L));
+        assertThat(value).isEqualTo("2O");
     }
 
     //TODO: test repartition

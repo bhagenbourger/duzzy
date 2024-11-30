@@ -2,6 +2,6 @@
 columns:
   - name: city
     column_type: STRING
-    null_rate: 1
+    null_rate: 0
     providers:
       - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"

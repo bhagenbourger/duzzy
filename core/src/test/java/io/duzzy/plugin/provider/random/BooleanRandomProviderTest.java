@@ -2,6 +2,7 @@ package io.duzzy.plugin.provider.random;
 
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.plugin.provider.constant.BooleanConstantProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -36,6 +37,13 @@ public class BooleanRandomProviderTest {
     @Test
     void computeValueIsIdempotent() {
         Boolean value = new BooleanRandomProvider().value(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isTrue();
+    }
+
+    @Test
+    void corruptedValueIsConstant() {
+        final Boolean value = new BooleanRandomProvider()
+                .corruptedValue(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isTrue();
     }
 }

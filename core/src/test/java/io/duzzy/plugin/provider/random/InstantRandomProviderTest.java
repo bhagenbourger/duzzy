@@ -52,15 +52,23 @@ public class InstantRandomProviderTest {
 
     @Test
     void computeValueIsIdempotent() {
-        Instant value = new InstantRandomProvider().value(new ColumnContext(new Random(1L), 1L, 1L));
+        final Instant value = new InstantRandomProvider().value(new ColumnContext(new Random(1L), 1L, 1L));
         assertThat(value).isEqualTo("6836-01-05T14:44:02.796Z");
     }
 
     @Test
     void computeValueWithRightRange() {
-        Instant value = new InstantRandomProvider(START, END).value(new ColumnContext(new Random(), 1L, 1L));
+        final Instant value = new InstantRandomProvider(START, END)
+                .value(new ColumnContext(new Random(), 1L, 1L));
         assertThat(value)
                 .isAfterOrEqualTo(START)
                 .isBeforeOrEqualTo(END);
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Instant value = new InstantRandomProvider(START, END)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo("-157314268-09-17T15:02:13.976Z");
     }
 }

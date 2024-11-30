@@ -25,11 +25,13 @@ public record DuzzyContext(
                     "BooleanConstantColumn",
                     ColumnType.BOOLEAN,
                     0f,
+                    0f,
                     List.of(new BooleanConstantProvider(Boolean.TRUE))
             ),
             new Column(
                     "DoubleConstantColumn",
                     ColumnType.DOUBLE,
+                    0f,
                     0f,
                     List.of(new DoubleConstantProvider(1.0d))
             )

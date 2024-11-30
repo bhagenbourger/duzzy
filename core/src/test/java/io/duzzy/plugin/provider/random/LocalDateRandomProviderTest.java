@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Random;
 
@@ -48,15 +49,24 @@ public class LocalDateRandomProviderTest {
 
     @Test
     void computeValueIsIdempotent() {
-        LocalDate value = new LocalDateRandomProvider(null, null).value(new ColumnContext(new Random(1L), 1L, 1L));
+        final LocalDate value = new LocalDateRandomProvider(null, null)
+                .value(new ColumnContext(new Random(1L), 1L, 1L));
         assertThat(value).isEqualTo("2014-04-07");
     }
 
     @Test
     void computeValueWithRightRange() {
-        LocalDate value = new LocalDateRandomProvider("2020-05-30", "2021-05-30").value(new ColumnContext(new Random(), 1L, 1L));
+        final LocalDate value = new LocalDateRandomProvider("2020-05-30", "2021-05-30")
+                .value(new ColumnContext(new Random(), 1L, 1L));
         assertThat(value)
                 .isAfterOrEqualTo("2020-05-30")
                 .isBeforeOrEqualTo("2021-05-30");
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final LocalDate value = new LocalDateRandomProvider("2020-05-30", "2021-05-30")
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo("+486231866-06-06");
     }
 }

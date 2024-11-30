@@ -2,11 +2,10 @@ package io.duzzy.plugin.provider.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.ConstantProvider;
+import io.duzzy.core.provider.constant.ConstantProvider;
+import io.duzzy.core.provider.corrupted.FloatCorruptedProvider;
 
-import java.util.Objects;
-
-public class FloatConstantProvider extends ConstantProvider<Float> {
+public class FloatConstantProvider extends ConstantProvider<Float> implements FloatCorruptedProvider {
 
     @JsonCreator
     public FloatConstantProvider(

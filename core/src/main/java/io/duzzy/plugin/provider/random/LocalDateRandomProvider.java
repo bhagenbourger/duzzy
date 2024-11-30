@@ -2,8 +2,8 @@ package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.Provider;
 
 import java.time.LocalDate;
 
@@ -33,5 +33,10 @@ public class LocalDateRandomProvider implements Provider<LocalDate> {
     @Override
     public LocalDate value(ColumnContext columnContext) {
         return LocalDate.ofEpochDay(columnContext.random().nextLong(this.min, this.max));
+    }
+
+    @Override
+    public LocalDate corruptedValue(ColumnContext columnContext) {
+        return LocalDate.ofEpochDay(columnContext.random().nextLong(-365243219162L, 365241780471L));
     }
 }

@@ -2,6 +2,7 @@ package io.duzzy.plugin.provider.increment;
 
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.plugin.provider.constant.FloatConstantProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -45,5 +46,12 @@ public class FloatIncrementProviderTest {
         final Float value = new FloatIncrementProvider(100f, 0.5f)
                 .value(new ColumnContext(new Random(), 1L, 1L));
         assertThat(value).isEqualTo(100.5f);
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Float value = new FloatIncrementProvider(3f, 0.1f)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(2.4870493E38f);
     }
 }

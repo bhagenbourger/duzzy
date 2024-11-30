@@ -3,48 +3,56 @@ columns:
   - name: booleanConstant
     column_type: BOOLEAN
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.BooleanConstantProvider"
         value: false
   - name: doubleConstant
     column_type: DOUBLE
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.DoubleConstantProvider"
         value: 1.1
   - name: floatConstant
     column_type: FLOAT
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.FloatConstantProvider"
         value: 2.2
   - name: instantConstant
     column_type: TIMESTAMP_MILLIS
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.IntegerConstantProvider"
         value: 42
   - name: longConstant
     column_type: LONG
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.LongConstantProvider"
         value: 12
   - name: stringConstant
     column_type: STRING
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
         value: myConstant
   - name: stringListConstant
     column_type: STRING
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
         values: [ "one", "two", "three" ]
   - name: stringWeightedListConstant
     column_type: STRING
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider"
         values:
@@ -57,6 +65,7 @@ columns:
   - name: doubleIncrement
     column_type: DOUBLE
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.increment.DoubleIncrementProvider"
         start: 500
@@ -64,6 +73,7 @@ columns:
   - name: floatIncrement
     column_type: FLOAT
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.increment.FloatIncrementProvider"
         start: 50
@@ -71,6 +81,7 @@ columns:
   - name: integerIncrement
     column_type: INTEGER
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
         start: 10
@@ -78,6 +89,7 @@ columns:
   - name: longIncrement
     column_type: LONG
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.increment.LongIncrementProvider"
         start: 100
@@ -85,6 +97,7 @@ columns:
   - name: alphanumericRandom
     column_type: STRING
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
         minLength: 20
@@ -92,11 +105,13 @@ columns:
   - name: booleanRandom
     column_type: BOOLEAN
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.BooleanRandomProvider"
   - name: doubleRandom
     column_type: DOUBLE
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.DoubleRandomProvider"
         min: 0.5
@@ -104,6 +119,7 @@ columns:
   - name: floatRandom
     column_type: FLOAT
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.FloatRandomProvider"
         min: 500.5
@@ -111,6 +127,7 @@ columns:
   - name: integerRandom
     column_type: INTEGER
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
         min: 50
@@ -118,6 +135,7 @@ columns:
   - name: longRandom
     column_type: LONG
     null_rate: 0.5
+    corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.LongRandomProvider"
         min: 1000

@@ -46,4 +46,11 @@ public class FloatConstantProviderTest {
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo(3f);
     }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Float value = new FloatConstantProvider(3f)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(2.4870493E38f);
+    }
 }

@@ -2,10 +2,10 @@ package io.duzzy.plugin.provider.increment;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.corrupted.FloatCorruptedProvider;
 
-public class FloatIncrementProvider implements Provider<Float> {
+public class FloatIncrementProvider implements FloatCorruptedProvider {
 
     private final Float start;
     private final Float step;

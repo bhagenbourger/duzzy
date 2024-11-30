@@ -1,10 +1,10 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.corrupted.IntegerCorruptedProvider;
 
-public class IntegerRandomProvider implements Provider<Integer> {
+public class IntegerRandomProvider implements IntegerCorruptedProvider {
 
     private final Integer min;
     private final Integer max;

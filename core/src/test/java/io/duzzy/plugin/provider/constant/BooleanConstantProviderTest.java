@@ -40,9 +40,16 @@ public class BooleanConstantProviderTest {
     }
 
     @Test
-    void computeValueIsConstant() {
+    void corruptedValueIsIdempotent() {
         final Boolean value = new BooleanConstantProvider(true)
-                .value(new ColumnContext(new Random(5L), 5L, 5L));
+                .value(new ColumnContext(new Random(1L), 1L, 1L));
         assertThat(value).isTrue();
+    }
+
+    @Test
+    void corruptedValueIsConstant() {
+        final Boolean value = new BooleanConstantProvider(true)
+                .corruptedValue(new ColumnContext(new Random(5L), 5L, 5L));
+        assertThat(value).isFalse();
     }
 }

@@ -2,6 +2,7 @@ package io.duzzy.plugin.provider.random;
 
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.plugin.provider.increment.DoubleIncrementProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -48,5 +49,12 @@ public class DoubleRandomProviderTest {
         Double value = new DoubleRandomProvider(5d, 6d).value(new ColumnContext(new Random(), 1L, 1L));
         assertThat(value).isGreaterThanOrEqualTo(5d);
         assertThat(value).isLessThan(6d);
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Double value = new DoubleRandomProvider(3d, 4d)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(1.3138947058478963E308);
     }
 }
