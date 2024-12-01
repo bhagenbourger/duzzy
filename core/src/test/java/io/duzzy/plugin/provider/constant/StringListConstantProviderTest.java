@@ -1,7 +1,7 @@
 package io.duzzy.plugin.provider.constant;
 
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.Provider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -49,8 +49,15 @@ public class StringListConstantProviderTest {
 
     @Test
     void computeValueIsInConstants() {
-        final  String value = new StringListConstantProvider(List.of("one", "two", "three"))
+        final String value = new StringListConstantProvider(List.of("one", "two", "three"))
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo("three");
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final String value = new StringListConstantProvider(List.of("one", "two", "three"))
+                .corruptedValue(new ColumnContext(new Random(10L), 1L, 1L));
+        assertThat(value).isEqualTo("io");
     }
 }

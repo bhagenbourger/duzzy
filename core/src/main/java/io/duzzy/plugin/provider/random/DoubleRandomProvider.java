@@ -2,10 +2,10 @@ package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.corrupted.DoubleCorruptedProvider;
 
-public class DoubleRandomProvider implements Provider<Double> {
+public class DoubleRandomProvider implements DoubleCorruptedProvider {
 
     private final Double min;
     private final Double max;

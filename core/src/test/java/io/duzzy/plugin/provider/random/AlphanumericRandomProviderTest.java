@@ -2,6 +2,7 @@ package io.duzzy.plugin.provider.random;
 
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.plugin.provider.constant.StringConstantProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -43,5 +44,13 @@ public class AlphanumericRandomProviderTest {
     void computeValueWithRightLength() {
         String value = new AlphanumericRandomProvider(5, 5).value(new ColumnContext(new Random(), 1L, 1L));
         assertThat(value).hasSize(5);
+    }
+
+    @Test
+    void corruptedValueIsIdempotentAndRespectMaxLength() {
+        final String value = new AlphanumericRandomProvider(5, 15)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo("Od`");
+        assertThat(value).hasSizeBetween(0, 15);
     }
 }

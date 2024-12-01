@@ -41,11 +41,13 @@ public class AvroWithSchemaSerializerTest {
                         "c1",
                         ColumnType.INTEGER,
                         null,
+                        null,
                         List.of(new IntegerIncrementProvider(null, null))
                 ),
                 new Column(
                         "c2",
                         ColumnType.STRING,
+                        null,
                         null,
                         List.of(new AlphanumericRandomProvider())
                 )

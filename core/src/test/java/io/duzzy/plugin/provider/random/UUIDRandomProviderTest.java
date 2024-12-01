@@ -33,7 +33,15 @@ public class UUIDRandomProviderTest {
 
     @Test
     void computeValueIsIdempotent() {
-        final UUID value = new UUIDRandomProvider().value(new ColumnContext(new Random(1L), 1L, 1L));
+        final UUID value = new UUIDRandomProvider()
+                .value(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(UUID.fromString("3d1c63a5-7e66-3d0e-87e7-6e21796eed1f"));
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final UUID value = new UUIDRandomProvider()
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
         assertThat(value).isEqualTo(UUID.fromString("3d1c63a5-7e66-3d0e-87e7-6e21796eed1f"));
     }
 }

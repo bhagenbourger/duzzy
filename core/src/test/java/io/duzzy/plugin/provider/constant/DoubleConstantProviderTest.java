@@ -46,4 +46,11 @@ public class DoubleConstantProviderTest {
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo(3d);
     }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Double value = new DoubleConstantProvider(3d)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(1.3138947058478963E308);
+    }
 }

@@ -3,10 +3,10 @@ package io.duzzy.plugin.provider.random;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.corrupted.StringCorruptedProvider;
 
-public class AlphanumericRandomProvider implements Provider<String> {
+public class AlphanumericRandomProvider implements StringCorruptedProvider {
 
     private static final int LEFT_LIMIT = 48; // numeral '0'
     private static final int RIGHT_LIMIT = 122; // letter 'z'
@@ -37,5 +37,10 @@ public class AlphanumericRandomProvider implements Provider<String> {
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    @Override
+    public String corruptedValue(ColumnContext columnContext) {
+        return StringCorruptedProvider.corruptedValue(columnContext, maxLength);
     }
 }

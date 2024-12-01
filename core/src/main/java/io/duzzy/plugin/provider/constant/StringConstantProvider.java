@@ -2,11 +2,11 @@ package io.duzzy.plugin.provider.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.provider.ConstantProvider;
+import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.constant.ConstantProvider;
+import io.duzzy.core.provider.corrupted.StringCorruptedProvider;
 
-import java.util.Objects;
-
-public class StringConstantProvider extends ConstantProvider<String> {
+public class StringConstantProvider extends ConstantProvider<String> implements StringCorruptedProvider {
 
     private static final String DEFAULT_VALUE = "constant";
 
@@ -15,5 +15,10 @@ public class StringConstantProvider extends ConstantProvider<String> {
             @JsonProperty("value") String value
     ) {
         super(value == null ? DEFAULT_VALUE : value);
+    }
+
+    @Override
+    public String corruptedValue(ColumnContext columnContext) {
+        return StringCorruptedProvider.corruptedValue(columnContext, getValue().length());
     }
 }

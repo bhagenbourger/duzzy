@@ -6,6 +6,8 @@ import io.duzzy.core.column.ColumnContext;
 public interface Provider<T> extends Plugin {
 
     T value(ColumnContext columnContext);
+
+    T corruptedValue(ColumnContext columnContext);
 }
 
 

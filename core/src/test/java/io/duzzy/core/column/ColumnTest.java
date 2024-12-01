@@ -1,7 +1,6 @@
 package io.duzzy.core.column;
 
 import io.duzzy.core.provider.ColumnType;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.plugin.provider.constant.BooleanConstantProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import org.junit.jupiter.api.Test;
@@ -26,35 +25,35 @@ public class ColumnTest {
 
     @Test
     void columnNameCantBeNull() {
-        assertThatThrownBy(() -> new Column(null, null, null, List.of()))
+        assertThatThrownBy(() -> new Column(null, null, null, null, List.of()))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Column name can't be null or empty");
     }
 
     @Test
     void columnNameCantBeEmpty() {
-        assertThatThrownBy(() -> new Column("", null, null, List.of()))
+        assertThatThrownBy(() -> new Column("", null, null, null, List.of()))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Column name can't be null or empty");
     }
 
     @Test
     void columnTypeCantBeNull() {
-        assertThatThrownBy(() -> new Column("ok", null, null, null))
+        assertThatThrownBy(() -> new Column("ok", null, null, null, null))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Column type can't be null");
     }
 
     @Test
     void columnProvidersCantBeNull() {
-        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, null, null))
+        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, null, null, null))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Providers can't be null or empty");
     }
 
     @Test
     void columnProvidersCantBeEmpty() {
-        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, null, List.of()))
+        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, null, null, List.of()))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Providers can't be null or empty");
     }
@@ -65,6 +64,7 @@ public class ColumnTest {
                 "ok",
                 ColumnType.BOOLEAN,
                 null,
+                null,
                 List.of(new BooleanConstantProvider(Boolean.TRUE)));
 
         assertThat(column.nullRate()).isEqualTo(0f);
@@ -72,9 +72,28 @@ public class ColumnTest {
 
     @Test
     void nullRateMustBeBetween0and1() {
-        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, 2f, List.of()))
+        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, 2f, null, List.of()))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Column nullRate must be between 0 and 1");
+    }
+
+    @Test
+    void corruptedRateDefaultValueShouldBe0() {
+        final Column column = new Column(
+                "ok",
+                ColumnType.BOOLEAN,
+                null,
+                null,
+                List.of(new BooleanConstantProvider(Boolean.TRUE)));
+
+        assertThat(column.corruptedRate()).isEqualTo(0f);
+    }
+
+    @Test
+    void corruptedRateMustBeBetween0and1() {
+        assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, null, 2f, List.of()))
+                .isInstanceOf(java.lang.AssertionError.class)
+                .hasMessage("Column corruptedRate must be between 0 and 1");
     }
 
     @Test
@@ -83,6 +102,7 @@ public class ColumnTest {
                 "test",
                 ColumnType.STRING,
                 1f,
+                0f,
                 List.of(new AlphanumericRandomProvider())
         );
         checkSometimesNull(column, 10);
@@ -93,6 +113,7 @@ public class ColumnTest {
         final Column column = new Column(
                 "test",
                 ColumnType.STRING,
+                0f,
                 0f,
                 List.of(new AlphanumericRandomProvider())
         );
@@ -105,6 +126,7 @@ public class ColumnTest {
                 "test",
                 ColumnType.STRING,
                 0.5f,
+                0f,
                 List.of(new AlphanumericRandomProvider())
         );
         checkSometimesNull(column, 5);

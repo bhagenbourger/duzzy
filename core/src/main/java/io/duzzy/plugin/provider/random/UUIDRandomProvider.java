@@ -1,8 +1,8 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.Provider;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -26,5 +26,10 @@ public class UUIDRandomProvider implements Provider<UUID> {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         return UUID.nameUUIDFromBytes(value.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public UUID corruptedValue(ColumnContext columnContext) {
+        return value(columnContext);
     }
 }

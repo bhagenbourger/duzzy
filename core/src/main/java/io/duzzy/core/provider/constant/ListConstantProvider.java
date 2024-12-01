@@ -1,6 +1,7 @@
-package io.duzzy.core.provider;
+package io.duzzy.core.provider.constant;
 
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.Provider;
 
 import java.util.List;
 

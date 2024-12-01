@@ -45,11 +45,13 @@ public class ParquetSerializerTest {
                         KEY_C1,
                         ColumnType.INTEGER,
                         null,
+                        null,
                         List.of(new IntegerIncrementProvider(null, null))
                 ),
                 new Column(
                         KEY_C2,
                         ColumnType.STRING,
+                        null,
                         null,
                         List.of(new AlphanumericRandomProvider())
                 )

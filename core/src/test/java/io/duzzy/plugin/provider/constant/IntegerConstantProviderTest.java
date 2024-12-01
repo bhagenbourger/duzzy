@@ -46,4 +46,11 @@ public class IntegerConstantProviderTest {
                 .value(new ColumnContext(new Random(5L), 5L, 5L));
         assertThat(value).isEqualTo(3);
     }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Integer value = new IntegerConstantProvider(3)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(-1155869325);
+    }
 }

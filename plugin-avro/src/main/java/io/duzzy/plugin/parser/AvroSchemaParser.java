@@ -202,6 +202,7 @@ public class AvroSchemaParser implements Parser {
                 columnName,
                 columnType,
                 null, //TODO null rate
+                null, //TODO corrupted rate
                 List.of(getProvider(columnName, columnType, duzzyConfig, defaultValue))
         );
     }

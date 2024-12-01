@@ -1,7 +1,7 @@
 package io.duzzy.plugin.provider.increment;
 
-import io.duzzy.core.provider.Provider;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.Provider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -45,5 +45,12 @@ public class DoubleIncrementProviderTest {
         final Double value = new DoubleIncrementProvider(100d, 0.5d)
                 .value(new ColumnContext(new Random(), 1L, 1L));
         assertThat(value).isEqualTo(100.5d);
+    }
+
+    @Test
+    void corruptedValueIsIdempotent() {
+        final Double value = new DoubleIncrementProvider(3d, 0.1d)
+                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+        assertThat(value).isEqualTo(1.3138947058478963E308);
     }
 }
