@@ -4,7 +4,7 @@ import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.column.Column;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
-import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.plugin.provider.random.*;
 import io.duzzy.plugin.schema.AvroInputSchema;
@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static io.duzzy.core.provider.ColumnType.*;
+import static io.duzzy.core.column.ColumnType.*;
 
 public class AvroSchemaParser implements Parser {
 

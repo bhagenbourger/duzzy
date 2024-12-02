@@ -29,6 +29,11 @@ abstract class AvroSerializer<W extends Closeable> extends Serializer<W> {
         this.namespace = namespace == null ? DEFAULT_NAMESPACE : namespace;
     }
 
+    @Override
+    public Boolean hasSchema() {
+        return true;
+    }
+
     private Schema buildSchema() {
         if (getDuzzyContext().inputSchema() instanceof AvroInputSchema) {
             return ((AvroInputSchema) getDuzzyContext().inputSchema()).schema();

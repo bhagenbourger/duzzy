@@ -1,7 +1,7 @@
 package io.duzzy.plugin.parser;
 
 import io.duzzy.core.DuzzyContext;
-import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.column.ColumnType;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.sink.ConsoleSink;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static io.duzzy.core.column.ColumnContext.DEFAULT;
+import static io.duzzy.test.TestUtility.RANDOM_COLUMN_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,7 +57,7 @@ public class DuzzySchemaParserTest {
 
         assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
         assertThat(duzzyContext.columns()).hasSize(1);
-        assertThat(duzzyContext.columns().getFirst().value(DEFAULT)).isNotNull();
+        assertThat(duzzyContext.columns().getFirst().value(RANDOM_COLUMN_CONTEXT.get())).isNotNull();
     }
 
     @Test
@@ -67,6 +67,6 @@ public class DuzzySchemaParserTest {
 
         assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
         assertThat(duzzyContext.columns()).hasSize(1);
-        assertThat(duzzyContext.columns().getFirst().value(DEFAULT)).isNotNull();
+        assertThat(duzzyContext.columns().getFirst().value(RANDOM_COLUMN_CONTEXT.get())).isNotNull();
     }
 }

@@ -2,7 +2,7 @@ package io.duzzy.plugin.serializer;
 
 import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.column.Column;
-import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;

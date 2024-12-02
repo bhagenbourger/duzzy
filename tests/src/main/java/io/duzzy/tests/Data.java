@@ -2,7 +2,7 @@ package io.duzzy.tests;
 
 import io.duzzy.core.DataItem;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.column.ColumnType;
 
 import java.util.List;
 

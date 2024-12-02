@@ -1,13 +1,14 @@
 package io.duzzy.core.column;
 
-import io.duzzy.core.provider.ColumnType;
 import io.duzzy.plugin.provider.constant.BooleanConstantProvider;
+import io.duzzy.plugin.provider.constant.StringConstantProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.duzzy.core.column.ColumnContext.DEFAULT;
+import static io.duzzy.test.TestUtility.PROVIDERS_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.RANDOM_COLUMN_CONTEXT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -16,7 +17,7 @@ public class ColumnTest {
     public static void checkSometimesNull(Column column, int expected) {
         int cpt = 0;
         for (int i = 0; i < 1000; i++) {
-            if (column.value(DEFAULT) == null) {
+            if (column.value(RANDOM_COLUMN_CONTEXT.get()) == null) {
                 cpt++;
             }
         }
@@ -94,6 +95,33 @@ public class ColumnTest {
         assertThatThrownBy(() -> new Column("ok", ColumnType.DECIMAL, null, 2f, List.of()))
                 .isInstanceOf(java.lang.AssertionError.class)
                 .hasMessage("Column corruptedRate must be between 0 and 1");
+    }
+
+    @Test
+    void corrupted() {
+        final Object value = new Column(
+                "ok",
+                ColumnType.BOOLEAN,
+                null,
+                1f,
+                List.of(new BooleanConstantProvider(Boolean.TRUE))
+        ).value(PROVIDERS_COLUMN_CONTEXT(false).get());
+
+        assertThat(value).isInstanceOf(Long.class);
+    }
+
+    @Test
+    void corruptedWithSchema() {
+        final Object value = new Column(
+                "ok",
+                ColumnType.STRING,
+                null,
+                1f,
+                List.of(new StringConstantProvider("const"))
+        ).value(PROVIDERS_COLUMN_CONTEXT(true).get());
+
+        assertThat(value).isInstanceOf(String.class);
+        assertThat(value).isNotEqualTo("const");
     }
 
     @Test
