@@ -1,16 +1,14 @@
 package io.duzzy.plugin.provider.random;
 
 import io.duzzy.core.provider.Provider;
-import io.duzzy.core.column.ColumnContext;
-import io.duzzy.plugin.provider.constant.BooleanConstantProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestHelper.DUMMY_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.SEEDED_FIVE_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.SEEDED_ONE_COLUMN_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +20,7 @@ public class BooleanRandomProviderTest {
         final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
 
         assertThat(provider).isInstanceOf(BooleanRandomProvider.class);
-        assertThat((Boolean) provider.value(DUMMY_COLUMN_CONTEXT.get())).isTrue();
+        assertThat((Boolean) provider.value(SEEDED_ONE_COLUMN_CONTEXT.get())).isTrue();
     }
 
     @Test
@@ -31,19 +29,20 @@ public class BooleanRandomProviderTest {
         final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
 
         assertThat(provider).isInstanceOf(BooleanRandomProvider.class);
-        assertThat((Boolean) provider.value(DUMMY_COLUMN_CONTEXT.get())).isTrue();
+        assertThat((Boolean) provider.value(SEEDED_ONE_COLUMN_CONTEXT.get())).isTrue();
     }
 
     @Test
     void computeValueIsIdempotent() {
-        Boolean value = new BooleanRandomProvider().value(new ColumnContext(new Random(1L), 1L, 1L));
+        final Boolean value = new BooleanRandomProvider()
+                .value(SEEDED_ONE_COLUMN_CONTEXT.get());
         assertThat(value).isTrue();
     }
 
     @Test
     void corruptedValueIsConstant() {
         final Boolean value = new BooleanRandomProvider()
-                .corruptedValue(new ColumnContext(new Random(5L), 5L, 5L));
+                .corruptedValue(SEEDED_FIVE_COLUMN_CONTEXT.get());
         assertThat(value).isTrue();
     }
 }

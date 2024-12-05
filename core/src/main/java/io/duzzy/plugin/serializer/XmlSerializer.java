@@ -53,4 +53,9 @@ public class XmlSerializer extends Serializer<XMLCustomStreamWriter> {
     protected void write(DataItems data, XMLCustomStreamWriter xmlStreamWriter) throws IOException {
         mapper.writeValue(xmlStreamWriter.xmlStreamWriter(), data.toMap());
     }
+
+    @Override
+    public Boolean hasSchema() {
+        return false;
+    }
 }

@@ -1,4 +1,4 @@
-package io.duzzy.core.provider;
+package io.duzzy.core.column;
 
 import java.util.Locale;
 

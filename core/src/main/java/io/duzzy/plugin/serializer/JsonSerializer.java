@@ -26,4 +26,9 @@ public class JsonSerializer extends Serializer<SequenceWriter> {
     protected void write(DataItems data, SequenceWriter writer) throws IOException {
         writer.write(data.toMap());
     }
+
+    @Override
+    public Boolean hasSchema() {
+        return false;
+    }
 }

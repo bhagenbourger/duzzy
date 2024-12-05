@@ -1,16 +1,14 @@
 package io.duzzy.plugin.provider.increment;
 
 import io.duzzy.core.provider.Provider;
-import io.duzzy.core.column.ColumnContext;
-import io.duzzy.plugin.provider.constant.FloatConstantProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestHelper.DUMMY_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.RANDOM_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.SEEDED_ONE_COLUMN_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +20,7 @@ public class FloatIncrementProviderTest {
         final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
 
         assertThat(provider).isInstanceOf(FloatIncrementProvider.class);
-        assertThat(provider.value(DUMMY_COLUMN_CONTEXT.get())).isEqualTo(100.5f);
+        assertThat(provider.value(SEEDED_ONE_COLUMN_CONTEXT.get())).isEqualTo(100.5f);
     }
 
     @Test
@@ -31,27 +29,27 @@ public class FloatIncrementProviderTest {
         final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
 
         assertThat(provider).isInstanceOf(FloatIncrementProvider.class);
-        assertThat(provider.value(DUMMY_COLUMN_CONTEXT.get())).isEqualTo(0.1f);
+        assertThat(provider.value(SEEDED_ONE_COLUMN_CONTEXT.get())).isEqualTo(0.1f);
     }
 
     @Test
     void computeValueWithRightStartingValue() {
         final Float value = new FloatIncrementProvider(100f, 0.5f)
-                .value(new ColumnContext(new Random(), 1L, 0L));
+                .value(RANDOM_COLUMN_CONTEXT.get());
         assertThat(value).isEqualTo(100f);
     }
 
     @Test
     void computeValueWithRightFirstStepValue() {
         final Float value = new FloatIncrementProvider(100f, 0.5f)
-                .value(new ColumnContext(new Random(), 1L, 1L));
+                .value(SEEDED_ONE_COLUMN_CONTEXT.get());
         assertThat(value).isEqualTo(100.5f);
     }
 
     @Test
     void corruptedValueIsIdempotent() {
         final Float value = new FloatIncrementProvider(3f, 0.1f)
-                .corruptedValue(new ColumnContext(new Random(1L), 1L, 1L));
+                .corruptedValue(SEEDED_ONE_COLUMN_CONTEXT.get());
         assertThat(value).isEqualTo(2.4870493E38f);
     }
 }

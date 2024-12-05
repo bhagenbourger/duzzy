@@ -3,7 +3,8 @@ package io.duzzy.core;
 import io.duzzy.core.column.ColumnContext;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
-import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.provider.Provider;
+import io.duzzy.core.reflection.ReflectionUtility;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.parser.DuzzySchemaParser;
 import org.apache.commons.codec.digest.MurmurHash3;
@@ -14,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 
 public class Duzzy {
@@ -75,33 +77,49 @@ public class Duzzy {
     }
 
     private static DuzzyResult generate(DuzzyContext duzzyContext) throws IOException {
+        final Long start = Instant.now().toEpochMilli();
         final Sink sink = duzzyContext.sink();
         sink.init(duzzyContext);
-        final Long start = Instant.now().toEpochMilli();
+        final List<Provider<?>> providers = ReflectionUtility.loadDuzzyProviders();
         for (Long index = 0L; index < duzzyContext.rows(); index++) {
-            final Long rowId = computeRowId(duzzyContext.seed(), index);
-            final ColumnContext columnContext = new ColumnContext(new Random(rowId), rowId, index);
-            sink.write(
-                    new DataItems(
-                            duzzyContext
-                                    .columns()
-                                    .stream()
-                                    .map(c -> new DataItem(
-                                            c.name(),
-                                            c.columnType(),
-                                            c.value(columnContext)
-                                    ))
-                                    .toList()
-                    )
-            );
+            processRow(duzzyContext, index, providers, sink);
         }
-        final Long end = Instant.now().toEpochMilli();
         sink.close();
+        final Long end = Instant.now().toEpochMilli();
 
         return new DuzzyResult(
                 Duration.of(end - start, ChronoUnit.MILLIS),
                 duzzyContext.rows(),
                 duzzyContext.seed()
+        );
+    }
+
+    private static void processRow(
+            DuzzyContext duzzyContext,
+            Long index,
+            List<Provider<?>> providers,
+            Sink sink
+    ) throws IOException {
+        final Long rowId = computeRowId(duzzyContext.seed(), index);
+        final ColumnContext columnContext = new ColumnContext(
+                providers,
+                sink.getSerializer().hasSchema(),
+                new Random(rowId),
+                rowId,
+                index
+        );
+        sink.write(
+                new DataItems(
+                        duzzyContext
+                                .columns()
+                                .stream()
+                                .map(c -> new DataItem(
+                                        c.name(),
+                                        c.columnType(),
+                                        c.value(columnContext)
+                                ))
+                                .toList()
+                )
         );
     }
 

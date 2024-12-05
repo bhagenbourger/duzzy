@@ -3,8 +3,10 @@ package io.duzzy.plugin.provider.random;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.provider.DuzzyProvider;
 import io.duzzy.core.provider.corrupted.LongCorruptedProvider;
 
+@DuzzyProvider
 public class LongRandomProvider implements LongCorruptedProvider {
 
     private final Long min;

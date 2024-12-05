@@ -3,12 +3,10 @@ package io.duzzy.core.serializer;
 import io.duzzy.core.DataItems;
 import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.Plugin;
-import io.duzzy.core.column.Column;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 public abstract class Serializer<W extends Closeable> implements Plugin {
 
@@ -18,6 +16,8 @@ public abstract class Serializer<W extends Closeable> implements Plugin {
     protected abstract W buildWriter(OutputStream outputStream) throws IOException;
 
     protected abstract void write(DataItems data, W writer) throws IOException;
+
+    public abstract Boolean hasSchema();
 
     public void init(OutputStream outputStream, DuzzyContext duzzyContext) throws IOException {
         this.duzzyContext = duzzyContext;

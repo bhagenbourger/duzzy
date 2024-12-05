@@ -50,4 +50,9 @@ public class CsvSerializer extends Serializer<SequenceWriter> {
     protected void write(DataItems data, SequenceWriter writer) throws IOException {
         writer.write(data.toValues());
     }
+
+    @Override
+    public Boolean hasSchema() {
+        return false;
+    }
 }

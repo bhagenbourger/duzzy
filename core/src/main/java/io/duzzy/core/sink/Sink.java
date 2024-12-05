@@ -11,7 +11,6 @@ public abstract class Sink implements Plugin {
 
     protected final Serializer<?> serializer;
 
-
     public Sink(Serializer<?> serializer) {
         this.serializer = serializer;
     }

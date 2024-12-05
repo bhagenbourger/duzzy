@@ -1,7 +1,7 @@
 package io.duzzy.core;
 
 import io.duzzy.core.column.Column;
-import io.duzzy.core.provider.ColumnType;
+import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.schema.InputSchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.provider.constant.BooleanConstantProvider;

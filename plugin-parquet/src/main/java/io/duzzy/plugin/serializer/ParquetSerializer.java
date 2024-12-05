@@ -45,6 +45,11 @@ public class ParquetSerializer extends Serializer<ParquetWriter<GenericData.Reco
         writer.write(serialize(data));
     }
 
+    @Override
+    public Boolean hasSchema() {
+        return true;
+    }
+
     private Schema getSchema() {
         if (schema == null) {
             schema = buildSchema();
