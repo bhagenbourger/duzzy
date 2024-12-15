@@ -26,7 +26,7 @@ public class AvroWithSchemaSerializer extends AvroSerializer<DataFileWriter<Gene
     }
 
     @Override
-    protected void write(DataItems data, DataFileWriter<GenericData.Record> writer) throws IOException {
+    protected void serialize(DataItems data, DataFileWriter<GenericData.Record> writer) throws IOException {
         writer.append(serialize(data));
     }
 }

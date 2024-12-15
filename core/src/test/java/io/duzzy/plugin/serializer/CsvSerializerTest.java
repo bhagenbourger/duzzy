@@ -25,28 +25,28 @@ public class CsvSerializerTest {
     }
 
     @Test
-    void writeCsvWithDefaultValues() throws IOException {
+    void serializeCsvWithDefaultValues() throws IOException {
         final String expected = "1,one\n2,two\n";
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final CsvSerializer csvSerializer = new CsvSerializer(null, null, null);
         csvSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-        csvSerializer.writeAll(getDataOne());
-        csvSerializer.writeAll(getDataTwo());
+        csvSerializer.serializeAll(getDataOne());
+        csvSerializer.serializeAll(getDataTwo());
 
         assertThat(outputStream.toString()).isEqualTo(expected);
     }
 
     @Test
-    void writeCsvWithCustomValues() throws IOException {
+    void serializeCsvWithCustomValues() throws IOException {
         final String expected = "1;\"one\"|2;\"two\"|";
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
         final CsvSerializer csvSerializer = YAML_MAPPER.readValue(serializerFile, CsvSerializer.class);
         csvSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-        csvSerializer.writeAll(getDataOne());
-        csvSerializer.writeAll(getDataTwo());
+        csvSerializer.serializeAll(getDataOne());
+        csvSerializer.serializeAll(getDataTwo());
 
         assertThat(outputStream.toString()).isEqualTo(expected);
     }

@@ -50,7 +50,7 @@ public class XmlSerializer extends Serializer<XMLCustomStreamWriter> {
     }
 
     @Override
-    protected void write(DataItems data, XMLCustomStreamWriter xmlStreamWriter) throws IOException {
+    protected void serialize(DataItems data, XMLCustomStreamWriter xmlStreamWriter) throws IOException {
         mapper.writeValue(xmlStreamWriter.xmlStreamWriter(), data.toMap());
     }
 

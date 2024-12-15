@@ -25,14 +25,14 @@ public class XmlSerializerTest {
     }
 
     @Test
-    void writeXmlWithDefaultValues() throws IOException {
+    void serializeXmlWithDefaultValues() throws IOException {
         final String expected = "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>1</c1><c2>one</c2></row><row><c1>2</c1><c2>two</c2></row></rows>";
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
         xmlSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-        xmlSerializer.writeAll(getDataOne());
-        xmlSerializer.writeAll(getDataTwo());
+        xmlSerializer.serializeAll(getDataOne());
+        xmlSerializer.serializeAll(getDataTwo());
         xmlSerializer.close();
 
         assertThat(outputStream.toString()).isEqualTo(expected);
@@ -46,8 +46,8 @@ public class XmlSerializerTest {
         final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
         final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
         xmlSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-        xmlSerializer.writeAll(getDataOne());
-        xmlSerializer.writeAll(getDataTwo());
+        xmlSerializer.serializeAll(getDataOne());
+        xmlSerializer.serializeAll(getDataTwo());
         xmlSerializer.close();
 
         assertThat(outputStream.toString()).isEqualTo(expected);

@@ -41,7 +41,7 @@ public class ParquetSerializer extends Serializer<ParquetWriter<GenericData.Reco
     }
 
     @Override
-    protected void write(DataItems data, ParquetWriter<GenericData.Record> writer) throws IOException {
+    protected void serialize(DataItems data, ParquetWriter<GenericData.Record> writer) throws IOException {
         writer.write(serialize(data));
     }
 
