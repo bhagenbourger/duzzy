@@ -10,5 +10,3 @@ sink:
   identifier: "io.duzzy.plugin.sink.ConsoleSink"
   serializer:
     identifier: "io.duzzy.plugin.serializer.JsonSerializer"
-rows: 42
-seed: 1234

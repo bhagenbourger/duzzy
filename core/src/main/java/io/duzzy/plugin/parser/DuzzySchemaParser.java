@@ -19,9 +19,7 @@ public class DuzzySchemaParser implements Parser {
                         new DuzzyInputSchema(duzzySchema),
                         duzzySchema.columns()
                 ),
-                duzzySchema.sink(),
-                duzzySchema.rows(),
-                duzzySchema.seed()
+                duzzySchema.sink()
         );
     }
 }

@@ -25,8 +25,7 @@ public class AvroSchemaParser implements Parser {
 
     @Override
     public DuzzyContext parse(File file, DuzzyConfig duzzyConfig) throws IOException {
-        final Schema avroSchema = new Schema.Parser().parse(file);
-        return new DuzzyContext(parse(avroSchema, duzzyConfig), null, null, null);
+        return new DuzzyContext(parse(new Schema.Parser().parse(file), duzzyConfig));
     }
 
     private static SchemaContext parse(Schema avroSchema, DuzzyConfig duzzyConfig) {

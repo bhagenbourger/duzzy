@@ -7,8 +7,6 @@ import java.util.List;
 
 public record DuzzySchema(
         List<Column> columns,
-        Sink sink,
-        Long rows,
-        Long seed
+        Sink sink
 ) {
 }
