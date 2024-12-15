@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public record DuzzyConfig(
-    List<DuzzyConfigColumn> columns,
+    List<Enricher> enrichers,
     Sink sink
 ) {
-  private static final String NAME = "name";
-  private static final String COLUMN_TYPE = "columnType";
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+  public DuzzyConfig {
+    enrichers = enrichers == null ? List.of() : enrichers;
+  }
 
   public static DuzzyConfig fromFile(File file) throws IOException {
     return Parser.YAML_MAPPER.readValue(file, DuzzyConfig.class);
@@ -25,8 +27,7 @@ public record DuzzyConfig(
       String key,
       String value
   ) {
-    //TODO: what if columns is null?
-    return columns()
+    return enrichers()
         .stream()
         .filter(c -> c.querySelectorMatcher(key, value))
         .findFirst()
@@ -34,12 +35,12 @@ public record DuzzyConfig(
   }
 
   private static Provider<?> buildProvider(
-      DuzzyConfigColumn duzzyConfigColumn
+      Enricher enricher
   ) {
     try {
       return OBJECT_MAPPER.convertValue(
-          duzzyConfigColumn.parameters(),
-          Class.forName(duzzyConfigColumn.identifier()).asSubclass(Provider.class)
+          enricher.providerParameters(),
+          Class.forName(enricher.providerIdentifier()).asSubclass(Provider.class)
       );
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);

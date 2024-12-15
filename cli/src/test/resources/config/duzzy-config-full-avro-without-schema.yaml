@@ -1,12 +1,12 @@
 ---
-columns:
+enrichers:
   - query_selector: "name=string_field"
-    identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
-    parameters:
+    provider_identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
+    provider_parameters:
       values: [ "Rome", "Paris", "London", "Madrid" ]
   - query_selector: "type=int"
-    identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
-    parameters:
+    provider_identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
+    provider_parameters:
       start: 100
       step: 2
 sink:
