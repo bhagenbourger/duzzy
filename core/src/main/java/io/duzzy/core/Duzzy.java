@@ -79,7 +79,7 @@ public class Duzzy {
     private static DuzzyResult generate(DuzzyContext duzzyContext) throws IOException {
         final Long start = Instant.now().toEpochMilli();
         final Sink sink = duzzyContext.sink();
-        sink.init(duzzyContext);
+        sink.init(duzzyContext.schemaContext());
         final List<Provider<?>> providers = ReflectionUtility.loadDuzzyProviders();
         for (Long index = 0L; index < duzzyContext.rows(); index++) {
             processRow(duzzyContext, index, providers, sink);
@@ -111,6 +111,7 @@ public class Duzzy {
         sink.write(
                 new DataItems(
                         duzzyContext
+                                .schemaContext()
                                 .columns()
                                 .stream()
                                 .map(c -> new DataItem(

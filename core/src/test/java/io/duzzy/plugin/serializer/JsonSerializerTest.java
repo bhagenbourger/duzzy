@@ -30,7 +30,7 @@ public class JsonSerializerTest {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final JsonSerializer jsonSerializer = new JsonSerializer();
-        jsonSerializer.init(outputStream, DuzzyContext.DEFAULT);
+        jsonSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
         jsonSerializer.writeAll(getDataOne());
         jsonSerializer.writeAll(getDataTwo());
 

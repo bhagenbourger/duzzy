@@ -1,8 +1,8 @@
 package io.duzzy.core.serializer;
 
 import io.duzzy.core.DataItems;
-import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.Plugin;
+import io.duzzy.core.schema.SchemaContext;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.io.OutputStream;
 public abstract class Serializer<W extends Closeable> implements Plugin {
 
     private W writer;
-    private DuzzyContext duzzyContext;
+    private SchemaContext schemaContext;
 
     protected abstract W buildWriter(OutputStream outputStream) throws IOException;
 
@@ -19,14 +19,14 @@ public abstract class Serializer<W extends Closeable> implements Plugin {
 
     public abstract Boolean hasSchema();
 
-    public void init(OutputStream outputStream, DuzzyContext duzzyContext) throws IOException {
-        this.duzzyContext = duzzyContext;
+    public void init(OutputStream outputStream, SchemaContext schemaContext) throws IOException {
+        this.schemaContext = schemaContext;
         this.writer = buildWriter(outputStream);
     }
 
     public void writeAll(DataItems data) throws IOException {
         if (writer == null) {
-            throw new RuntimeException("writer must be initiated - call init(OutputStream outputStream) method");
+            throw new RuntimeException("writer must be initiated - call init(OutputStream outputStream, SchemaContext schemaContext) method");
         }
         write(data, writer);
     }
@@ -43,7 +43,7 @@ public abstract class Serializer<W extends Closeable> implements Plugin {
         }
     }
 
-    protected DuzzyContext getDuzzyContext() {
-        return duzzyContext;
+    protected SchemaContext getSchemaContext() {
+        return schemaContext;
     }
 }

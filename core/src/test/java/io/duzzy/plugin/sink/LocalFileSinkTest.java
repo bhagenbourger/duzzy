@@ -33,7 +33,7 @@ public class LocalFileSinkTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         final LocalFileSink localFileSink = new LocalFileSink(new JsonSerializer(), filename);
-        localFileSink.init(DuzzyContext.DEFAULT);
+        localFileSink.init(DuzzyContext.DEFAULT.schemaContext());
         localFileSink.write(getDataOne());
         localFileSink.write(getDataTwo());
         localFileSink.write(getDataTwo());

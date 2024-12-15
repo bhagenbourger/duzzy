@@ -30,7 +30,7 @@ public class XmlSerializerTest {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
-        xmlSerializer.init(outputStream, DuzzyContext.DEFAULT);
+        xmlSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
         xmlSerializer.writeAll(getDataOne());
         xmlSerializer.writeAll(getDataTwo());
         xmlSerializer.close();
@@ -45,7 +45,7 @@ public class XmlSerializerTest {
 
         final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
         final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
-        xmlSerializer.init(outputStream, DuzzyContext.DEFAULT);
+        xmlSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
         xmlSerializer.writeAll(getDataOne());
         xmlSerializer.writeAll(getDataTwo());
         xmlSerializer.close();
