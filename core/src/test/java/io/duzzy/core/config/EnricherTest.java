@@ -6,16 +6,16 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DuzzyConfigColumnTest {
+public class EnricherTest {
 
-    private static final DuzzyConfigColumn duzzyConfigColumnExact =
-            new DuzzyConfigColumn(
+    private static final Enricher ENRICHER_EXACT =
+            new Enricher(
                     "name=phone",
                     "io.duzzy.plugin.column.random.AlphanumericRandomColumn",
                     Map.of()
             );
-    private static final DuzzyConfigColumn duzzyConfigColumnStartsWith =
-            new DuzzyConfigColumn(
+    private static final Enricher ENRICHER_STARTS_WITH =
+            new Enricher(
                     "name=phone.*",
                     "io.duzzy.plugin.column.random.AlphanumericRandomColumn",
                     Map.of()
@@ -23,21 +23,21 @@ public class DuzzyConfigColumnTest {
 
     @Test
     void shouldMatchOnExactName() {
-        assertThat(duzzyConfigColumnExact.querySelectorMatcher("name", "phone")).isTrue();
+        assertThat(ENRICHER_EXACT.querySelectorMatcher("name", "phone")).isTrue();
     }
 
     @Test
     void shouldNotMatchOnNotExactName() {
-        assertThat(duzzyConfigColumnExact.querySelectorMatcher("name", "telephone")).isFalse();
+        assertThat(ENRICHER_EXACT.querySelectorMatcher("name", "telephone")).isFalse();
     }
 
     @Test
     void shouldNotMatchOnNotSameKey() {
-        assertThat(duzzyConfigColumnExact.querySelectorMatcher("type", "phone")).isFalse();
+        assertThat(ENRICHER_EXACT.querySelectorMatcher("type", "phone")).isFalse();
     }
 
     @Test
     void shouldMatchOnStartsWithName() {
-        assertThat(duzzyConfigColumnStartsWith.querySelectorMatcher("name", "phone_number")).isTrue();
+        assertThat(ENRICHER_STARTS_WITH.querySelectorMatcher("name", "phone_number")).isTrue();
     }
 }

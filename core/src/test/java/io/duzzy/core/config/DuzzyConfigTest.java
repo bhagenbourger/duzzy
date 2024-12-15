@@ -18,12 +18,12 @@ public class DuzzyConfigTest {
         final File duzzyConfigFile = getFromResources(getClass(), "config/duzzy-config-full.yaml");
         final DuzzyConfig duzzyConfig = DuzzyConfig.fromFile(duzzyConfigFile);
 
-        assertThat(duzzyConfig.columns()).hasSize(1);
-        assertThat(duzzyConfig.columns().getFirst().querySelector())
+        assertThat(duzzyConfig.enrichers()).hasSize(1);
+        assertThat(duzzyConfig.enrichers().getFirst().querySelector())
                 .isEqualTo("name=city");
-        assertThat(duzzyConfig.columns().getFirst().identifier())
+        assertThat(duzzyConfig.enrichers().getFirst().providerIdentifier())
                 .isEqualTo("io.duzzy.plugin.provider.random.AlphanumericRandomProvider");
-        assertThat(duzzyConfig.columns().getFirst().parameters())
+        assertThat(duzzyConfig.enrichers().getFirst().parameters())
                 .isEqualTo(Map.of("min_length", 3, "max_length", 20));
         assertThat(duzzyConfig.sink()).isInstanceOf(LocalFileSink.class);
     }

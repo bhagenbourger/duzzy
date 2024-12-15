@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public record DuzzyConfigColumn(
+public record Enricher(
         @JsonProperty("query_selector") @JsonAlias({"querySelector", "query-selector"}) String querySelector,
-        @JsonProperty("identifier") String identifier,
+        @JsonProperty("provider_identifier") @JsonAlias({"providerIdentifier", "provider-identifier"}) String providerIdentifier,
         @JsonProperty("parameters") Map<String, Object> parameters
 ) {
 
