@@ -30,7 +30,7 @@ public class ConsoleSinkTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-        consoleSink.init(DuzzyContext.DEFAULT);
+        consoleSink.init(DuzzyContext.DEFAULT.schemaContext());
         consoleSink.write(getDataOne());
         consoleSink.write(getDataTwo());
         consoleSink.write(getDataOne());

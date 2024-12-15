@@ -26,7 +26,7 @@ public class HdfsSinkTest {
                 null,
                 filename
         );
-        hdfsSink.init(DuzzyContext.DEFAULT);
+        hdfsSink.init(DuzzyContext.DEFAULT.schemaContext());
         hdfsSink.write(getDataOne());
         hdfsSink.write(getDataTwo());
         hdfsSink.close();

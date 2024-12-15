@@ -35,15 +35,15 @@ abstract class AvroSerializer<W extends Closeable> extends Serializer<W> {
     }
 
     private Schema buildSchema() {
-        if (getDuzzyContext().inputSchema() instanceof AvroInputSchema) {
-            return ((AvroInputSchema) getDuzzyContext().inputSchema()).schema();
+        if (getSchemaContext().inputSchema() instanceof AvroInputSchema) {
+            return ((AvroInputSchema) getSchemaContext().inputSchema()).schema();
         }
 
         final SchemaBuilder.FieldAssembler<Schema> fields = SchemaBuilder
                 .record(name)
                 .namespace(namespace)
                 .fields();
-        getDuzzyContext().columns().forEach(c -> {
+        getSchemaContext().columns().forEach(c -> {
             switch (c.columnType()) {
                 case INTEGER -> fields.name(c.name()).type().intType().noDefault();
                 case INTEGER_NULLABLE -> fields.name(c.name()).type().nullable().intType().noDefault();

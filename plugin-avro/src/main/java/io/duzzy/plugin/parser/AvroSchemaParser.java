@@ -2,10 +2,11 @@ package io.duzzy.plugin.parser;
 
 import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.column.Column;
+import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
-import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.provider.Provider;
+import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.plugin.provider.random.*;
 import io.duzzy.plugin.schema.AvroInputSchema;
 import org.apache.avro.LogicalType;
@@ -25,15 +26,19 @@ public class AvroSchemaParser implements Parser {
     @Override
     public DuzzyContext parse(File file, DuzzyConfig duzzyConfig) throws IOException {
         final Schema avroSchema = new Schema.Parser().parse(file);
+        return new DuzzyContext(parse(avroSchema, duzzyConfig), null, null, null);
+    }
+
+    private static SchemaContext parse(Schema avroSchema, DuzzyConfig duzzyConfig) {
         if (avroSchema.hasFields()) {
             final List<Column> columns = avroSchema
                     .getFields()
                     .stream()
                     .map(f -> AvroSchemaParser.parse(f, duzzyConfig))
                     .toList();
-            return new DuzzyContext(new AvroInputSchema(avroSchema), columns, null, null, null);
+            return new SchemaContext(new AvroInputSchema(avroSchema), columns);
         }
-        return new DuzzyContext(new AvroInputSchema(avroSchema), null, null, null, null);
+        return new SchemaContext(new AvroInputSchema(avroSchema), null);
     }
 
     private static Column parse(Schema.Field field, DuzzyConfig duzzyConfig) {

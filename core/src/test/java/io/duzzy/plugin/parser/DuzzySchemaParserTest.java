@@ -1,6 +1,7 @@
 package io.duzzy.plugin.parser;
 
 import io.duzzy.core.DuzzyContext;
+import io.duzzy.core.column.Column;
 import io.duzzy.core.column.ColumnType;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.serializer.JsonSerializer;
@@ -22,11 +23,12 @@ public class DuzzySchemaParserTest {
         final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
         assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
-        assertThat(duzzyContext.columns()).hasSize(1);
-        assertThat(duzzyContext.columns().getFirst().name()).isEqualTo("city");
-        assertThat(duzzyContext.columns().getFirst().columnType()).isEqualTo(ColumnType.STRING);
-        assertThat(duzzyContext.columns().getFirst().nullRate()).isEqualTo(0f);
-        assertThat(duzzyContext.columns().getFirst().providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
+        assertThat(duzzyContext.schemaContext().columns()).hasSize(1);
+        final Column first = duzzyContext.schemaContext().columns().getFirst();
+        assertThat(first.name()).isEqualTo("city");
+        assertThat(first.columnType()).isEqualTo(ColumnType.STRING);
+        assertThat(first.nullRate()).isEqualTo(0f);
+        assertThat(first.providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
         assertThat(duzzyContext.sink()).isInstanceOf(ConsoleSink.class);
         assertThat(duzzyContext.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
         assertThat(duzzyContext.rows()).isEqualTo(42L);
@@ -39,11 +41,12 @@ public class DuzzySchemaParserTest {
         final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
         assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
-        assertThat(duzzyContext.columns()).hasSize(1);
-        assertThat(duzzyContext.columns().getFirst().name()).isEqualTo("city");
-        assertThat(duzzyContext.columns().getFirst().columnType()).isEqualTo(ColumnType.STRING);
-        assertThat(duzzyContext.columns().getFirst().nullRate()).isEqualTo(0f);
-        assertThat(duzzyContext.columns().getFirst().providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
+        assertThat(duzzyContext.schemaContext().columns()).hasSize(1);
+        final Column first = duzzyContext.schemaContext().columns().getFirst();
+        assertThat(first.name()).isEqualTo("city");
+        assertThat(first.columnType()).isEqualTo(ColumnType.STRING);
+        assertThat(first.nullRate()).isEqualTo(0f);
+        assertThat(first.providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
         assertThat(duzzyContext.sink()).isInstanceOf(ConsoleSink.class);
         assertThat(duzzyContext.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
         assertThat(duzzyContext.rows()).isEqualTo(10L);
@@ -56,8 +59,8 @@ public class DuzzySchemaParserTest {
         final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
         assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
-        assertThat(duzzyContext.columns()).hasSize(1);
-        assertThat(duzzyContext.columns().getFirst().value(RANDOM_COLUMN_CONTEXT.get())).isNotNull();
+        assertThat(duzzyContext.schemaContext().columns()).hasSize(1);
+        assertThat(duzzyContext.schemaContext().columns().getFirst().value(RANDOM_COLUMN_CONTEXT.get())).isNotNull();
     }
 
     @Test
@@ -66,7 +69,7 @@ public class DuzzySchemaParserTest {
         final DuzzyContext duzzyContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
         assertThat(duzzyContext).isInstanceOf(DuzzyContext.class);
-        assertThat(duzzyContext.columns()).hasSize(1);
-        assertThat(duzzyContext.columns().getFirst().value(RANDOM_COLUMN_CONTEXT.get())).isNotNull();
+        assertThat(duzzyContext.schemaContext().columns()).hasSize(1);
+        assertThat(duzzyContext.schemaContext().columns().getFirst().value(RANDOM_COLUMN_CONTEXT.get())).isNotNull();
     }
 }
