@@ -25,14 +25,14 @@ public class JsonSerializerTest {
     }
 
     @Test
-    void writeJson() throws IOException {
+    void serializeJson() throws IOException {
         final String expected = "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}";
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         final JsonSerializer jsonSerializer = new JsonSerializer();
         jsonSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-        jsonSerializer.writeAll(getDataOne());
-        jsonSerializer.writeAll(getDataTwo());
+        jsonSerializer.serializeAll(getDataOne());
+        jsonSerializer.serializeAll(getDataTwo());
 
         assertThat(outputStream.toString()).isEqualTo(expected);
     }

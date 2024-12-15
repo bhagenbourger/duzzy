@@ -23,7 +23,7 @@ public abstract class OutputStreamSink extends Sink {
 
     @Override
     public void write(DataItems data) throws IOException {
-        this.serializer.writeAll(data);
+        this.serializer.serializeAll(data);
     }
 
     @Override

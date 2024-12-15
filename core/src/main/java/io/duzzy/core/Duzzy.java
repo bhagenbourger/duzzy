@@ -45,14 +45,14 @@ public class Duzzy {
         //TODO: Log a WARN if parser is instance of DuzzySchemaParser.class and DuzzyConfig is not null
         // => DuzzyConf is useless with DuzzySchemaParser
 
-        return generate(getDuzzyContext(getParser(), getDuzzyConfig()));
+        return generate(createDuzzyContext(loadParser(), loadDuzzyConfig()));
     }
 
-    private DuzzyConfig getDuzzyConfig() throws IOException {
+    private DuzzyConfig loadDuzzyConfig() throws IOException {
         return config != null ? DuzzyConfig.fromFile(config) : null;
     }
 
-    private DuzzyContext getDuzzyContext(
+    private DuzzyContext createDuzzyContext(
             Parser parser,
             DuzzyConfig duzzyConfig
     ) throws IOException {
@@ -62,7 +62,7 @@ public class Duzzy {
                 .withSink(duzzyConfig == null ? null : duzzyConfig.sink());
     }
 
-    private Parser getParser()
+    private Parser loadParser()
             throws InstantiationException,
             IllegalAccessException,
             InvocationTargetException,

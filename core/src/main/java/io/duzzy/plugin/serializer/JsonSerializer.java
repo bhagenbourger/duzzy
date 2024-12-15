@@ -23,7 +23,7 @@ public class JsonSerializer extends Serializer<SequenceWriter> {
     }
 
     @Override
-    protected void write(DataItems data, SequenceWriter writer) throws IOException {
+    protected void serialize(DataItems data, SequenceWriter writer) throws IOException {
         writer.write(data.toMap());
     }
 

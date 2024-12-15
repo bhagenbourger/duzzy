@@ -15,7 +15,7 @@ public abstract class Serializer<W extends Closeable> implements Plugin {
 
     protected abstract W buildWriter(OutputStream outputStream) throws IOException;
 
-    protected abstract void write(DataItems data, W writer) throws IOException;
+    protected abstract void serialize(DataItems data, W writer) throws IOException;
 
     public abstract Boolean hasSchema();
 
@@ -24,16 +24,16 @@ public abstract class Serializer<W extends Closeable> implements Plugin {
         this.writer = buildWriter(outputStream);
     }
 
-    public void writeAll(DataItems data) throws IOException {
+    public void serializeAll(DataItems data) throws IOException {
         if (writer == null) {
             throw new RuntimeException("writer must be initiated - call init(OutputStream outputStream, SchemaContext schemaContext) method");
         }
-        write(data, writer);
+        serialize(data, writer);
     }
 
-    public void writeUnit(DataItems data, OutputStream outputStream) throws IOException {
+    public void serializeUnit(DataItems data, OutputStream outputStream) throws IOException {
         W localWriter = buildWriter(outputStream);
-        write(data, localWriter);
+        serialize(data, localWriter);
         localWriter.close();
     }
 

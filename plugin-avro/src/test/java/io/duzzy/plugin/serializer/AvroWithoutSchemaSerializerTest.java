@@ -33,7 +33,7 @@ public class AvroWithoutSchemaSerializerTest {
     }
 
     @Test
-    void writeWithDefaultValues() throws IOException {
+    void serializeWithDefaultValues() throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         final List<Column> columns = List.of(
                 new Column(
@@ -56,8 +56,8 @@ public class AvroWithoutSchemaSerializerTest {
         final AvroWithoutSchemaSerializer avroWithoutSchemaSerializer =
                 new AvroWithoutSchemaSerializer(null, null);
         avroWithoutSchemaSerializer.init(outputStream, schemaContext);
-        avroWithoutSchemaSerializer.writeAll(getDataOne());
-        avroWithoutSchemaSerializer.writeAll(getDataTwo());
+        avroWithoutSchemaSerializer.serializeAll(getDataOne());
+        avroWithoutSchemaSerializer.serializeAll(getDataTwo());
 
         final DatumReader<GenericData.Record> reader = new GenericDatumReader<>();
         reader.setSchema(avroWithoutSchemaSerializer.getSchema());

@@ -33,7 +33,7 @@ public class AvroWithSchemaSerializerTest {
     }
 
     @Test
-    void writeWithDefaultValues() throws IOException {
+    void serializeWithDefaultValues() throws IOException {
         final String expectedSchema = "{\"type\":\"record\",\"name\":\"name\",\"namespace\":\"namespace\",\"fields\":[{\"name\":\"c1\",\"type\":\"int\"},{\"name\":\"c2\",\"type\":\"string\"}]}";
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         final List<Column> columns = List.of(
@@ -57,8 +57,8 @@ public class AvroWithSchemaSerializerTest {
         final AvroWithSchemaSerializer avroWithSchemaSerializer =
                 new AvroWithSchemaSerializer(null, null);
         avroWithSchemaSerializer.init(outputStream, schemaContext);
-        avroWithSchemaSerializer.writeAll(Data.getDataOne());
-        avroWithSchemaSerializer.writeAll(Data.getDataTwo());
+        avroWithSchemaSerializer.serializeAll(Data.getDataOne());
+        avroWithSchemaSerializer.serializeAll(Data.getDataTwo());
         avroWithSchemaSerializer.close();
 
         final DataFileReader<GenericData.Record> records = new DataFileReader<>(

@@ -38,7 +38,7 @@ public class KafkaSink extends Sink {
     @Override
     public void write(DataItems data) throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        serializer.writeUnit(data, outputStream);
+        serializer.serializeUnit(data, outputStream);
         final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
                 topic,
                 null,
