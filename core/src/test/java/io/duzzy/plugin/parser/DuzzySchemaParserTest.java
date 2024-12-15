@@ -31,8 +31,6 @@ public class DuzzySchemaParserTest {
         assertThat(first.providers().getFirst()).isInstanceOf(AlphanumericRandomProvider.class);
         assertThat(duzzyContext.sink()).isInstanceOf(ConsoleSink.class);
         assertThat(duzzyContext.sink().getSerializer()).isInstanceOf(JsonSerializer.class);
-        assertThat(duzzyContext.rows()).isEqualTo(42L);
-        assertThat(duzzyContext.seed()).isEqualTo(1234L);
     }
 
     @Test

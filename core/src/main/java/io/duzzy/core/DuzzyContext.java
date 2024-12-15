@@ -14,13 +14,22 @@ public record DuzzyContext(
         Long seed
 ) {
     public static final DuzzyContext DEFAULT = new DuzzyContext(
-            new SchemaContext(null, null),
+            null,
             null,
             null,
             null
     );
 
+    public DuzzyContext(SchemaContext schemaContext) {
+        this(schemaContext, null);
+    }
+
+    public DuzzyContext(SchemaContext schemaContext, Sink sink) {
+        this(schemaContext, sink, null, null);
+    }
+
     public DuzzyContext {
+        schemaContext = schemaContext == null ? new SchemaContext(null, null) : schemaContext;
         sink = sink == null ? new ConsoleSink(new JsonSerializer()) : sink;
         rows = rows == null ? 10L : rows;
         seed = seed == null ? new Random().nextLong() : seed;

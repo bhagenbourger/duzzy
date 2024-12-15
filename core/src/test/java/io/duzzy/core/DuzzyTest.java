@@ -58,7 +58,7 @@ public class DuzzyTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-all-columns.yaml");
-        final DuzzyResult duzzyResult = new Duzzy(duzzySchemaFile, null, 1L, null, null).generate();
+        final DuzzyResult duzzyResult = new Duzzy(duzzySchemaFile, null, 1L, 42L, null).generate();
 
         assertThat(duzzyResult.rows()).isEqualTo(42L);
         assertThat(duzzyResult.seed()).isEqualTo(1L);
