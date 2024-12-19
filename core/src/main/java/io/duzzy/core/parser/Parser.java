@@ -8,19 +8,18 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.config.DuzzyConfig;
-
 import java.io.File;
 import java.io.IOException;
 
 public interface Parser {
-    ObjectMapper YAML_MAPPER = YAMLMapper
-            .builder()
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-            .build()
-            .registerModule(new PluginModule())
-            .registerModule(new JavaTimeModule());
+  ObjectMapper YAML_MAPPER = YAMLMapper
+      .builder()
+      .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+      .build()
+      .registerModule(new PluginModule())
+      .registerModule(new JavaTimeModule());
 
-    DuzzyContext parse(File file, DuzzyConfig duzzyConfig) throws IOException;
+  DuzzyContext parse(File file, DuzzyConfig duzzyConfig) throws IOException;
 }

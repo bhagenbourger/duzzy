@@ -7,15 +7,15 @@ import io.duzzy.core.provider.constant.ConstantProvider;
 
 public class BooleanConstantProvider extends ConstantProvider<Boolean> {
 
-    @JsonCreator
-    public BooleanConstantProvider(
-            @JsonProperty("value") Boolean value
-    ) {
-        super(value);
-    }
+  @JsonCreator
+  public BooleanConstantProvider(
+      @JsonProperty("value") Boolean value
+  ) {
+    super(value);
+  }
 
-    @Override
-    public Boolean corruptedValue(ColumnContext columnContext) {
-        return !getValue();
-    }
+  @Override
+  public Boolean corruptedValue(ColumnContext columnContext) {
+    return !getValue();
+  }
 }

@@ -6,12 +6,12 @@ import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
 
 public class PluginModule extends SimpleModule {
-    public static final String NAME = "duzzy-plugin";
+  public static final String NAME = "duzzy-plugin";
 
-    public PluginModule() {
-        super(NAME);
-        addDeserializer(Provider.class, new PluginDeserializer<>());
-        addDeserializer(Serializer.class, new PluginDeserializer<>());
-        addDeserializer(Sink.class, new PluginDeserializer<>());
-    }
+  public PluginModule() {
+    super(NAME);
+    addDeserializer(Provider.class, new PluginDeserializer<>());
+    addDeserializer(Serializer.class, new PluginDeserializer<>());
+    addDeserializer(Sink.class, new PluginDeserializer<>());
+  }
 }

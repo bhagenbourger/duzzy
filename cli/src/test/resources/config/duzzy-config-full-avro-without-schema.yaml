@@ -3,7 +3,7 @@ columns:
   - query_selector: "name=string_field"
     identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
     parameters:
-      values: ["Rome", "Paris", "London", "Madrid"]
+      values: [ "Rome", "Paris", "London", "Madrid" ]
   - query_selector: "type=int"
     identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
     parameters:

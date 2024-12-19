@@ -7,10 +7,10 @@ import io.duzzy.core.provider.corrupted.LongCorruptedProvider;
 
 public class LongConstantProvider extends ConstantProvider<Long> implements LongCorruptedProvider {
 
-    @JsonCreator
-    public LongConstantProvider(
-            @JsonProperty("value") Long value
-    ) {
-        super(value);
-    }
+  @JsonCreator
+  public LongConstantProvider(
+      @JsonProperty("value") Long value
+  ) {
+    super(value);
+  }
 }

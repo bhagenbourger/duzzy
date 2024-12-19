@@ -6,17 +6,17 @@ import io.duzzy.core.provider.Provider;
 
 public class BooleanRandomProvider implements Provider<Boolean> {
 
-    @JsonCreator
-    public BooleanRandomProvider() {
-    }
+  @JsonCreator
+  public BooleanRandomProvider() {
+  }
 
-    @Override
-    public Boolean value(ColumnContext columnContext) {
-        return columnContext.random().nextBoolean();
-    }
+  @Override
+  public Boolean value(ColumnContext columnContext) {
+    return columnContext.random().nextBoolean();
+  }
 
-    @Override
-    public Boolean corruptedValue(ColumnContext columnContext) {
-        return value(columnContext);
-    }
+  @Override
+  public Boolean corruptedValue(ColumnContext columnContext) {
+    return value(columnContext);
+  }
 }

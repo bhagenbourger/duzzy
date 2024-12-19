@@ -28,6 +28,7 @@ dependencies {
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'checkstyle'
 
     group = 'io.duzzy'
     version = 'unspecified'
@@ -36,6 +37,12 @@ allprojects {
     java {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    checkstyle {
+        toolVersion = "10.21.0"
+        ignoreFailures = false
+        maxWarnings = 0
     }
 
     repositories {
@@ -50,6 +57,7 @@ subprojects {
         testImplementation platform('org.junit:junit-bom:5.10.0')
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testImplementation 'org.assertj:assertj-core:3.26.3'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 
     test {
