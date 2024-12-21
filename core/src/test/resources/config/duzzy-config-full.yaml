@@ -1,8 +1,8 @@
 ---
-columns:
+enrichers:
   - query_selector: "name=city"
-    identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
-    parameters:
+    provider_identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
+    provider_parameters:
       min_length: 3
       max_length: 20
 sink:
