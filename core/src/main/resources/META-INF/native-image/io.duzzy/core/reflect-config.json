@@ -123,7 +123,7 @@
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.plugin.provider.random.UUIDRandomProvider",
+    "name": "io.duzzy.plugin.provider.random.UuidRandomProvider",
     "allPublicConstructors": true
   }
 ]

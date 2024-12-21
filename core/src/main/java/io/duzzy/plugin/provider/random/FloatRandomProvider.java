@@ -7,24 +7,24 @@ import io.duzzy.core.provider.corrupted.FloatCorruptedProvider;
 
 public class FloatRandomProvider implements FloatCorruptedProvider {
 
-    private final Float min;
-    private final Float max;
+  private final Float min;
+  private final Float max;
 
-    public FloatRandomProvider() {
-        this(null, null);
-    }
+  public FloatRandomProvider() {
+    this(null, null);
+  }
 
-    @JsonCreator
-    public FloatRandomProvider(
-            @JsonProperty("min") Float min,
-            @JsonProperty("max") Float max
-    ) {
-        this.min = min == null ? Float.MIN_VALUE : min;
-        this.max = max == null ? Float.MAX_VALUE : max;
-    }
+  @JsonCreator
+  public FloatRandomProvider(
+      @JsonProperty("min") Float min,
+      @JsonProperty("max") Float max
+  ) {
+    this.min = min == null ? Float.MIN_VALUE : min;
+    this.max = max == null ? Float.MAX_VALUE : max;
+  }
 
-    @Override
-    public Float value(ColumnContext columnContext) {
-        return columnContext.random().nextFloat(this.min, this.max);
-    }
+  @Override
+  public Float value(ColumnContext columnContext) {
+    return columnContext.random().nextFloat(this.min, this.max);
+  }
 }

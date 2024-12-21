@@ -6,5 +6,3 @@ include 'plugin-hdfs'
 include 'plugin-avro'
 include 'plugin-parquet'
 include 'tests'
-include 'tests-e2e'
-

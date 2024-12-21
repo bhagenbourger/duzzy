@@ -3,7 +3,7 @@ columns:
   - query_selector: "name=string_field"
     identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
     parameters:
-      values: ["Rome", "Paris", "London", "Madrid"]
+      values: [ "Rome", "Paris", "London", "Madrid" ]
   - query_selector: "type=int"
     identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
     parameters:
@@ -11,6 +11,6 @@ columns:
       step: 2
 sink:
   identifier: "io.duzzy.plugin.sink.LocalFileSink"
-  filename: "build/avro-with-config-result.json"
+  filename: "build/avro-with-config-result.xml"
   serializer:
-    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+    identifier: "io.duzzy.plugin.serializer.XmlSerializer"

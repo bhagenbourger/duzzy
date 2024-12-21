@@ -7,20 +7,20 @@ import io.duzzy.core.provider.corrupted.LongCorruptedProvider;
 
 public class LongIncrementProvider implements LongCorruptedProvider {
 
-    private final Long start;
-    private final Long step;
+  private final Long start;
+  private final Long step;
 
-    @JsonCreator
-    public LongIncrementProvider(
-            @JsonProperty("start") Long start,
-            @JsonProperty("step") Long step
-    ) {
-        this.start = start == null ? 0L : start;
-        this.step = step == null ? 1L : step;
-    }
+  @JsonCreator
+  public LongIncrementProvider(
+      @JsonProperty("start") Long start,
+      @JsonProperty("step") Long step
+  ) {
+    this.start = start == null ? 0L : start;
+    this.step = step == null ? 1L : step;
+  }
 
-    @Override
-    public Long value(ColumnContext columnContext) {
-        return start + (columnContext.rowIndex() * step);
-    }
+  @Override
+  public Long value(ColumnContext columnContext) {
+    return start + (columnContext.rowIndex() * step);
+  }
 }

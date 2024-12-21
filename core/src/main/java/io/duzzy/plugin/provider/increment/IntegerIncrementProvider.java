@@ -7,20 +7,20 @@ import io.duzzy.core.provider.corrupted.IntegerCorruptedProvider;
 
 public class IntegerIncrementProvider implements IntegerCorruptedProvider {
 
-    private final Integer start;
-    private final Integer step;
+  private final Integer start;
+  private final Integer step;
 
-    @JsonCreator
-    public IntegerIncrementProvider(
-            @JsonProperty("start") Integer start,
-            @JsonProperty("step") Integer step
-    ) {
-        this.start = start == null ? 0 : start;
-        this.step = step == null ? 1 : step;
-    }
+  @JsonCreator
+  public IntegerIncrementProvider(
+      @JsonProperty("start") Integer start,
+      @JsonProperty("step") Integer step
+  ) {
+    this.start = start == null ? 0 : start;
+    this.step = step == null ? 1 : step;
+  }
 
-    @Override
-    public Integer value(ColumnContext columnContext) {
-        return start + (columnContext.rowIndex().intValue() * step);
-    }
+  @Override
+  public Integer value(ColumnContext columnContext) {
+    return start + (columnContext.rowIndex().intValue() * step);
+  }
 }

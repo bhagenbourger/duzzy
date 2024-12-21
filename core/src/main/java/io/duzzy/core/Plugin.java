@@ -2,7 +2,7 @@ package io.duzzy.core;
 
 public interface Plugin {
 
-    default String getIdentifier(){
-        return this.getClass().getCanonicalName();
-    }
+  default String getIdentifier() {
+    return this.getClass().getCanonicalName();
+  }
 }
