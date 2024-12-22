@@ -12,6 +12,9 @@ public record DuzzyContext(
     Long rows,
     Long seed
 ) {
+  private static final Random RANDOM = new Random();
+  private static final Long DEFAULT_ROWS = 10L;
+
   public static final DuzzyContext DEFAULT = new DuzzyContext(
       null,
       null,
@@ -30,8 +33,8 @@ public record DuzzyContext(
   public DuzzyContext {
     schemaContext = schemaContext == null ? new SchemaContext(null, null) : schemaContext;
     sink = sink == null ? new ConsoleSink(new JsonSerializer()) : sink;
-    rows = rows == null ? 10L : rows;
-    seed = seed == null ? new Random().nextLong() : seed;
+    rows = rows == null ? DEFAULT_ROWS : rows;
+    seed = seed == null ? Long.valueOf(RANDOM.nextLong()) : seed;
   }
 
   public DuzzyContext withSeed(Long seed) {

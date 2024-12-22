@@ -15,8 +15,8 @@ public class LongIncrementProvider implements LongCorruptedProvider {
       @JsonProperty("start") Long start,
       @JsonProperty("step") Long step
   ) {
-    this.start = start == null ? 0L : start;
-    this.step = step == null ? 1L : step;
+    this.start = start == null ? Long.valueOf(0L) : start;
+    this.step = step == null ? Long.valueOf(1L) : step;
   }
 
   @Override

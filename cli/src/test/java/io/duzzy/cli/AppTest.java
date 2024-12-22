@@ -7,10 +7,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.apache.avro.Schema;
@@ -80,8 +81,8 @@ public class AppTest {
     final StringWriter sw = new StringWriter();
     cmd.setOut(new PrintWriter(sw));
 
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
@@ -98,7 +99,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
-    assertThat(outputStreamCaptor.toString())
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
         .startsWith("\n\nDuzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
@@ -114,8 +115,8 @@ public class AppTest {
     final StringWriter sw = new StringWriter();
     cmd.setOut(new PrintWriter(sw));
 
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
@@ -132,7 +133,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
-    assertThat(outputStreamCaptor.toString())
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
         .startsWith("\n\nDuzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
@@ -148,8 +149,8 @@ public class AppTest {
     final StringWriter sw = new StringWriter();
     cmd.setOut(new PrintWriter(sw));
 
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
@@ -166,7 +167,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
-    assertThat(outputStreamCaptor.toString())
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
         .startsWith("\n\nDuzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
@@ -179,8 +180,8 @@ public class AppTest {
     final StringWriter sw = new StringWriter();
     cmd.setOut(new PrintWriter(sw));
 
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
@@ -207,7 +208,7 @@ public class AppTest {
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
-      assertThat(outputStreamCaptor.toString())
+      assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
           .startsWith("\n\nDuzzy generated 3 rows in PT0")
           .endsWith("S with seed 1234\n");
     }
@@ -221,8 +222,8 @@ public class AppTest {
     final StringWriter sw = new StringWriter();
     cmd.setOut(new PrintWriter(sw));
 
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
@@ -233,20 +234,24 @@ public class AppTest {
         "-o=TXT"
     );
 
-    final File resultFile = new File("build/avro-without-schema-with-config-result.avro");
-    final BinaryDecoder decoder = DecoderFactory
-        .get()
-        .binaryDecoder(new FileInputStream(resultFile), null);
     final Schema schema = new Schema
         .Parser()
         .parse(getFromResources(getClass(), "avro-schema/all-supported-fields.avsc"));
     final DatumReader<GenericData.Record> reader = new GenericDatumReader<>();
     reader.setSchema(schema);
-    GenericData.Record read = reader.read(null, decoder);
+    final File resultFile = new File("build/avro-without-schema-with-config-result.avro");
+
+    try (final InputStream fileInputStream = new FileInputStream(resultFile)) {
+      final BinaryDecoder decoder = DecoderFactory
+          .get()
+          .binaryDecoder(fileInputStream, null);
+      final GenericData.Record read = reader.read(null, decoder);
+      assertThat(read).isNotNull();
+    }
+
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
-    assertThat(read).isNotNull();
-    assertThat(outputStreamCaptor.toString())
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
         .startsWith("\n\nDuzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }

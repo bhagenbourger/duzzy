@@ -15,8 +15,8 @@ public class DoubleIncrementProvider implements DoubleCorruptedProvider {
       @JsonProperty("start") Double start,
       @JsonProperty("step") Double step
   ) {
-    this.start = start == null ? 0d : start;
-    this.step = step == null ? 0.1d : step;
+    this.start = start == null ? Double.valueOf(0d) : start;
+    this.step = step == null ? Double.valueOf(0.1d) : step;
   }
 
   @Override

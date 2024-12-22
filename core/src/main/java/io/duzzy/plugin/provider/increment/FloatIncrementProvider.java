@@ -15,8 +15,8 @@ public class FloatIncrementProvider implements FloatCorruptedProvider {
       @JsonProperty("start") Float start,
       @JsonProperty("step") Float step
   ) {
-    this.start = start == null ? 0f : start;
-    this.step = step == null ? 0.1f : step;
+    this.start = start == null ? Float.valueOf(0f) : start;
+    this.step = step == null ? Float.valueOf(0.1f) : step;
   }
 
   @Override

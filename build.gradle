@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'org.graalvm.buildtools.native' version '0.10.3'
+    id 'com.github.spotbugs' version '6.0.27'
 }
 
 application {
@@ -29,6 +30,7 @@ dependencies {
 allprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
+    apply plugin: 'com.github.spotbugs'
 
     group = 'io.duzzy'
     version = 'unspecified'
@@ -43,6 +45,11 @@ allprojects {
         toolVersion = "10.21.0"
         ignoreFailures = false
         maxWarnings = 0
+    }
+
+    spotbugs {
+        toolVersion = '4.8.6'
+        excludeFilter = file('../config/spotbugs/spotbugs-exclude.xml')
     }
 
     repositories {

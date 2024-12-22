@@ -16,8 +16,8 @@ public class IntegerRandomProvider implements IntegerCorruptedProvider {
   public IntegerRandomProvider(
       @JsonProperty("min") Integer min,
       @JsonProperty("max") Integer max) {
-    this.min = min == null ? Integer.MIN_VALUE : min;
-    this.max = max == null ? Integer.MAX_VALUE : max;
+    this.min = min == null ? Integer.valueOf(Integer.MIN_VALUE) : min;
+    this.max = max == null ? Integer.valueOf(Integer.MAX_VALUE) : max;
   }
 
   @Override

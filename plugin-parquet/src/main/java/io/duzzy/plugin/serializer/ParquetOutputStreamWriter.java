@@ -9,7 +9,7 @@ public class ParquetOutputStreamWriter implements OutputFile {
 
   private final OutputStream outputStream;
 
-  public ParquetOutputStreamWriter(OutputStream outputStream) {
+  public ParquetOutputStreamWriter(final OutputStream outputStream) {
     this.outputStream = outputStream;
   }
 

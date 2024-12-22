@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,6 @@ public class LocalFileSinkTest {
     final String filename = "build/test.json";
     final String expected =
         "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":2,\"c2\":\"two\"}";
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
 
     final LocalFileSink localFileSink = new LocalFileSink(new JsonSerializer(), filename);
     localFileSink.init(DuzzyContext.DEFAULT.schemaContext());

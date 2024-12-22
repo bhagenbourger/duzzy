@@ -21,8 +21,8 @@ public class LongRandomProvider implements LongCorruptedProvider {
       @JsonProperty("min") Long min,
       @JsonProperty("max") Long max
   ) {
-    this.min = min == null ? Long.MIN_VALUE : min;
-    this.max = max == null ? Long.MAX_VALUE : max;
+    this.min = min == null ? Long.valueOf(Long.MIN_VALUE) : min;
+    this.max = max == null ? Long.valueOf(Long.MAX_VALUE) : max;
   }
 
   @Override

@@ -13,9 +13,8 @@ public class Helper {
   }
 
   public static File createTempFile(String prefix) throws IOException {
-    File tmp = File.createTempFile(prefix, ".tmp");
+    final File tmp = File.createTempFile(prefix, ".tmp");
     tmp.deleteOnExit();
-    tmp.delete();
     return tmp;
   }
 }

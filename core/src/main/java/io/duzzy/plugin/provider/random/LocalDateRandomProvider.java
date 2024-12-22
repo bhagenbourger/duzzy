@@ -8,7 +8,7 @@ import io.duzzy.core.column.ColumnContext;
 import io.duzzy.core.provider.Provider;
 import java.time.LocalDate;
 
-public class LocalDateRandomProvider implements Provider<LocalDate> {
+public final class LocalDateRandomProvider implements Provider<LocalDate> {
 
   private static final Long DEFAULT_MAX = 2932891L; //9999-12-31 + 1 day
 
