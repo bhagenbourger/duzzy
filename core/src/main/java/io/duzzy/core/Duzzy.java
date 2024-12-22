@@ -10,6 +10,7 @@ import io.duzzy.plugin.parser.DuzzySchemaParser;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -123,6 +124,8 @@ public class Duzzy {
   }
 
   private static Long computeRowId(Long seed, Long index) {
-    return MurmurHash3.hash128x64(Long.toString(seed ^ index).getBytes())[0];
+    return MurmurHash3.hash128x64(
+        Long.toString(seed ^ index).getBytes(StandardCharsets.UTF_8)
+    )[0];
   }
 }

@@ -19,8 +19,8 @@ public class FloatRandomProvider implements FloatCorruptedProvider {
       @JsonProperty("min") Float min,
       @JsonProperty("max") Float max
   ) {
-    this.min = min == null ? Float.MIN_VALUE : min;
-    this.max = max == null ? Float.MAX_VALUE : max;
+    this.min = min == null ? Float.valueOf(Float.MIN_VALUE) : min;
+    this.max = max == null ? Float.valueOf(Float.MAX_VALUE) : max;
   }
 
   @Override

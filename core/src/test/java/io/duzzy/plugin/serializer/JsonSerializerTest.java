@@ -11,6 +11,7 @@ import io.duzzy.core.serializer.Serializer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 public class JsonSerializerTest {
@@ -33,6 +34,6 @@ public class JsonSerializerTest {
     jsonSerializer.serializeAll(getDataOne());
     jsonSerializer.serializeAll(getDataTwo());
 
-    assertThat(outputStream.toString()).isEqualTo(expected);
+    assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }
 }

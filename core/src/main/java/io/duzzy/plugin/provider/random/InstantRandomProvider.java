@@ -6,7 +6,7 @@ import io.duzzy.core.column.ColumnContext;
 import io.duzzy.core.provider.Provider;
 import java.time.Instant;
 
-public class InstantRandomProvider implements Provider<Instant> {
+public final class InstantRandomProvider implements Provider<Instant> {
 
   private static final Long DEFAULT_MAX = 253402300800000L; //9999-12-31 + 1 day
 

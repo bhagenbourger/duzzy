@@ -12,8 +12,8 @@ import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 public class ConsoleSinkTest {
@@ -30,8 +30,8 @@ public class ConsoleSinkTest {
   void writeJson() throws IOException {
     final String expected =
         "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":1,\"c2\":\"one\"}";
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
     consoleSink.init(DuzzyContext.DEFAULT.schemaContext());
@@ -40,6 +40,6 @@ public class ConsoleSinkTest {
     consoleSink.write(getDataOne());
     consoleSink.close();
 
-    assertThat(outputStreamCaptor.toString()).isEqualTo(expected);
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }
 }

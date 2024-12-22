@@ -4,6 +4,7 @@ import static com.fasterxml.jackson.dataformat.csv.CsvSchema.DEFAULT_COLUMN_SEPA
 import static com.fasterxml.jackson.dataformat.csv.CsvSchema.DEFAULT_LINEFEED;
 import static com.fasterxml.jackson.dataformat.csv.CsvSchema.DEFAULT_QUOTE_CHAR;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.SequenceWriter;
@@ -27,12 +28,21 @@ public class CsvSerializer extends Serializer<SequenceWriter> {
 
   @JsonCreator
   public CsvSerializer(
-      @JsonProperty("quoteChar") Character quoteChar,
-      @JsonProperty("columnSeparator") Character columnSeparator,
-      @JsonProperty("lineSeparator") String lineSeparator
+      @JsonProperty("quote_char")
+      @JsonAlias({"quoteChar", "quote-char"})
+      Character quoteChar,
+
+      @JsonProperty("column_separator")
+      @JsonAlias({"columnSeparator", "column-separator"})
+      Character columnSeparator,
+
+      @JsonProperty("line_separator")
+      @JsonAlias({"lineSeparator", "line-separator"})
+      String lineSeparator
   ) {
-    this.quoteChar = quoteChar == null ? DEFAULT_QUOTE_CHAR : quoteChar;
-    this.columnSeparator = columnSeparator == null ? DEFAULT_COLUMN_SEPARATOR : columnSeparator;
+    this.quoteChar = quoteChar == null ? Character.valueOf(DEFAULT_QUOTE_CHAR) : quoteChar;
+    this.columnSeparator =
+        columnSeparator == null ? Character.valueOf(DEFAULT_COLUMN_SEPARATOR) : columnSeparator;
     this.lineSeparator = lineSeparator == null ? String.valueOf(DEFAULT_LINEFEED) : lineSeparator;
   }
 

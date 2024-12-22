@@ -45,7 +45,6 @@ public class ParquetSerializerTest {
   @Test
   void serializeWithDefaultValues() throws IOException {
     final File file = createTempFile(getClass().getSimpleName());
-    final OutputStream outputStream = new FileOutputStream(file);
     final List<Column> columns = List.of(
         new Column(
             KEY_C1,
@@ -64,11 +63,13 @@ public class ParquetSerializerTest {
     );
     final SchemaContext schemaContext = new SchemaContext(null, columns);
 
-    final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null);
-    parquetSerializer.init(outputStream, schemaContext);
-    parquetSerializer.serializeAll(getDataOne());
-    parquetSerializer.serializeAll(getDataTwo());
-    parquetSerializer.close();
+    try (final OutputStream outputStream = new FileOutputStream(file)) {
+      final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null);
+      parquetSerializer.init(outputStream, schemaContext);
+      parquetSerializer.serializeAll(getDataOne());
+      parquetSerializer.serializeAll(getDataTwo());
+      parquetSerializer.close();
+    }
 
     final ParquetReader<GenericRecord> reader = AvroParquetReader
         .<GenericRecord>builder(new AvroReadSupport<>(), new Path(file.getPath()))

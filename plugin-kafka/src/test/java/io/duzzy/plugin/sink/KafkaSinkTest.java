@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.serializer.XmlSerializer;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Iterator;
@@ -52,8 +53,10 @@ public class KafkaSinkTest {
     consumer.subscribe(Collections.singleton(topic));
     final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
     final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
-    assertThat(new String(iterator.next().value())).isEqualTo("{\"c1\":1,\"c2\":\"one\"}");
-    assertThat(new String(iterator.next().value())).isEqualTo("{\"c1\":2,\"c2\":\"two\"}");
+    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
+        .isEqualTo("{\"c1\":1,\"c2\":\"one\"}");
+    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
+        .isEqualTo("{\"c1\":2,\"c2\":\"two\"}");
   }
 
   @Test
@@ -73,9 +76,9 @@ public class KafkaSinkTest {
     consumer.subscribe(Collections.singleton(topic));
     final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
     final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
-    assertThat(new String(iterator.next().value())).isEqualTo(
+    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
         "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>1</c1><c2>one</c2></row></rows>");
-    assertThat(new String(iterator.next().value())).isEqualTo(
+    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
         "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>2</c1><c2>two</c2></row></rows>");
   }
 

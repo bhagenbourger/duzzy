@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
@@ -34,8 +34,8 @@ public class DuzzyTest {
         {"city":"IsUgerpfGgWRl3H"}
         {"city":"rBw98FAPe1"}
         {"city":"Lri7KqkjVTcL0"}""";
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema.yaml");
 
@@ -43,7 +43,7 @@ public class DuzzyTest {
 
     assertThat(duzzyResult.rows()).isEqualTo(10L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);
-    assertThat(outputStreamCaptor.toString()).isEqualTo(expected);
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }
 
   @Test
@@ -58,8 +58,8 @@ public class DuzzyTest {
         getFromResources(getClass(), "result/expected-duzzy-schema-all-coumns.jsonl");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));
 
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final File duzzySchemaFile =
         getFromResources(getClass(), "schema/duzzy-schema-all-columns.yaml");
@@ -67,7 +67,7 @@ public class DuzzyTest {
 
     assertThat(duzzyResult.rows()).isEqualTo(42L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);
-    assertThat(outputStreamCaptor.toString()).isEqualTo(expected);
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }
 
   @Test
@@ -91,8 +91,8 @@ public class DuzzyTest {
         + "<country><city>rBw98FAPe1</city></country>"
         + "<country><city>Lri7KqkjVTcL0</city></country>"
         + "</countries>";
-    final OutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStreamCaptor));
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-xml.yaml");
 
@@ -100,6 +100,6 @@ public class DuzzyTest {
 
     assertThat(duzzyResult.rows()).isEqualTo(10L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);
-    assertThat(outputStreamCaptor.toString()).isEqualTo(expected);
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }
 }

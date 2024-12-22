@@ -8,4 +8,7 @@ public record DuzzySchema(
     List<Column> columns,
     Sink sink
 ) {
+
+  public DuzzySchema {
+  }
 }

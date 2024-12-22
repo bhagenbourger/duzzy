@@ -18,8 +18,8 @@ public class DoubleRandomProvider implements DoubleCorruptedProvider {
   public DoubleRandomProvider(
       @JsonProperty("min") Double min,
       @JsonProperty("max") Double max) {
-    this.min = min == null ? Double.MIN_VALUE : min;
-    this.max = max == null ? Double.MAX_VALUE : max;
+    this.min = min == null ? Double.valueOf(Double.MIN_VALUE) : min;
+    this.max = max == null ? Double.valueOf(Double.MAX_VALUE) : max;
   }
 
   @Override

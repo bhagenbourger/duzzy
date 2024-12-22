@@ -15,8 +15,8 @@ public class IntegerIncrementProvider implements IntegerCorruptedProvider {
       @JsonProperty("start") Integer start,
       @JsonProperty("step") Integer step
   ) {
-    this.start = start == null ? 0 : start;
-    this.step = step == null ? 1 : step;
+    this.start = start == null ? Integer.valueOf(0) : start;
+    this.step = step == null ? Integer.valueOf(1) : step;
   }
 
   @Override
