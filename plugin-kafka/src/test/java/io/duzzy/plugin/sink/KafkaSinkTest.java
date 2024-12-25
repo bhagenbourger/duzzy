@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.serializer.XmlSerializer;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
@@ -37,7 +36,7 @@ public class KafkaSinkTest {
   }
 
   @Test
-  void writeJsonMessage() throws IOException {
+  void writeJsonMessage() throws Exception {
     final String topic = "json";
 
     final KafkaSink kafkaSink = new KafkaSink(
@@ -45,6 +44,7 @@ public class KafkaSinkTest {
         topic,
         kafka.getBootstrapServers()
     );
+    kafkaSink.init(null);
     kafkaSink.write(getDataOne());
     kafkaSink.write(getDataTwo());
     kafkaSink.close();
@@ -60,7 +60,7 @@ public class KafkaSinkTest {
   }
 
   @Test
-  void writeXmlMessage() throws IOException {
+  void writeXmlMessage() throws Exception {
     final String topic = "xml";
 
     final KafkaSink kafkaSink = new KafkaSink(
@@ -68,6 +68,7 @@ public class KafkaSinkTest {
         topic,
         kafka.getBootstrapServers()
     );
+    kafkaSink.init(null);
     kafkaSink.write(getDataOne());
     kafkaSink.write(getDataTwo());
     kafkaSink.close();

@@ -31,8 +31,8 @@ public class JsonSerializerTest {
 
     final JsonSerializer jsonSerializer = new JsonSerializer();
     jsonSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-    jsonSerializer.serializeAll(getDataOne());
-    jsonSerializer.serializeAll(getDataTwo());
+    jsonSerializer.serialize(getDataOne());
+    jsonSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }

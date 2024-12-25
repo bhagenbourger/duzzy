@@ -31,8 +31,8 @@ public class CsvSerializerTest {
 
     final CsvSerializer csvSerializer = new CsvSerializer(null, null, null);
     csvSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-    csvSerializer.serializeAll(getDataOne());
-    csvSerializer.serializeAll(getDataTwo());
+    csvSerializer.serialize(getDataOne());
+    csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }
@@ -45,8 +45,8 @@ public class CsvSerializerTest {
     final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
     final CsvSerializer csvSerializer = YAML_MAPPER.readValue(serializerFile, CsvSerializer.class);
     csvSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-    csvSerializer.serializeAll(getDataOne());
-    csvSerializer.serializeAll(getDataTwo());
+    csvSerializer.serialize(getDataOne());
+    csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
   }

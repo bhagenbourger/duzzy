@@ -61,8 +61,8 @@ public class AvroWithSchemaSerializerTest {
     final AvroWithSchemaSerializer avroWithSchemaSerializer =
         new AvroWithSchemaSerializer(null, null);
     avroWithSchemaSerializer.init(outputStream, schemaContext);
-    avroWithSchemaSerializer.serializeAll(Data.getDataOne());
-    avroWithSchemaSerializer.serializeAll(Data.getDataTwo());
+    avroWithSchemaSerializer.serialize(Data.getDataOne());
+    avroWithSchemaSerializer.serialize(Data.getDataTwo());
     avroWithSchemaSerializer.close();
 
     final DataFileReader<GenericData.Record> records = new DataFileReader<>(

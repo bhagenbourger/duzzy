@@ -34,13 +34,7 @@ public class Duzzy {
     this.schemaParser = schemaParser;
   }
 
-  public DuzzyResult generate()
-      throws IOException,
-      ClassNotFoundException,
-      NoSuchMethodException,
-      InvocationTargetException,
-      InstantiationException,
-      IllegalAccessException {
+  public DuzzyResult generate() throws Exception {
 
     //TODO: Log a WARN if parser is instance of DuzzySchemaParser.class and DuzzyConfig is not null
     // => DuzzyConf is useless with DuzzySchemaParser
@@ -48,7 +42,7 @@ public class Duzzy {
     return generate(createDuzzyContext(loadParser(), loadDuzzyConfig()));
   }
 
-  private static DuzzyResult generate(DuzzyContext duzzyContext) throws IOException {
+  private static DuzzyResult generate(DuzzyContext duzzyContext) throws Exception {
     final Long start = Instant.now().toEpochMilli();
     final Sink sink = duzzyContext.sink();
     sink.init(duzzyContext.schemaContext());
@@ -98,7 +92,7 @@ public class Duzzy {
       Long index,
       List<Provider<?>> providers,
       Sink sink
-  ) throws IOException {
+  ) throws Exception {
     final Long rowId = computeRowId(duzzyContext.seed(), index);
     final ColumnContext columnContext = new ColumnContext(
         providers,

@@ -3,14 +3,14 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.OutputStreamSink;
+import io.duzzy.core.sink.Sink;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-public class HdfsSink extends OutputStreamSink {
+public class HdfsSink extends Sink {
 
   @JsonCreator
   public HdfsSink(

@@ -39,6 +39,10 @@
     "allPublicConstructors": true
   },
   {
+    "name": "io.duzzy.plugin.serializer.SqlSerializer",
+    "allPublicConstructors": true
+  },
+  {
     "name": "io.duzzy.core.column.Column",
     "allPublicConstructors": true
   },

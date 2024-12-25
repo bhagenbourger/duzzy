@@ -67,8 +67,8 @@ public class AvroWithoutSchemaSerializerTest {
     final AvroWithoutSchemaSerializer avroWithoutSchemaSerializer =
         new AvroWithoutSchemaSerializer(null, null);
     avroWithoutSchemaSerializer.init(outputStream, schemaContext);
-    avroWithoutSchemaSerializer.serializeAll(getDataOne());
-    avroWithoutSchemaSerializer.serializeAll(getDataTwo());
+    avroWithoutSchemaSerializer.serialize(getDataOne());
+    avroWithoutSchemaSerializer.serialize(getDataTwo());
 
     final DatumReader<GenericData.Record> reader = new GenericDatumReader<>();
     reader.setSchema(avroWithoutSchemaSerializer.getSchema());

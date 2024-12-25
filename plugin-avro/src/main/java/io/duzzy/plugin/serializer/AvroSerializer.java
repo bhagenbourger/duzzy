@@ -80,7 +80,7 @@ abstract class AvroSerializer<W extends Closeable> extends Serializer<W> {
     return fields.endRecord();
   }
 
-  protected GenericData.Record serialize(DataItems data) {
+  protected GenericData.Record serializeToRecord(DataItems data) {
     final GenericRecordBuilder recordBuilder = new GenericRecordBuilder(getSchema());
     data.items().forEach(d -> recordBuilder.set(d.name(), toPrimitiveType(d)));
     return recordBuilder.build();
