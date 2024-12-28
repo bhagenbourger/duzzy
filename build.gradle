@@ -25,6 +25,7 @@ dependencies {
     implementation project(":plugin-hdfs")
     implementation project(":plugin-kafka")
     implementation project(":plugin-parquet")
+    implementation project(":plugin-duckdb")
 }
 
 allprojects {

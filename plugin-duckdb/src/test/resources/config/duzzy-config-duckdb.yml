@@ -1,0 +1,7 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.DuckdbSink"
+  url: "jdbc:duckdb:/tmp/my_database"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+    table_name: test
