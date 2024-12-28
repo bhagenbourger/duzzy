@@ -1,0 +1,16 @@
+---
+columns:
+  - name: id
+    column_type: INTEGER
+    null_rate: 0
+    corrupted_rate: 0
+    providers:
+      - identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
+        min: 50
+        max: 100
+  - name: name
+    column_type: STRING
+    null_rate: 0
+    corrupted_rate: 0
+    providers:
+      - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
