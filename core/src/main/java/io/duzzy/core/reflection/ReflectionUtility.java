@@ -1,12 +1,15 @@
 package io.duzzy.core.reflection;
 
 import com.google.common.reflect.ClassPath;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.provider.DuzzyProvider;
 import io.duzzy.core.provider.Provider;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,5 +58,12 @@ public class ReflectionUtility {
           }
         })
         .collect(Collectors.toUnmodifiableList());
+  }
+
+  public static Map<DuzzyType, List<Documentation>> loadDocumentation() throws IOException {
+    return ReflectionUtility
+        .loadDuzzyAnnotatedClasses(Documentation.class)
+        .map(c -> c.getAnnotation(Documentation.class))
+        .collect(Collectors.groupingBy(Documentation::duzzyType));
   }
 }

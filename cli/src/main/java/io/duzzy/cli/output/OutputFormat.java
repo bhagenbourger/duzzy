@@ -1,4 +1,4 @@
-package io.duzzy.cli;
+package io.duzzy.cli.output;
 
 public enum OutputFormat {
   RAW(new DuzzyResultRawFormatter()),
