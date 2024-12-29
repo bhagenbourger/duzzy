@@ -6,3 +6,5 @@ include 'plugin-hdfs'
 include 'plugin-avro'
 include 'plugin-parquet'
 include 'tests'
+include 'plugin-duckdb'
+
