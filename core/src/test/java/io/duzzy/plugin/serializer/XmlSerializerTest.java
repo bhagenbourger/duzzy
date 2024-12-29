@@ -34,8 +34,8 @@ public class XmlSerializerTest {
 
     final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
     xmlSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-    xmlSerializer.serializeAll(getDataOne());
-    xmlSerializer.serializeAll(getDataTwo());
+    xmlSerializer.serialize(getDataOne());
+    xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
@@ -52,8 +52,8 @@ public class XmlSerializerTest {
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
     final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
     xmlSerializer.init(outputStream, DuzzyContext.DEFAULT.schemaContext());
-    xmlSerializer.serializeAll(getDataOne());
-    xmlSerializer.serializeAll(getDataTwo());
+    xmlSerializer.serialize(getDataOne());
+    xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);

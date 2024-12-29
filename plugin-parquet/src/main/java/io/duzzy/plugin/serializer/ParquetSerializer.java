@@ -43,11 +43,11 @@ public class ParquetSerializer extends Serializer<ParquetWriter<GenericData.Reco
   @Override
   protected void serialize(DataItems data, ParquetWriter<GenericData.Record> writer)
       throws IOException {
-    writer.write(serialize(data));
+    writer.write(serializeToRecord(data));
   }
 
   //TODO: move to a common lib with avro?
-  private GenericData.Record serialize(DataItems data) {
+  private GenericData.Record serializeToRecord(DataItems data) {
     final GenericRecordBuilder recordBuilder = new GenericRecordBuilder(getSchema());
     data.items().forEach(d -> recordBuilder.set(d.name(), d.value()));
     return recordBuilder.build();

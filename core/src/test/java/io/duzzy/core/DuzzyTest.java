@@ -5,9 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,13 +14,7 @@ import org.junit.jupiter.api.Test;
 public class DuzzyTest {
 
   @Test
-  void generateJsonInConsoleFromDuzzySchema()
-      throws IOException,
-      ClassNotFoundException,
-      InvocationTargetException,
-      NoSuchMethodException,
-      InstantiationException,
-      IllegalAccessException {
+  void generateJsonInConsoleFromDuzzySchema() throws Exception {
     final String expected = """
         {"city":"xO7KVnF2g9"}
         {"city":"zJL0NaCYFQq8D"}
@@ -47,13 +39,7 @@ public class DuzzyTest {
   }
 
   @Test
-  void generateJsonInConsoleFromDuzzySchemaWithAllColumns()
-      throws IOException,
-      ClassNotFoundException,
-      InvocationTargetException,
-      NoSuchMethodException,
-      InstantiationException,
-      IllegalAccessException {
+  void generateJsonInConsoleFromDuzzySchemaWithAllColumns() throws Exception {
     final File expectedFile =
         getFromResources(getClass(), "result/expected-duzzy-schema-all-coumns.jsonl");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));
@@ -71,13 +57,7 @@ public class DuzzyTest {
   }
 
   @Test
-  void generateXmlInConsoleFromDuzzySchema()
-      throws IOException,
-      ClassNotFoundException,
-      InvocationTargetException,
-      NoSuchMethodException,
-      InstantiationException,
-      IllegalAccessException {
+  void generateXmlInConsoleFromDuzzySchema() throws Exception {
     final String expected = "<?xml version='1.0' encoding='UTF-8'?>"
         + "<countries>"
         + "<country><city>xO7KVnF2g9</city></country>"

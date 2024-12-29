@@ -3,11 +3,11 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.OutputStreamSink;
+import io.duzzy.core.sink.Sink;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class LocalFileSink extends OutputStreamSink {
+public class LocalFileSink extends Sink {
 
   @JsonCreator
   public LocalFileSink(

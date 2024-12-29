@@ -27,7 +27,7 @@ public class ConsoleSinkTest {
   }
 
   @Test
-  void writeJson() throws IOException {
+  void writeJson() throws Exception {
     final String expected =
         "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":1,\"c2\":\"one\"}";
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();

@@ -66,8 +66,8 @@ public class ParquetSerializerTest {
     try (final OutputStream outputStream = new FileOutputStream(file)) {
       final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null);
       parquetSerializer.init(outputStream, schemaContext);
-      parquetSerializer.serializeAll(getDataOne());
-      parquetSerializer.serializeAll(getDataTwo());
+      parquetSerializer.serialize(getDataOne());
+      parquetSerializer.serialize(getDataTwo());
       parquetSerializer.close();
     }
 

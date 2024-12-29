@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.core.DuzzyContext;
 import io.duzzy.plugin.serializer.JsonSerializer;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class HdfsSinkTest {
 
   @Test
-  void writeJsonFile() throws IOException {
+  void writeJsonFile() throws Exception {
     final String expected = "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}";
     final String filename = "build/hdfs.json";
 

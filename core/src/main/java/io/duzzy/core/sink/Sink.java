@@ -4,22 +4,29 @@ import io.duzzy.core.DataItems;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.serializer.Serializer;
-import java.io.IOException;
+import java.io.OutputStream;
 
 public abstract class Sink implements Plugin {
 
   protected final Serializer<?> serializer;
+  protected final OutputStream outputStream;
 
-  public Sink(Serializer<?> serializer) {
+  public Sink(Serializer<?> serializer, OutputStream outputStream) {
     this.serializer = serializer;
+    this.outputStream = outputStream;
   }
 
-  public abstract void init(SchemaContext schemaContext) throws IOException;
+  public void init(SchemaContext schemaContext) throws Exception {
+    this.serializer.init(outputStream, schemaContext);
+  }
 
-  public abstract void write(DataItems data) throws IOException;
+  public void write(DataItems data) throws Exception {
+    this.serializer.serialize(data);
+  }
 
-  public void close() throws IOException {
+  public void close() throws Exception {
     serializer.close();
+    outputStream.close();
   }
 
   public Serializer<?> getSerializer() {

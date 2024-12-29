@@ -24,30 +24,32 @@ public class KafkaSink extends Sink {
       @JsonProperty("topic") String topic,
       @JsonProperty("bootstrapServers") String bootstrapServers
   ) {
-    super(serializer);
+    super(serializer, new ByteArrayOutputStream());
     this.topic = topic;
     this.producer = new KafkaProducer<>(buildProperties(bootstrapServers));
   }
 
   @Override
-  public void init(SchemaContext schemaContext) {
-
+  public void init(SchemaContext schemaContext) throws IOException {
+    serializer.init(outputStream, schemaContext);
   }
 
   @Override
-  public void write(DataItems data) throws IOException {
-    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    serializer.serializeUnit(data, outputStream);
+  public void write(DataItems data) throws Exception {
+    super.write(data);
+    serializer.close();
     final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
         topic,
         null,
-        outputStream.toByteArray()
+        ((ByteArrayOutputStream) outputStream).toByteArray()
     );
     producer.send(record);
+    ((ByteArrayOutputStream) outputStream).reset();
+    serializer.reset();
   }
 
   @Override
-  public void close() throws IOException {
+  public void close() throws Exception {
     super.close();
     producer.close();
   }

@@ -27,7 +27,7 @@ public class AvroWithoutSchemaSerializer extends AvroSerializer<BinaryEncoderClo
   @Override
   protected void serialize(DataItems data, BinaryEncoderCloseable writer) throws IOException {
     new GenericDatumWriter<Record>(getSchema()).write(
-        serialize(data),
+        serializeToRecord(data),
         writer.binaryEncoder()
     );
   }
