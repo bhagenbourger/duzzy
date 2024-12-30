@@ -1,4 +1,4 @@
 ---
 identifier: "io.duzzy.plugin.serializer.CsvSerializer"
-columnSeparator: ";"
-lineSeparator: "|"
+column_separator: ";"
+line_separator: "|"

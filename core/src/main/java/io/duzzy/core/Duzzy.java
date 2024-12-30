@@ -15,7 +15,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Stream;
 import org.apache.commons.codec.digest.MurmurHash3;
 
 public class Duzzy {
@@ -39,7 +41,11 @@ public class Duzzy {
     //TODO: Log a WARN if parser is instance of DuzzySchemaParser.class and DuzzyConfig is not null
     // => DuzzyConf is useless with DuzzySchemaParser
 
-    return generate(createDuzzyContext(loadParser(), loadDuzzyConfig()));
+    final DuzzyConfig duzzyConfig = loadDuzzyConfig();
+    final DuzzyContext duzzyContext = createDuzzyContext(loadParser(), duzzyConfig);
+
+    final Optional<DuzzyResult> errors = validate(duzzyConfig, duzzyContext);
+    return errors.orElse(generate(duzzyContext));
   }
 
   private static DuzzyResult generate(DuzzyContext duzzyContext) throws Exception {
@@ -54,10 +60,34 @@ public class Duzzy {
     final Long end = Instant.now().toEpochMilli();
 
     return new DuzzyResult(
+        Optional.empty(),
         Duration.of(end - start, ChronoUnit.MILLIS),
         duzzyContext.rows(),
         duzzyContext.seed()
     );
+  }
+
+  private static Optional<DuzzyResult> validate(
+      DuzzyConfig duzzyConfig,
+      DuzzyContext duzzyContext
+  ) {
+    final List<String> errors = Stream
+        .concat(
+            duzzyConfig == null ? Stream.empty() : duzzyConfig.checkArguments().stream(),
+            duzzyContext == null ? Stream.empty() : duzzyContext.checkArguments().stream()
+        )
+        .flatMap(List::stream)
+        .toList();
+    return Optional
+        .of(errors)
+        .filter(e -> !e.isEmpty())
+        .map(e -> new DuzzyResult(
+                Optional.of(e),
+                Duration.ofSeconds(0),
+                0L,
+                duzzyContext == null ? null : duzzyContext.seed()
+            )
+        );
   }
 
   private DuzzyConfig loadDuzzyConfig() throws IOException {

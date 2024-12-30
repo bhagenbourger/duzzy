@@ -12,10 +12,10 @@ public class PluginDeserializer<T extends Plugin> extends JsonDeserializer<T> {
 
   @Override
   public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-    JsonNode node = parser.readValueAsTree();
-    JsonNode identifier = node.get(IDENTIFIER);
+    final JsonNode node = parser.readValueAsTree();
+    final JsonNode identifier = node.get(IDENTIFIER);
     try {
-      Class<?> clazz = Class.forName(identifier.textValue());
+      final Class<?> clazz = Class.forName(identifier.textValue());
       return (T) parser.getCodec().treeToValue(node, clazz);
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);

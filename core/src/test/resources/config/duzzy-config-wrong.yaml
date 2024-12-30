@@ -1,0 +1,6 @@
+---
+enrichers:
+  - query_selector: "toto"
+    provider_parameters:
+      min_length: 3
+      max_length: 20
