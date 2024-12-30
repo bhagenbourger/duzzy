@@ -13,6 +13,8 @@ import org.jooq.impl.DSL;
 
 public class SqlSerializer extends Serializer<OutputStream> {
 
+  private static final String DEFAULT_TABLE_NAME = "duzzy_table";
+
   private final String tableName;
 
   @JsonCreator
@@ -21,11 +23,11 @@ public class SqlSerializer extends Serializer<OutputStream> {
       @JsonAlias({"tableName", "table-name"})
       String tableName
   ) {
-    this.tableName = tableName;
+    this.tableName = tableName == null ? DEFAULT_TABLE_NAME : tableName;
   }
 
   @Override
-  protected OutputStream buildWriter(OutputStream outputStream) throws IOException {
+  protected OutputStream buildWriter(OutputStream outputStream) {
     return outputStream;
   }
 

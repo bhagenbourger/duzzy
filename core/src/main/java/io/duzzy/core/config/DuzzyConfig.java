@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public record DuzzyConfig(
     List<Enricher> enrichers,
@@ -19,8 +20,18 @@ public record DuzzyConfig(
     enrichers = enrichers == null ? List.of() : enrichers;
   }
 
-  public static DuzzyConfig fromFile(File file) throws IOException {
-    return Parser.YAML_MAPPER.readValue(file, DuzzyConfig.class);
+  public Optional<List<String>> checkArguments() {
+    final List<String> errors = Stream
+        .concat(
+            enrichers
+                .stream()
+                .flatMap(e -> e.checkArguments().stream()),
+            sink == null ? Stream.of() : sink.checkArguments().stream()
+        )
+        .flatMap(List::stream)
+        .filter(e -> !e.isEmpty())
+        .toList();
+    return Optional.of(errors).filter(e -> !e.isEmpty());
   }
 
   public Optional<Provider<?>> findProvider(
@@ -32,6 +43,10 @@ public record DuzzyConfig(
         .filter(c -> c.querySelectorMatcher(key, value))
         .findFirst()
         .map(DuzzyConfig::buildProvider);
+  }
+
+  public static DuzzyConfig fromFile(File file) throws IOException {
+    return Parser.YAML_MAPPER.readValue(file, DuzzyConfig.class);
   }
 
   private static Provider<?> buildProvider(

@@ -4,6 +4,8 @@ import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.sink.ConsoleSink;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public record DuzzyContext(
@@ -47,5 +49,9 @@ public record DuzzyContext(
 
   public DuzzyContext withSink(Sink sink) {
     return sink == null ? this : new DuzzyContext(schemaContext(), sink, rows(), seed());
+  }
+
+  public Optional<List<String>> checkArguments() {
+    return Optional.empty();
   }
 }
