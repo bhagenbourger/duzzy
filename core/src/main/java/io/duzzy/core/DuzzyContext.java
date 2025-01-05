@@ -4,9 +4,11 @@ import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.sink.ConsoleSink;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public record DuzzyContext(
     SchemaContext schemaContext,
@@ -52,6 +54,21 @@ public record DuzzyContext(
   }
 
   public Optional<List<String>> checkArguments() {
-    return Optional.empty();
+    final List<String> errors = new ArrayList<>();
+    if (rows <= 0) {
+      errors.add("Rows parameter must be greater than 0");
+    }
+    final List<String> allErrors =
+        Stream.concat(
+                Stream
+                    .concat(
+                        Optional.of(errors).stream(),
+                        sink.checkArguments().stream()
+                    ),
+                schemaContext.checkArguments().stream()
+            )
+            .flatMap(List::stream)
+            .toList();
+    return Optional.of(allErrors).filter(e -> !e.isEmpty());
   }
 }
