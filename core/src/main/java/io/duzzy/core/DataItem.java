@@ -1,10 +1,10 @@
 package io.duzzy.core;
 
-import io.duzzy.core.column.ColumnType;
+import io.duzzy.core.field.Type;
 
 public record DataItem(
     String name,
-    ColumnType type,
+    Type type,
     Object value
 ) {
 }

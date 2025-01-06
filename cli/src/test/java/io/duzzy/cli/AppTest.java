@@ -215,7 +215,7 @@ public class AppTest {
   }
 
   @Test
-  void shouldGenerateFromAvroToAvroWithoutSchemaWithConfig() throws IOException {
+  void shouldGenerateFromAvroToAvroSchemalessWithConfig() throws IOException {
     final App app = new App();
     final CommandLine cmd = new CommandLine(app);
 
@@ -228,7 +228,7 @@ public class AppTest {
     final int exitCode = cmd.execute(
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
         "-p=io.duzzy.plugin.parser.AvroSchemaParser",
-        "-c=../cli/src/test/resources/config/duzzy-config-full-avro-without-schema.yaml",
+        "-c=../cli/src/test/resources/config/duzzy-config-full-avro-schemaless.yaml",
         "-r=3",
         "-s=1234",
         "-o=TXT"
@@ -239,7 +239,7 @@ public class AppTest {
         .parse(getFromResources(getClass(), "avro-schema/all-supported-fields.avsc"));
     final DatumReader<GenericData.Record> reader = new GenericDatumReader<>();
     reader.setSchema(schema);
-    final File resultFile = new File("build/avro-without-schema-with-config-result.avro");
+    final File resultFile = new File("build/avro-schemaless-with-config-result.avro");
 
     try (final InputStream fileInputStream = new FileInputStream(resultFile)) {
       final BinaryDecoder decoder = DecoderFactory

@@ -31,7 +31,7 @@ public record DuzzyContext(
   }
 
   public DuzzyContext {
-    schemaContext = schemaContext == null ? new SchemaContext(null, null) : schemaContext;
+    schemaContext = schemaContext == null ? new SchemaContext(null) : schemaContext;
     sink = sink == null ? new ConsoleSink(new JsonSerializer()) : sink;
     rows = rows == null ? DEFAULT_ROWS : rows;
     seed = seed == null ? Long.valueOf(RANDOM.nextLong()) : seed;

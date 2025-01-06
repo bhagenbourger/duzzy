@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.corrupted.DoubleCorruptedProvider;
 
 public class DoubleRandomProvider implements DoubleCorruptedProvider {
@@ -23,7 +23,7 @@ public class DoubleRandomProvider implements DoubleCorruptedProvider {
   }
 
   @Override
-  public Double value(ColumnContext columnContext) {
-    return columnContext.random().nextDouble(this.min, this.max);
+  public Double value(FieldContext fieldContext) {
+    return fieldContext.random().nextDouble(this.min, this.max);
   }
 }

@@ -1,8 +1,8 @@
 package io.duzzy.plugin.provider.random;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestUtility.RANDOM_COLUMN_CONTEXT;
-import static io.duzzy.test.TestUtility.SEEDED_ONE_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.RANDOM_FIELD_CONTEXT;
+import static io.duzzy.test.TestUtility.SEEDED_ONE_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,24 +15,24 @@ public class DoubleRandomProviderTest {
 
   @Test
   void parsedFromYaml() throws IOException {
-    final File columnFile =
-        getFromResources(getClass(), "provider/random/double-random-column-full.yaml");
-    final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
+    final File providerFile =
+        getFromResources(getClass(), "provider/random/double-random-provider-full.yaml");
+    final Provider<?> provider = YAML_MAPPER.readValue(providerFile, Provider.class);
 
     assertThat(provider).isInstanceOf(DoubleRandomProvider.class);
-    assertThat((Double) provider.value(SEEDED_ONE_COLUMN_CONTEXT.get()))
+    assertThat((Double) provider.value(SEEDED_ONE_FIELD_CONTEXT.get()))
         .isGreaterThanOrEqualTo(50d)
         .isLessThanOrEqualTo(100d);
   }
 
   @Test
   void parsedFromYamlHasDefaultValues() throws IOException {
-    final File columnFile =
-        getFromResources(getClass(), "provider/random/double-random-column.yaml");
-    final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
+    final File providerFile =
+        getFromResources(getClass(), "provider/random/double-random-provider.yaml");
+    final Provider<?> provider = YAML_MAPPER.readValue(providerFile, Provider.class);
 
     assertThat(provider).isInstanceOf(DoubleRandomProvider.class);
-    assertThat((Double) provider.value(SEEDED_ONE_COLUMN_CONTEXT.get()))
+    assertThat((Double) provider.value(SEEDED_ONE_FIELD_CONTEXT.get()))
         .isGreaterThanOrEqualTo(Double.MIN_VALUE)
         .isLessThanOrEqualTo(Double.MAX_VALUE);
   }
@@ -40,14 +40,14 @@ public class DoubleRandomProviderTest {
   @Test
   void computeValueIsIdempotent() {
     final Double value = new DoubleRandomProvider()
-        .value(SEEDED_ONE_COLUMN_CONTEXT.get());
+        .value(SEEDED_ONE_FIELD_CONTEXT.get());
     assertThat(value).isEqualTo(1.3138947058478963E308);
   }
 
   @Test
   void computeValueWithRightRange() {
     final Double value = new DoubleRandomProvider(5d, 6d)
-        .value(RANDOM_COLUMN_CONTEXT.get());
+        .value(RANDOM_FIELD_CONTEXT.get());
     assertThat(value).isGreaterThanOrEqualTo(5d);
     assertThat(value).isLessThan(6d);
   }
@@ -55,7 +55,7 @@ public class DoubleRandomProviderTest {
   @Test
   void corruptedValueIsIdempotent() {
     final Double value = new DoubleRandomProvider(3d, 4d)
-        .corruptedValue(SEEDED_ONE_COLUMN_CONTEXT.get());
+        .corruptedValue(SEEDED_ONE_FIELD_CONTEXT.get());
     assertThat(value).isEqualTo(1.3138947058478963E308);
   }
 }

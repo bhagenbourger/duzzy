@@ -1,8 +1,11 @@
 package io.duzzy.plugin.serializer;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DataItems;
+import io.duzzy.core.serializer.AvroSerializer;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.apache.avro.file.DataFileWriter;
@@ -13,17 +16,24 @@ public class AvroWithSchemaSerializer extends AvroSerializer<DataFileWriter<Gene
 
   @JsonCreator
   public AvroWithSchemaSerializer(
-      @JsonProperty("name") String name,
-      @JsonProperty("namespace") String namespace
+      @JsonProperty("name")
+      String name,
+      @JsonProperty("namespace")
+      String namespace,
+      @JsonProperty("schema_file")
+      @JsonAlias({"schemaFile", "schema-file"})
+      File schemaFile
   ) {
-    super(name, namespace);
+    super(name, namespace, schemaFile);
   }
 
   @Override
   protected DataFileWriter<GenericData.Record> buildWriter(OutputStream outputStream)
       throws IOException {
-    return new DataFileWriter<GenericData.Record>(new GenericDatumWriter<>()).create(getSchema(),
-        outputStream);
+    return new DataFileWriter<GenericData.Record>(
+        new GenericDatumWriter<>()).create(getSchema(),
+        outputStream
+    );
   }
 
   @Override

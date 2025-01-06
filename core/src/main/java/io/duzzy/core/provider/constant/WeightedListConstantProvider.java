@@ -1,6 +1,6 @@
 package io.duzzy.core.provider.constant;
 
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import java.util.List;
 
@@ -21,8 +21,8 @@ public abstract class WeightedListConstantProvider<T> implements Provider<T> {
   }
 
   @Override
-  public T value(ColumnContext columnContext) {
-    int rand = columnContext.random().nextInt(0, totalWeight);
+  public T value(FieldContext fieldContext) {
+    int rand = fieldContext.random().nextInt(0, totalWeight);
     int i = 0;
     while (i < values.size() - 1 && rand > 0) {
       rand -= values.get(i).weight();

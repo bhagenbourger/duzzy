@@ -31,7 +31,7 @@ public class DuzzyConfigTest {
   }
 
   @Test
-  void shouldFindColumn() throws IOException {
+  void shouldFindProvider() throws IOException {
     final File duzzyConfigFile = getFromResources(getClass(), "config/duzzy-config-full.yaml");
     final DuzzyConfig duzzyConfig = DuzzyConfig.fromFile(duzzyConfigFile);
 

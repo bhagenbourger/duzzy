@@ -1,27 +1,26 @@
 package io.duzzy.core.schema;
 
-import io.duzzy.core.column.Column;
-import io.duzzy.core.column.ColumnType;
+import io.duzzy.core.field.Field;
+import io.duzzy.core.field.Type;
 import io.duzzy.plugin.provider.constant.BooleanConstantProvider;
 import io.duzzy.plugin.provider.constant.DoubleConstantProvider;
 import java.util.List;
 
 public record SchemaContext(
-    InputSchema inputSchema,
-    List<Column> columns
+    List<Field> fields
 ) {
 
-  private static final List<Column> DEFAULT_COLUMNS = List.of(
-      new Column(
-          "BooleanConstantColumn",
-          ColumnType.BOOLEAN,
+  private static final List<Field> DEFAULT_FIELDS = List.of(
+      new Field(
+          "BooleanConstantField",
+          Type.BOOLEAN,
           0f,
           0f,
           List.of(new BooleanConstantProvider(Boolean.TRUE))
       ),
-      new Column(
-          "DoubleConstantColumn",
-          ColumnType.DOUBLE,
+      new Field(
+          "DoubleConstantField",
+          Type.DOUBLE,
           0f,
           0f,
           List.of(new DoubleConstantProvider(1.0d))
@@ -29,6 +28,6 @@ public record SchemaContext(
   );
 
   public SchemaContext {
-    columns = columns == null || columns.isEmpty() ? DEFAULT_COLUMNS : columns;
+    fields = fields == null || fields.isEmpty() ? DEFAULT_FIELDS : fields;
   }
 }

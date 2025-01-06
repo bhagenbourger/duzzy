@@ -10,10 +10,6 @@
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.core.config.DuzzyConfigColumn",
-    "allPublicConstructors": true
-  },
-  {
     "name": "io.duzzy.core.DuzzyResult",
     "allPublicMethods": true,
     "allPublicConstructors": true
@@ -43,7 +39,7 @@
     "allPublicConstructors": true
   },
   {
-    "name": "io.duzzy.core.column.Column",
+    "name": "io.duzzy.core.field.Field",
     "allPublicConstructors": true
   },
   {

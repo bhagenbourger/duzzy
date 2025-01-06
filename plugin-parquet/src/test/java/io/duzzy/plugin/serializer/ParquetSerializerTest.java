@@ -13,8 +13,8 @@ import static io.duzzy.tests.Helper.createTempFile;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.column.Column;
-import io.duzzy.core.column.ColumnType;
+import io.duzzy.core.field.Field;
+import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
@@ -45,27 +45,26 @@ public class ParquetSerializerTest {
   @Test
   void serializeWithDefaultValues() throws IOException {
     final File file = createTempFile(getClass().getSimpleName());
-    final List<Column> columns = List.of(
-        new Column(
+    final List<Field> fields = List.of(
+        new Field(
             KEY_C1,
-            ColumnType.INTEGER,
+            Type.INTEGER,
             null,
             null,
             List.of(new IntegerIncrementProvider(null, null))
         ),
-        new Column(
+        new Field(
             KEY_C2,
-            ColumnType.STRING,
+            Type.STRING,
             null,
             null,
             List.of(new AlphanumericRandomProvider())
         )
     );
-    final SchemaContext schemaContext = new SchemaContext(null, columns);
 
     try (final OutputStream outputStream = new FileOutputStream(file)) {
-      final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null);
-      parquetSerializer.init(outputStream, schemaContext);
+      final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null, null);
+      parquetSerializer.init(outputStream, new SchemaContext(fields));
       parquetSerializer.serialize(getDataOne());
       parquetSerializer.serialize(getDataTwo());
       parquetSerializer.close();

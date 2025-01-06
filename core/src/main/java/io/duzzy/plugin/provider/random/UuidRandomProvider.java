@@ -1,7 +1,7 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -17,8 +17,8 @@ public class UuidRandomProvider implements Provider<UUID> {
   }
 
   @Override
-  public UUID value(ColumnContext columnContext) {
-    final String value = columnContext
+  public UUID value(FieldContext fieldContext) {
+    final String value = fieldContext
         .random()
         .ints(LEFT_LIMIT, RIGHT_LIMIT + 1)
         .limit(LENGTH)
@@ -28,7 +28,7 @@ public class UuidRandomProvider implements Provider<UUID> {
   }
 
   @Override
-  public UUID corruptedValue(ColumnContext columnContext) {
-    return value(columnContext);
+  public UUID corruptedValue(FieldContext fieldContext) {
+    return value(fieldContext);
   }
 }

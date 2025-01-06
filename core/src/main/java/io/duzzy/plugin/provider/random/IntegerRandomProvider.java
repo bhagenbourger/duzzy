@@ -1,7 +1,7 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.corrupted.IntegerCorruptedProvider;
 
 public class IntegerRandomProvider implements IntegerCorruptedProvider {
@@ -21,7 +21,7 @@ public class IntegerRandomProvider implements IntegerCorruptedProvider {
   }
 
   @Override
-  public Integer value(ColumnContext columnContext) {
-    return columnContext.random().nextInt(this.min, this.max);
+  public Integer value(FieldContext fieldContext) {
+    return fieldContext.random().nextInt(this.min, this.max);
   }
 }

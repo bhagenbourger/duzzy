@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.increment;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.corrupted.FloatCorruptedProvider;
 
 public class FloatIncrementProvider implements FloatCorruptedProvider {
@@ -20,7 +20,7 @@ public class FloatIncrementProvider implements FloatCorruptedProvider {
   }
 
   @Override
-  public Float value(ColumnContext columnContext) {
-    return start + (columnContext.rowIndex().floatValue() * step);
+  public Float value(FieldContext fieldContext) {
+    return start + (fieldContext.rowIndex().floatValue() * step);
   }
 }

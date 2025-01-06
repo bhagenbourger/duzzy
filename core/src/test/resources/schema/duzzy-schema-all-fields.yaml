@@ -1,56 +1,56 @@
 ---
-columns:
+fields:
   - name: booleanConstant
-    column_type: BOOLEAN
+    type: BOOLEAN
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.BooleanConstantProvider"
         value: false
   - name: doubleConstant
-    column_type: DOUBLE
+    type: DOUBLE
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.DoubleConstantProvider"
         value: 1.1
   - name: floatConstant
-    column_type: FLOAT
+    type: FLOAT
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.FloatConstantProvider"
         value: 2.2
   - name: instantConstant
-    column_type: TIMESTAMP_MILLIS
+    type: TIMESTAMP_MILLIS
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.IntegerConstantProvider"
         value: 42
   - name: longConstant
-    column_type: LONG
+    type: LONG
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.LongConstantProvider"
         value: 12
   - name: stringConstant
-    column_type: STRING
+    type: STRING
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
         value: myConstant
   - name: stringListConstant
-    column_type: STRING
+    type: STRING
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
         values: [ "one", "two", "three" ]
   - name: stringWeightedListConstant
-    column_type: STRING
+    type: STRING
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -63,7 +63,7 @@ columns:
           - value: third
             weight: 3
   - name: doubleIncrement
-    column_type: DOUBLE
+    type: DOUBLE
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -71,7 +71,7 @@ columns:
         start: 500
         step: 0.3
   - name: floatIncrement
-    column_type: FLOAT
+    type: FLOAT
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -79,7 +79,7 @@ columns:
         start: 50
         step: 0.1
   - name: integerIncrement
-    column_type: INTEGER
+    type: INTEGER
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -87,7 +87,7 @@ columns:
         start: 10
         step: 3
   - name: longIncrement
-    column_type: LONG
+    type: LONG
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -95,7 +95,7 @@ columns:
         start: 100
         step: 10
   - name: alphanumericRandom
-    column_type: STRING
+    type: STRING
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -103,13 +103,13 @@ columns:
         minLength: 20
         maxLength: 25
   - name: booleanRandom
-    column_type: BOOLEAN
+    type: BOOLEAN
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
       - identifier: "io.duzzy.plugin.provider.random.BooleanRandomProvider"
   - name: doubleRandom
-    column_type: DOUBLE
+    type: DOUBLE
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -117,7 +117,7 @@ columns:
         min: 0.5
         max: 1.5
   - name: floatRandom
-    column_type: FLOAT
+    type: FLOAT
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -125,7 +125,7 @@ columns:
         min: 500.5
         max: 550.1
   - name: integerRandom
-    column_type: INTEGER
+    type: INTEGER
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:
@@ -133,7 +133,7 @@ columns:
         min: 50
         max: 100
   - name: longRandom
-    column_type: LONG
+    type: LONG
     null_rate: 0.5
     corrupted_rate: 0.5
     providers:

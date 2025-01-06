@@ -2,7 +2,7 @@ package io.duzzy.tests;
 
 import io.duzzy.core.DataItem;
 import io.duzzy.core.DataItems;
-import io.duzzy.core.column.ColumnType;
+import io.duzzy.core.field.Type;
 import java.util.List;
 
 public class Data {
@@ -15,15 +15,15 @@ public class Data {
 
   public static DataItems getDataOne() {
     return new DataItems(List.of(
-        new DataItem(KEY_C1, ColumnType.INTEGER, INTEGER_ONE),
-        new DataItem(KEY_C2, ColumnType.STRING, STRING_ONE)
+        new DataItem(KEY_C1, Type.INTEGER, INTEGER_ONE),
+        new DataItem(KEY_C2, Type.STRING, STRING_ONE)
     ));
   }
 
   public static DataItems getDataTwo() {
     return new DataItems(List.of(
-        new DataItem(KEY_C1, ColumnType.INTEGER, INTEGER_TWO),
-        new DataItem(KEY_C2, ColumnType.STRING, STRING_TWO)
+        new DataItem(KEY_C1, Type.INTEGER, INTEGER_TWO),
+        new DataItem(KEY_C2, Type.STRING, STRING_TWO)
     ));
   }
 }
