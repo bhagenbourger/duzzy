@@ -28,10 +28,11 @@ tasks.named('check') {
 dependencies {
     implementation project(":cli")
     implementation project(":plugin-avro")
+    implementation project(":plugin-parquet")
     implementation project(":plugin-hdfs")
     implementation project(":plugin-kafka")
-    implementation project(":plugin-parquet")
     implementation project(":plugin-duckdb")
+    implementation project(":plugin-postgresql")
 }
 
 allprojects {

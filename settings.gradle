@@ -7,4 +7,5 @@ include 'plugin-avro'
 include 'plugin-parquet'
 include 'tests'
 include 'plugin-duckdb'
+include 'plugin-postgresql'
 
