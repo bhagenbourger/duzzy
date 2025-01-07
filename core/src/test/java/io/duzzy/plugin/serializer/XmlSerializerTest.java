@@ -42,7 +42,7 @@ public class XmlSerializerTest {
   }
 
   @Test
-  void writXmlWithCustomValues() throws IOException {
+  void serializeXmlWithCustomValues() throws IOException {
     final String expected =
         "<?xml version='1.0' encoding='UTF-8'?><myRoot>"
             + "<myRow><c1>1</c1><c2>one</c2></myRow>"

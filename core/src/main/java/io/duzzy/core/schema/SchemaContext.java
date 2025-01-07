@@ -4,7 +4,9 @@ import io.duzzy.core.column.Column;
 import io.duzzy.core.column.ColumnType;
 import io.duzzy.plugin.provider.constant.BooleanConstantProvider;
 import io.duzzy.plugin.provider.constant.DoubleConstantProvider;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public record SchemaContext(
     InputSchema inputSchema,
@@ -30,5 +32,17 @@ public record SchemaContext(
 
   public SchemaContext {
     columns = columns == null || columns.isEmpty() ? DEFAULT_COLUMNS : columns;
+  }
+
+  public Optional<List<String>> checkArguments() {
+    return Optional
+        .of(
+            columns
+                .stream()
+                .flatMap(c -> c.checkArguments().stream())
+                .flatMap(Collection::stream)
+                .toList()
+        )
+        .filter(e -> !e.isEmpty());
   }
 }

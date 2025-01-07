@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.provider.Provider;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 public record Column(
@@ -44,6 +45,10 @@ public record Column(
     }
 
     return getProvider(providers(), columnContext.random()).value(columnContext);
+  }
+
+  public Optional<List<String>> checkArguments() {
+
   }
 
   private static Provider<?> getProvider(

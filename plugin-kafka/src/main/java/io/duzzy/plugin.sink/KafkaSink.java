@@ -1,5 +1,6 @@
 package io.duzzy.plugin.sink;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DataItems;
@@ -15,6 +16,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class KafkaSink extends Sink {
 
+  private static final String DEFAULT_TOPIC = "duzzy_topic";
+  private static final String DEFAULT_BOOTSTRAP_SERVERS = "127.0.0.1:9093";
+
   private final String topic;
   private final KafkaProducer<String, byte[]> producer;
 
@@ -22,11 +26,15 @@ public class KafkaSink extends Sink {
   public KafkaSink(
       @JsonProperty("serializer") Serializer<?> serializer,
       @JsonProperty("topic") String topic,
-      @JsonProperty("bootstrapServers") String bootstrapServers
+      @JsonProperty("bootstrap_servers")
+      @JsonAlias({"bootstrapServers", "bootstrap-servers"})
+      String bootstrapServers
   ) {
     super(serializer, new ByteArrayOutputStream());
-    this.topic = topic;
-    this.producer = new KafkaProducer<>(buildProperties(bootstrapServers));
+    this.topic = topic == null ? DEFAULT_TOPIC : topic;
+    this.producer = new KafkaProducer<>(
+        buildProperties(bootstrapServers == null ? DEFAULT_BOOTSTRAP_SERVERS : bootstrapServers)
+    );
   }
 
   @Override
