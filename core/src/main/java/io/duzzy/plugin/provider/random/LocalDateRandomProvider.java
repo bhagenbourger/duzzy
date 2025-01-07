@@ -4,7 +4,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import java.time.LocalDate;
 
@@ -30,12 +30,12 @@ public final class LocalDateRandomProvider implements Provider<LocalDate> {
   }
 
   @Override
-  public LocalDate value(ColumnContext columnContext) {
-    return LocalDate.ofEpochDay(columnContext.random().nextLong(this.min, this.max));
+  public LocalDate value(FieldContext fieldContext) {
+    return LocalDate.ofEpochDay(fieldContext.random().nextLong(this.min, this.max));
   }
 
   @Override
-  public LocalDate corruptedValue(ColumnContext columnContext) {
-    return LocalDate.ofEpochDay(columnContext.random().nextLong(-365243219162L, 365241780471L));
+  public LocalDate corruptedValue(FieldContext fieldContext) {
+    return LocalDate.ofEpochDay(fieldContext.random().nextLong(-365243219162L, 365241780471L));
   }
 }

@@ -3,7 +3,7 @@ package io.duzzy.plugin.provider.random;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.corrupted.StringCorruptedProvider;
 
 public class AlphanumericRandomProvider implements StringCorruptedProvider {
@@ -28,9 +28,9 @@ public class AlphanumericRandomProvider implements StringCorruptedProvider {
   }
 
   @Override
-  public String value(ColumnContext columnContext) {
-    int length = columnContext.random().nextInt(minLength, maxLength + 1);
-    return columnContext
+  public String value(FieldContext fieldContext) {
+    int length = fieldContext.random().nextInt(minLength, maxLength + 1);
+    return fieldContext
         .random()
         .ints(LEFT_LIMIT, RIGHT_LIMIT + 1)
         .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
@@ -40,7 +40,7 @@ public class AlphanumericRandomProvider implements StringCorruptedProvider {
   }
 
   @Override
-  public String corruptedValue(ColumnContext columnContext) {
-    return StringCorruptedProvider.corruptedValue(columnContext, maxLength);
+  public String corruptedValue(FieldContext fieldContext) {
+    return StringCorruptedProvider.corruptedValue(fieldContext, maxLength);
   }
 }

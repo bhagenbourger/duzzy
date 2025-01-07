@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import java.time.Instant;
 
@@ -28,12 +28,12 @@ public final class InstantRandomProvider implements Provider<Instant> {
   }
 
   @Override
-  public Instant value(ColumnContext columnContext) {
-    return Instant.ofEpochMilli(columnContext.random().nextLong(this.min, this.max));
+  public Instant value(FieldContext fieldContext) {
+    return Instant.ofEpochMilli(fieldContext.random().nextLong(this.min, this.max));
   }
 
   @Override
-  public Instant corruptedValue(ColumnContext columnContext) {
-    return Instant.ofEpochMilli(columnContext.random().nextLong(Long.MIN_VALUE, Long.MAX_VALUE));
+  public Instant corruptedValue(FieldContext fieldContext) {
+    return Instant.ofEpochMilli(fieldContext.random().nextLong(Long.MIN_VALUE, Long.MAX_VALUE));
   }
 }

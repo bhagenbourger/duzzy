@@ -39,16 +39,16 @@ public class DuzzyTest {
   }
 
   @Test
-  void generateJsonInConsoleFromDuzzySchemaWithAllColumns() throws Exception {
+  void generateJsonInConsoleFromDuzzySchemaWithAllFields() throws Exception {
     final File expectedFile =
-        getFromResources(getClass(), "result/expected-duzzy-schema-all-coumns.jsonl");
+        getFromResources(getClass(), "result/expected-duzzy-schema-all-fields.jsonl");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final File duzzySchemaFile =
-        getFromResources(getClass(), "schema/duzzy-schema-all-columns.yaml");
+        getFromResources(getClass(), "schema/duzzy-schema-all-fields.yaml");
     final DuzzyResult duzzyResult = new Duzzy(duzzySchemaFile, null, 1L, 42L, null).generate();
 
     assertThat(duzzyResult.rows()).isEqualTo(42L);

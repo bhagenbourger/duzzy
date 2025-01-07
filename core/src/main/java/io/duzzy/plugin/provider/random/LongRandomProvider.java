@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.DuzzyProvider;
 import io.duzzy.core.provider.corrupted.LongCorruptedProvider;
 
@@ -26,7 +26,7 @@ public class LongRandomProvider implements LongCorruptedProvider {
   }
 
   @Override
-  public Long value(ColumnContext columnContext) {
-    return columnContext.random().nextLong(this.min, this.max);
+  public Long value(FieldContext fieldContext) {
+    return fieldContext.random().nextLong(this.min, this.max);
   }
 }

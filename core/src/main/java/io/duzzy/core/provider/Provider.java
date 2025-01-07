@@ -1,13 +1,13 @@
 package io.duzzy.core.provider;
 
 import io.duzzy.core.Plugin;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 
 public interface Provider<T> extends Plugin {
 
-  T value(ColumnContext columnContext);
+  T value(FieldContext fieldContext);
 
-  T corruptedValue(ColumnContext columnContext);
+  T corruptedValue(FieldContext fieldContext);
 }
 
 

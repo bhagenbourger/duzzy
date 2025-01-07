@@ -1,20 +1,15 @@
 package io.duzzy.plugin.parser;
 
-import static io.duzzy.core.column.ColumnType.DOUBLE;
-import static io.duzzy.core.column.ColumnType.DOUBLE_NULLABLE;
-import static io.duzzy.core.column.ColumnType.FLOAT;
-import static io.duzzy.core.column.ColumnType.FLOAT_NULLABLE;
-import static io.duzzy.core.column.ColumnType.INTEGER;
-import static io.duzzy.core.column.ColumnType.INTEGER_NULLABLE;
-import static io.duzzy.core.column.ColumnType.LONG;
-import static io.duzzy.core.column.ColumnType.LONG_NULLABLE;
-import static io.duzzy.core.column.ColumnType.STRING;
-import static io.duzzy.core.column.ColumnType.STRING_NULLABLE;
+import static io.duzzy.core.field.Type.DOUBLE;
+import static io.duzzy.core.field.Type.FLOAT;
+import static io.duzzy.core.field.Type.INTEGER;
+import static io.duzzy.core.field.Type.LONG;
+import static io.duzzy.core.field.Type.STRING;
 
 import io.duzzy.core.DuzzyContext;
-import io.duzzy.core.column.Column;
-import io.duzzy.core.column.ColumnType;
 import io.duzzy.core.config.DuzzyConfig;
+import io.duzzy.core.field.Field;
+import io.duzzy.core.field.Type;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.schema.SchemaContext;
@@ -27,7 +22,6 @@ import io.duzzy.plugin.provider.random.IntegerRandomProvider;
 import io.duzzy.plugin.provider.random.LocalDateRandomProvider;
 import io.duzzy.plugin.provider.random.LongRandomProvider;
 import io.duzzy.plugin.provider.random.UuidRandomProvider;
-import io.duzzy.plugin.schema.AvroInputSchema;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -46,19 +40,24 @@ public class AvroSchemaParser implements Parser {
 
   private static SchemaContext parse(Schema avroSchema, DuzzyConfig duzzyConfig) {
     if (avroSchema.hasFields()) {
-      final List<Column> columns = avroSchema
+      final List<Field> fields = avroSchema
           .getFields()
           .stream()
           .map(f -> AvroSchemaParser.parse(f, duzzyConfig))
           .toList();
-      return new SchemaContext(new AvroInputSchema(avroSchema), columns);
+      return new SchemaContext(fields);
     }
-    return new SchemaContext(new AvroInputSchema(avroSchema), null);
+    return new SchemaContext(null);
   }
 
-  private static Column parse(Schema.Field field, DuzzyConfig duzzyConfig) {
+  private static Field parse(Schema.Field field, DuzzyConfig duzzyConfig) {
     if (field.schema().getLogicalType() != null) {
-      return parse(field.name(), field.schema().getLogicalType(), duzzyConfig);
+      return parse(
+          field.name(),
+          field.schema().getLogicalType(),
+          field.schema(),
+          duzzyConfig
+      );
     } else if (field.schema().isUnion()) {
       if (field.schema().isNullable()) {
         return parse(
@@ -84,21 +83,24 @@ public class AvroSchemaParser implements Parser {
     }
   }
 
-  private static Column parse(
+  private static Field parse(
       String fieldName,
       LogicalType fieldLogicalType,
+      Schema schema,
       DuzzyConfig duzzyConfig
   ) {
     return switch (fieldLogicalType.getName()) {
-      case "uuid" -> getColumn(
+      case "uuid" -> getField(
           fieldName,
-          ColumnType.UUID,
+          Type.UUID,
+          getNullRate(schema),
           duzzyConfig,
           new UuidRandomProvider()
       );
-      case "date" -> getColumn(
+      case "date" -> getField(
           fieldName,
-          ColumnType.DATE,
+          Type.DATE,
+          getNullRate(schema),
           duzzyConfig,
           new LocalDateRandomProvider()
       );
@@ -111,15 +113,17 @@ public class AvroSchemaParser implements Parser {
       case "time-micros" -> throw new RuntimeException(
           "Field name '$fieldName' - avro logical type 'time-micros' is not supported"
       );
-      case "timestamp-millis" -> getColumn(
+      case "timestamp-millis" -> getField(
           fieldName,
-          ColumnType.TIMESTAMP_MILLIS,
+          Type.TIMESTAMP_MILLIS,
+          getNullRate(schema),
           duzzyConfig,
           new InstantRandomProvider()
       );
-      case "timestamp-micros" -> getColumn(
+      case "timestamp-micros" -> getField(
           fieldName,
-          ColumnType.TIMESTAMP_MICROS,
+          Type.TIMESTAMP_MICROS,
+          getNullRate(schema),
           duzzyConfig,
           new InstantRandomProvider()
       );
@@ -129,55 +133,62 @@ public class AvroSchemaParser implements Parser {
       case "local-timestamp-micros" -> throw new RuntimeException(
           "Field name '$fieldName' - avro logical type 'local-timestamp-micros' is not supported"
       );
-      case null, default -> getColumn(
+      case null, default -> getField(
           "test",
           STRING,
+          getNullRate(schema),
           duzzyConfig,
           new AlphanumericRandomProvider()
       ); //TODO:  keep that?
     };
   }
 
-  private static Column parse(
+  private static Field parse(
       String fieldName,
       Schema.Type fieldType,
       Schema schema,
       DuzzyConfig duzzyConfig
   ) {
     return switch (fieldType) {
-      case Schema.Type.STRING -> getColumn(
+      case Schema.Type.STRING -> getField(
           fieldName,
-          schema.isNullable() ? STRING_NULLABLE : STRING,
+          STRING,
+          getNullRate(schema),
           duzzyConfig,
           new AlphanumericRandomProvider()
       );
-      case Schema.Type.INT -> getColumn(
+      case Schema.Type.INT -> getField(
           fieldName,
-          schema.isNullable() ? INTEGER_NULLABLE : INTEGER,
+          INTEGER,
+          getNullRate(schema),
           duzzyConfig,
           new IntegerRandomProvider()
       );
-      case Schema.Type.LONG -> getColumn(
+      case Schema.Type.LONG -> getField(
           fieldName,
-          schema.isNullable() ? LONG_NULLABLE : LONG,
+          LONG,
+          getNullRate(schema),
           duzzyConfig,
           new LongRandomProvider()
       );
-      case Schema.Type.FLOAT -> getColumn(
+      case Schema.Type.FLOAT -> getField(
           fieldName,
-          schema.isNullable() ? FLOAT_NULLABLE : FLOAT,
+          FLOAT,
+          getNullRate(schema),
           duzzyConfig,
           new FloatRandomProvider()
       );
-      case Schema.Type.DOUBLE -> getColumn(
+      case Schema.Type.DOUBLE -> getField(
           fieldName,
-          schema.isNullable() ? DOUBLE_NULLABLE : DOUBLE,
+          DOUBLE,
+          getNullRate(schema),
           duzzyConfig,
           new DoubleRandomProvider()
       );
-      case Schema.Type.BOOLEAN -> getColumn(
+      case Schema.Type.BOOLEAN -> getField(
           fieldName,
-          schema.isNullable() ? ColumnType.BOOLEAN_NULLABLE : ColumnType.BOOLEAN,
+          Type.BOOLEAN,
+          getNullRate(schema),
           duzzyConfig,
           new BooleanRandomProvider()
       );
@@ -200,29 +211,34 @@ public class AvroSchemaParser implements Parser {
     };
   }
 
+  private static float getNullRate(Schema schema) {
+    return schema.isNullable() ? 0.1f : 0f;
+  }
+
   private static Provider<?> getProvider(
-      String columnName,
-      ColumnType columnType,
+      String fieldName,
+      Type type,
       DuzzyConfig duzzyConfig,
       Provider<?> defaultValue
   ) {
-    return duzzyConfig != null ? duzzyConfig.findProvider(NAME, columnName)
-        .or(() -> duzzyConfig.findProvider(TYPE, columnType.getName()))
+    return duzzyConfig != null ? duzzyConfig.findProvider(NAME, fieldName)
+        .or(() -> duzzyConfig.findProvider(TYPE, type.getName()))
         .orElse(defaultValue) : defaultValue;
   }
 
-  private static Column getColumn(
-      String columnName,
-      ColumnType columnType,
+  private static Field getField(
+      String fieldName,
+      Type type,
+      Float nullRate,
       DuzzyConfig duzzyConfig,
       Provider<?> defaultValue
   ) {
-    return new Column(
-        columnName,
-        columnType,
-        null, //TODO null rate
+    return new Field(
+        fieldName,
+        type,
+        nullRate,
         null, //TODO corrupted rate
-        List.of(getProvider(columnName, columnType, duzzyConfig, defaultValue))
+        List.of(getProvider(fieldName, type, duzzyConfig, defaultValue))
     );
   }
 }

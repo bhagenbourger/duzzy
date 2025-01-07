@@ -1,6 +1,6 @@
 package io.duzzy.core.provider.constant;
 
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 
 public abstract class ConstantProvider<T> implements Provider<T> {
@@ -12,7 +12,7 @@ public abstract class ConstantProvider<T> implements Provider<T> {
   }
 
   @Override
-  public T value(ColumnContext columnContext) {
+  public T value(FieldContext fieldContext) {
     return value;
   }
 

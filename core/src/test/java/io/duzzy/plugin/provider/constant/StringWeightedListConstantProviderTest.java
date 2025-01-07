@@ -1,8 +1,8 @@
 package io.duzzy.plugin.provider.constant;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestUtility.SEEDED_FIVE_COLUMN_CONTEXT;
-import static io.duzzy.test.TestUtility.SEEDED_ONE_COLUMN_CONTEXT;
+import static io.duzzy.test.TestUtility.SEEDED_FIVE_FIELD_CONTEXT;
+import static io.duzzy.test.TestUtility.SEEDED_ONE_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,46 +23,46 @@ public class StringWeightedListConstantProviderTest {
 
   @Test
   void parsedFromYaml() throws IOException {
-    final File columnFile = getFromResources(
+    final File providerFile = getFromResources(
         getClass(),
         "provider/constant/string-constant-weighted-list-provider-full.yaml"
     );
-    final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
+    final Provider<?> provider = YAML_MAPPER.readValue(providerFile, Provider.class);
 
     assertThat(provider).isInstanceOf(StringWeightedListConstantProvider.class);
-    assertThat(provider.value(SEEDED_ONE_COLUMN_CONTEXT.get())).isEqualTo("three");
+    assertThat(provider.value(SEEDED_ONE_FIELD_CONTEXT.get())).isEqualTo("three");
   }
 
   @Test
   void parsedFromYamlHasDefaultValues() throws IOException {
-    final File columnFile = getFromResources(
+    final File providerFile = getFromResources(
         getClass(),
         "provider/constant/string-constant-weighted-list-provider.yaml"
     );
-    final Provider<?> provider = YAML_MAPPER.readValue(columnFile, Provider.class);
+    final Provider<?> provider = YAML_MAPPER.readValue(providerFile, Provider.class);
 
     assertThat(provider).isInstanceOf(StringWeightedListConstantProvider.class);
-    assertThat(provider.value(SEEDED_ONE_COLUMN_CONTEXT.get())).isEqualTo("constant");
+    assertThat(provider.value(SEEDED_ONE_FIELD_CONTEXT.get())).isEqualTo("constant");
   }
 
   @Test
   void computeValueIsIdempotent() {
     final String value = new StringWeightedListConstantProvider(VALUES)
-        .value(SEEDED_ONE_COLUMN_CONTEXT.get());
+        .value(SEEDED_ONE_FIELD_CONTEXT.get());
     assertThat(value).isEqualTo("three");
   }
 
   @Test
   void computeValueIsInConstants() {
     final String value = new StringWeightedListConstantProvider(VALUES)
-        .value(SEEDED_FIVE_COLUMN_CONTEXT.get());
+        .value(SEEDED_FIVE_FIELD_CONTEXT.get());
     assertThat(value).isEqualTo("three");
   }
 
   @Test
   void corruptedValueIsIdempotent() {
     final String value = new StringWeightedListConstantProvider(VALUES)
-        .corruptedValue(SEEDED_ONE_COLUMN_CONTEXT.get());
+        .corruptedValue(SEEDED_ONE_FIELD_CONTEXT.get());
     assertThat(value).isEqualTo("Od`");
   }
 

@@ -11,6 +11,6 @@ enrichers:
       step: 2
 sink:
   identifier: "io.duzzy.plugin.sink.LocalFileSink"
-  filename: "build/avro-without-schema-with-config-result.avro"
+  filename: "build/avro-schemaless-with-config-result.avro"
   serializer:
-    identifier: "io.duzzy.plugin.serializer.AvroWithoutSchemaSerializer"
+    identifier: "io.duzzy.plugin.serializer.AvroSchemalessSerializer"

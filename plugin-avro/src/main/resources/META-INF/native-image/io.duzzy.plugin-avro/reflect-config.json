@@ -1,6 +1,6 @@
 [
   {
-    "name": "io.duzzy.plugin.serializer.AvroWithoutSchemaSerializer",
+    "name": "io.duzzy.plugin.serializer.AvroSchemalessSerializer",
     "allPublicConstructors": true
   },
   {

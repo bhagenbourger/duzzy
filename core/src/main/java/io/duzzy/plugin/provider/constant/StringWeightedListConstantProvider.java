@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.constant.WeightedItem;
 import io.duzzy.core.provider.constant.WeightedListConstantProvider;
 import io.duzzy.core.provider.corrupted.StringCorruptedProvider;
@@ -23,8 +23,8 @@ public class StringWeightedListConstantProvider
   }
 
   @Override
-  public String corruptedValue(ColumnContext columnContext) {
-    return StringCorruptedProvider.corruptedValue(columnContext,
+  public String corruptedValue(FieldContext fieldContext) {
+    return StringCorruptedProvider.corruptedValue(fieldContext,
         getValues().getFirst().value().length());
   }
 }

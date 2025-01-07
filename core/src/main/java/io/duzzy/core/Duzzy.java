@@ -1,7 +1,7 @@
 package io.duzzy.core;
 
-import io.duzzy.core.column.ColumnContext;
 import io.duzzy.core.config.DuzzyConfig;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.reflection.ReflectionUtility;
@@ -94,7 +94,7 @@ public class Duzzy {
       Sink sink
   ) throws Exception {
     final Long rowId = computeRowId(duzzyContext.seed(), index);
-    final ColumnContext columnContext = new ColumnContext(
+    final FieldContext fieldContext = new FieldContext(
         providers,
         sink.getSerializer().hasSchema(),
         new Random(rowId),
@@ -105,12 +105,12 @@ public class Duzzy {
         new DataItems(
             duzzyContext
                 .schemaContext()
-                .columns()
+                .fields()
                 .stream()
                 .map(c -> new DataItem(
                     c.name(),
-                    c.columnType(),
-                    c.value(columnContext)
+                    c.type(),
+                    c.value(fieldContext)
                 ))
                 .toList()
         )

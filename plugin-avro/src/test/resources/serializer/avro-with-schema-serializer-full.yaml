@@ -1,0 +1,5 @@
+---
+identifier: "io.duzzy.plugin.serializer.AvroWithSchemaSerializer"
+namespace: "myNamespace"
+name: "myName"
+schema_file: "src/test/resources/avro-schemas/all-supported-fields.avsc"

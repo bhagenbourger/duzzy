@@ -2,7 +2,7 @@ package io.duzzy.plugin.provider.increment;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.column.ColumnContext;
+import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.corrupted.LongCorruptedProvider;
 
 public class LongIncrementProvider implements LongCorruptedProvider {
@@ -20,7 +20,7 @@ public class LongIncrementProvider implements LongCorruptedProvider {
   }
 
   @Override
-  public Long value(ColumnContext columnContext) {
-    return start + (columnContext.rowIndex() * step);
+  public Long value(FieldContext fieldContext) {
+    return start + (fieldContext.rowIndex() * step);
   }
 }

@@ -10,13 +10,13 @@ public class EnricherTest {
   private static final Enricher ENRICHER_EXACT =
       new Enricher(
           "name=phone",
-          "io.duzzy.plugin.column.random.AlphanumericRandomColumn",
+          "io.duzzy.plugin.provider.random.AlphanumericRandomProvider",
           Map.of()
       );
   private static final Enricher ENRICHER_STARTS_WITH =
       new Enricher(
           "name=phone.*",
-          "io.duzzy.plugin.column.random.AlphanumericRandomColumn",
+          "io.duzzy.plugin.provider.random.AlphanumericRandomProvider",
           Map.of()
       );
 
