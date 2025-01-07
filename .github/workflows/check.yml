@@ -25,6 +25,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Install Duckdb
+        shell: bash
+        run: pip install duckdb --upgrade
+
       - name: Check code
         run: ./gradlew check
 
