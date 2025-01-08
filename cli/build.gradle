@@ -1,15 +1,15 @@
 dependencies {
     implementation project(":core")
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.0'
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jackson"
     implementation 'info.picocli:picocli:4.7.6'
     annotationProcessor 'info.picocli:picocli-codegen:4.7.6'
 
     testImplementation project(":plugin-avro")
-    testImplementation 'org.apache.avro:avro:1.12.0'
+    testImplementation "org.apache.avro:avro:$avro"
 }
 
 compileJava {

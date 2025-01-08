@@ -25,6 +25,12 @@ tasks.named('check') {
     dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
 }
 
+ext {
+    avro = "1.12.0"
+    jackson = "2.18.0"
+    log4j2 = "2.24.3"
+}
+
 dependencies {
     implementation project(":cli")
     implementation project(":plugin-avro")
@@ -73,6 +79,12 @@ allprojects {
 subprojects {
 
     dependencies {
+        implementation 'org.slf4j:slf4j-api:2.0.16'
+        implementation "org.apache.logging.log4j:log4j-api:$log4j2"
+        implementation "org.apache.logging.log4j:log4j-core:$log4j2"
+        implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4j2"
+
+
         testImplementation project(":tests")
         testImplementation platform('org.junit:junit-bom:5.10.0')
         testImplementation 'org.junit.jupiter:junit-jupiter'

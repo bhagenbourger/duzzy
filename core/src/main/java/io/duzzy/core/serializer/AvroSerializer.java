@@ -14,8 +14,12 @@ import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> {
+
+  private static final Logger logger = LoggerFactory.getLogger(AvroSerializer.class);
 
   private static final String DEFAULT_NAME = "name";
   private static final String DEFAULT_NAMESPACE = "namespace";
@@ -82,7 +86,10 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
     try {
       innerSchema = buildSchemaFromFile();
     } catch (IOException e) {
-      //TODO: log error
+      logger.warn(
+          "Error while building schema from file, fallback on creating schema from fields",
+          e
+      );
     }
     return innerSchema == null ? buildSchemaFromFields() : innerSchema;
   }

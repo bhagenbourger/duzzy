@@ -25,7 +25,7 @@ public class DuzzyTest {
         {"city":"E1lt67oJ6Ne"}
         {"city":"IsUgerpfGgWRl3H"}
         {"city":"rBw98FAPe1"}
-        {"city":"Lri7KqkjVTcL0"}""";
+        {"city":"Lri7KqkjVTcL0"}\n""";
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
@@ -70,7 +70,7 @@ public class DuzzyTest {
         + "<country><city>IsUgerpfGgWRl3H</city></country>"
         + "<country><city>rBw98FAPe1</city></country>"
         + "<country><city>Lri7KqkjVTcL0</city></country>"
-        + "</countries>";
+        + "</countries>\n";
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 

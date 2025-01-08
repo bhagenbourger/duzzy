@@ -18,6 +18,7 @@ public class ConsoleSink extends Sink {
   public void close() throws IOException {
     serializer.close();
     System.out.writeBytes(((ByteArrayOutputStream) outputStream).toByteArray());
+    System.out.println();
     //Don't close System.out
   }
 }

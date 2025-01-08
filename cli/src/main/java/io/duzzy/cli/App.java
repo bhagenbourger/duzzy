@@ -4,12 +4,16 @@ import io.duzzy.core.Duzzy;
 import io.duzzy.core.DuzzyResult;
 import java.io.File;
 import java.util.concurrent.Callable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 @Command(name = "duzzy", mixinStandardHelpOptions = true, version = "1.0")
 public class App implements Callable<Integer> {
+
+  private static final Logger logger = LoggerFactory.getLogger(App.class);
 
   @Option(
       names = {"-f", "--schema-file"},
@@ -58,11 +62,14 @@ public class App implements Callable<Integer> {
   }
 
   @Override
-  public Integer call() throws Exception {
-    final DuzzyResult duzzyResult = new Duzzy(schema, config, seed, rows, parser).generate();
-    System.out.println();
-    System.out.println();
-    System.out.println(outputFormat.getDuzzyResultVisitor().format(duzzyResult));
+  public Integer call() {
+    try {
+      final DuzzyResult duzzyResult = new Duzzy(schema, config, seed, rows, parser).generate();
+      System.out.println(outputFormat.getDuzzyResultVisitor().format(duzzyResult));
+    } catch (Exception e) {
+      logger.error("An error occurred while running Duzzy:", e);
+      return 1;
+    }
     return 0;
   }
 }
