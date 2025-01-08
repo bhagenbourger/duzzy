@@ -100,7 +100,7 @@ public class AppTest {
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("\n\nDuzzy generated 3 rows in PT0")
+        .startsWith("Duzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
 
@@ -134,7 +134,7 @@ public class AppTest {
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("\n\nDuzzy generated 3 rows in PT0")
+        .startsWith("Duzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
 
@@ -168,7 +168,7 @@ public class AppTest {
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("\n\nDuzzy generated 3 rows in PT0")
+        .startsWith("Duzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
 
@@ -209,7 +209,7 @@ public class AppTest {
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-          .startsWith("\n\nDuzzy generated 3 rows in PT0")
+          .startsWith("Duzzy generated 3 rows in PT0")
           .endsWith("S with seed 1234\n");
     }
   }
@@ -252,7 +252,7 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("\n\nDuzzy generated 3 rows in PT0")
+        .startsWith("Duzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
   }
 }

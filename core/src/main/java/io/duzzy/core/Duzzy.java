@@ -35,10 +35,6 @@ public class Duzzy {
   }
 
   public DuzzyResult generate() throws Exception {
-
-    //TODO: Log a WARN if parser is instance of DuzzySchemaParser.class and DuzzyConfig is not null
-    // => DuzzyConf is useless with DuzzySchemaParser
-
     return generate(createDuzzyContext(loadParser(), loadDuzzyConfig()));
   }
 

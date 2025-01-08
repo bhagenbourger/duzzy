@@ -29,7 +29,7 @@ public class ConsoleSinkTest {
   @Test
   void writeJson() throws Exception {
     final String expected =
-        "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":1,\"c2\":\"one\"}";
+        "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":1,\"c2\":\"one\"}\n";
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
