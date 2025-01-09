@@ -1,0 +1,3 @@
+---
+identifier: "io.duzzy.plugin.sink.LocalFileSink"
+filename: "build/failed/test.json"

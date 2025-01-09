@@ -1,3 +1,4 @@
 ---
 identifier: "io.duzzy.plugin.sink.LocalFileSink"
-filename: "/tmp/test.json"
+filename: "build/dummy/test.json"
+create_if_not_exists: true
