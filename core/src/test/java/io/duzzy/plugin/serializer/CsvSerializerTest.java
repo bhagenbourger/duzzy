@@ -6,7 +6,7 @@ import static io.duzzy.tests.Data.getDataTwo;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,7 +30,7 @@ public class CsvSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final CsvSerializer csvSerializer = new CsvSerializer(null, null, null);
-    csvSerializer.init(outputStream, new SchemaContext(null));
+    csvSerializer.init(outputStream, new DuzzySchema(null));
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
 
@@ -44,7 +44,7 @@ public class CsvSerializerTest {
 
     final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
     final CsvSerializer csvSerializer = YAML_MAPPER.readValue(serializerFile, CsvSerializer.class);
-    csvSerializer.init(outputStream, new SchemaContext(null));
+    csvSerializer.init(outputStream, new DuzzySchema(null));
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
 

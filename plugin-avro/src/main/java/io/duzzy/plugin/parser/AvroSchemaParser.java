@@ -10,7 +10,7 @@ import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.parser.Parser;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.provider.random.BooleanRandomProvider;
 import io.duzzy.plugin.provider.random.DoubleRandomProvider;
@@ -29,20 +29,20 @@ import org.apache.avro.Schema;
 public class AvroSchemaParser implements Parser {
 
   @Override
-  public SchemaContext parse(File file, DuzzyConfig duzzyConfig) throws IOException {
+  public DuzzySchema parse(File file, DuzzyConfig duzzyConfig) throws IOException {
     return parse(new Schema.Parser().parse(file), duzzyConfig);
   }
 
-  private SchemaContext parse(Schema avroSchema, DuzzyConfig duzzyConfig) {
+  private DuzzySchema parse(Schema avroSchema, DuzzyConfig duzzyConfig) {
     if (avroSchema.hasFields()) {
       final List<Field> fields = avroSchema
           .getFields()
           .stream()
           .map(f -> parse(f, duzzyConfig))
           .toList();
-      return new SchemaContext(fields);
+      return new DuzzySchema(fields);
     }
-    return new SchemaContext(null);
+    return new DuzzySchema(null);
   }
 
   private Field parse(Schema.Field field, DuzzyConfig duzzyConfig) {

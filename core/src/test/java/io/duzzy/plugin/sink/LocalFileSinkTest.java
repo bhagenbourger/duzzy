@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.Duzzy;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.File;
@@ -52,7 +52,7 @@ public class LocalFileSinkTest {
         filename,
         true
     );
-    localFileSink.init(new SchemaContext(null));
+    localFileSink.init(new DuzzySchema(null));
     localFileSink.write(getDataOne());
     localFileSink.write(getDataTwo());
     localFileSink.write(getDataTwo());

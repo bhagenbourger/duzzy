@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.field.Field;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import java.io.File;
 import java.io.IOException;
 import org.apache.avro.AvroTypeException;
@@ -16,59 +16,59 @@ public class AvroSchemaParserTest {
   @Test
   void avroSchemaToDuzzySchema() throws IOException {
     final File avroSchema = getFromResources(getClass(), "avro-schemas/all-supported-fields.avsc");
-    final SchemaContext schemaContext = new AvroSchemaParser().parse(avroSchema, null);
+    final DuzzySchema duzzySchema = new AvroSchemaParser().parse(avroSchema, null);
 
-    assertThat(schemaContext.fields()).hasSize(16);
-    assertThat(schemaContext.fields().getFirst())
+    assertThat(duzzySchema.fields()).hasSize(16);
+    assertThat(duzzySchema.fields().getFirst())
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("string_field",
             "io.duzzy.plugin.provider.random.AlphanumericRandomProvider");
-    assertThat(schemaContext.fields().get(1))
+    assertThat(duzzySchema.fields().get(1))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("int_field", "io.duzzy.plugin.provider.random.IntegerRandomProvider");
-    assertThat(schemaContext.fields().get(2))
+    assertThat(duzzySchema.fields().get(2))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("long_field", "io.duzzy.plugin.provider.random.LongRandomProvider");
-    assertThat(schemaContext.fields().get(3))
+    assertThat(duzzySchema.fields().get(3))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("float_field", "io.duzzy.plugin.provider.random.FloatRandomProvider");
-    assertThat(schemaContext.fields().get(4))
+    assertThat(duzzySchema.fields().get(4))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("double_field", "io.duzzy.plugin.provider.random.DoubleRandomProvider");
-    assertThat(schemaContext.fields().get(5))
+    assertThat(duzzySchema.fields().get(5))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("boolean_field", "io.duzzy.plugin.provider.random.BooleanRandomProvider");
-    assertThat(schemaContext.fields().get(6))
+    assertThat(duzzySchema.fields().get(6))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("nullable_str",
             "io.duzzy.plugin.provider.random.AlphanumericRandomProvider");
-    assertThat(schemaContext.fields().get(7))
+    assertThat(duzzySchema.fields().get(7))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("nullable_int", "io.duzzy.plugin.provider.random.IntegerRandomProvider");
-    assertThat(schemaContext.fields().get(8))
+    assertThat(duzzySchema.fields().get(8))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("nullable_long", "io.duzzy.plugin.provider.random.LongRandomProvider");
-    assertThat(schemaContext.fields().get(9))
+    assertThat(duzzySchema.fields().get(9))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("nullable_float", "io.duzzy.plugin.provider.random.FloatRandomProvider");
-    assertThat(schemaContext.fields().get(10))
+    assertThat(duzzySchema.fields().get(10))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("nullable_double", "io.duzzy.plugin.provider.random.DoubleRandomProvider");
-    assertThat(schemaContext.fields().get(11))
+    assertThat(duzzySchema.fields().get(11))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("nullable_boolean",
             "io.duzzy.plugin.provider.random.BooleanRandomProvider");
-    assertThat(schemaContext.fields().get(12))
+    assertThat(duzzySchema.fields().get(12))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("uuid_field", "io.duzzy.plugin.provider.random.UuidRandomProvider");
-    assertThat(schemaContext.fields().get(13))
+    assertThat(duzzySchema.fields().get(13))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("date_field", "io.duzzy.plugin.provider.random.LocalDateRandomProvider");
-    assertThat(schemaContext.fields().get(14))
+    assertThat(duzzySchema.fields().get(14))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("timestamp_millis_field",
             "io.duzzy.plugin.provider.random.InstantRandomProvider");
-    assertThat(schemaContext.fields().get(15))
+    assertThat(duzzySchema.fields().get(15))
         .extracting(Field::name, c -> c.providers().getFirst().getIdentifier())
         .containsExactly("timestamp_micros_field",
             "io.duzzy.plugin.provider.random.InstantRandomProvider");
@@ -86,9 +86,9 @@ public class AvroSchemaParserTest {
   @Test
   void emptyAvroSchemaToDuzzyContext() throws IOException {
     final File avroSchema = getFromResources(getClass(), "avro-schemas/empty-fields.avsc");
-    final SchemaContext schemaContext = new AvroSchemaParser().parse(avroSchema, null);
+    final DuzzySchema duzzySchema = new AvroSchemaParser().parse(avroSchema, null);
 
-    assertThat(schemaContext.fields()).isEqualTo(new SchemaContext(null).fields());
+    assertThat(duzzySchema.fields()).isEqualTo(new DuzzySchema(null).fields());
   }
 
   @Test

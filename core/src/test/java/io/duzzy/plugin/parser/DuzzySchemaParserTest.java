@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +17,10 @@ public class DuzzySchemaParserTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-full.yaml");
-    final SchemaContext schemaContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+    final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-    assertThat(schemaContext.fields()).hasSize(1);
-    final Field first = schemaContext.fields().getFirst();
+    assertThat(duzzySchema.fields()).hasSize(1);
+    final Field first = duzzySchema.fields().getFirst();
     assertThat(first.name()).isEqualTo("city");
     assertThat(first.type()).isEqualTo(Type.STRING);
     assertThat(first.nullRate()).isEqualTo(0f);
@@ -30,10 +30,10 @@ public class DuzzySchemaParserTest {
   @Test
   void parsedFromYamlHasDefaultValues() throws IOException {
     final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema.yaml");
-    final SchemaContext schemaContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+    final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-    assertThat(schemaContext.fields()).hasSize(1);
-    final Field first = schemaContext.fields().getFirst();
+    assertThat(duzzySchema.fields()).hasSize(1);
+    final Field first = duzzySchema.fields().getFirst();
     assertThat(first.name()).isEqualTo("city");
     assertThat(first.type()).isEqualTo(Type.STRING);
     assertThat(first.nullRate()).isEqualTo(0f);
@@ -44,19 +44,19 @@ public class DuzzySchemaParserTest {
   void parsedFromYamlShouldBeCaseInsensitive() throws IOException {
     final File duzzySchemaFile =
         getFromResources(getClass(), "schema/duzzy-schema-case-insensitive.yaml");
-    final SchemaContext schemaContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+    final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-    assertThat(schemaContext.fields()).hasSize(1);
-    assertThat(schemaContext.fields().getFirst().value(RANDOM_FIELD_CONTEXT.get())).isNotNull();
+    assertThat(duzzySchema.fields()).hasSize(1);
+    assertThat(duzzySchema.fields().getFirst().value(RANDOM_FIELD_CONTEXT.get())).isNotNull();
   }
 
   @Test
   void parsedFromYamlShouldBeAbleToReadSnakeCase() throws IOException {
     final File duzzySchemaFile =
         getFromResources(getClass(), "schema/duzzy-schema-snake-case.yaml");
-    final SchemaContext schemaContext = new DuzzySchemaParser().parse(duzzySchemaFile, null);
+    final DuzzySchema duzzySchema = new DuzzySchemaParser().parse(duzzySchemaFile, null);
 
-    assertThat(schemaContext.fields()).hasSize(1);
-    assertThat(schemaContext.fields().getFirst().value(RANDOM_FIELD_CONTEXT.get())).isNotNull();
+    assertThat(duzzySchema.fields()).hasSize(1);
+    assertThat(duzzySchema.fields().getFirst().value(RANDOM_FIELD_CONTEXT.get())).isNotNull();
   }
 }

@@ -147,7 +147,7 @@ case "\$( uname )" in                #(
   NONSTOP* )        nonstop=true ;;
 esac
 
-CLASSPATH=\$HOME/.duzzy/plugins/*:$classpath
+CLASSPATH="$classpath:\$HOME/.duzzy/plugins/*"
 
 <% if ( mainClassName.startsWith('--module ') ) { %>
 MODULE_PATH=$modulePath

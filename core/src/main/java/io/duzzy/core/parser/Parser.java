@@ -6,12 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.provider.Provider;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -57,5 +56,5 @@ public interface Parser {
     );
   }
 
-  SchemaContext parse(File file, DuzzyConfig duzzyConfig) throws IOException;
+  DuzzySchema parse(File file, DuzzyConfig duzzyConfig) throws IOException;
 }

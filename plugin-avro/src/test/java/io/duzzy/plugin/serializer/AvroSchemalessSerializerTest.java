@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
@@ -65,7 +65,7 @@ public class AvroSchemalessSerializerTest {
 
     final AvroSchemalessSerializer avroSchemalessSerializer =
         new AvroSchemalessSerializer(null, null, null);
-    avroSchemalessSerializer.init(outputStream, new SchemaContext(fields));
+    avroSchemalessSerializer.init(outputStream, new DuzzySchema(fields));
     avroSchemalessSerializer.serialize(getDataOne());
     avroSchemalessSerializer.serialize(getDataTwo());
 

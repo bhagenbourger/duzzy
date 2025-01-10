@@ -3,7 +3,7 @@ package io.duzzy.core;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.provider.ProviderUtil;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -14,20 +14,20 @@ public class DuzzyProcessing {
 
   private final Long start;
   private final Long end;
-  private final SchemaContext schemaContext;
+  private final DuzzySchema duzzySchema;
   private final Sink sink;
   private final Long seed;
 
-  public DuzzyProcessing(Long start, Long end, SchemaContext schemaContext, Sink sink, Long seed) {
+  public DuzzyProcessing(Long start, Long end, DuzzySchema duzzySchema, Sink sink, Long seed) {
     this.start = start;
     this.end = end;
-    this.schemaContext = schemaContext;
+    this.duzzySchema = duzzySchema;
     this.sink = sink;
     this.seed = seed;
   }
 
   public void run() throws Exception {
-    sink.init(schemaContext);
+    sink.init(duzzySchema);
     for (Long index = start; index < end; index++) {
       processRow(index, ProviderUtil.RANDOM_PROVIDERS);
     }
@@ -48,7 +48,7 @@ public class DuzzyProcessing {
     );
     sink.write(
         new DataItems(
-            schemaContext
+            duzzySchema
                 .fields()
                 .stream()
                 .map(c -> new DataItem(
