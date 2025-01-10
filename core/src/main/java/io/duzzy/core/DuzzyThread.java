@@ -20,7 +20,7 @@ public class DuzzyThread implements Callable<Void> {
       new DuzzyProcessing(
           start,
           end,
-          duzzyContext.schemaContext(),
+          duzzyContext.duzzySchema(),
           duzzyContext.sink().fork(Thread.currentThread().threadId()),
           duzzyContext.seed()
       ).run();

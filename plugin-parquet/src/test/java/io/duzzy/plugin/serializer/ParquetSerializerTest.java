@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
@@ -64,7 +64,7 @@ public class ParquetSerializerTest {
 
     try (final OutputStream outputStream = new FileOutputStream(file)) {
       final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null, null);
-      parquetSerializer.init(outputStream, new SchemaContext(fields));
+      parquetSerializer.init(outputStream, new DuzzySchema(fields));
       parquetSerializer.serialize(getDataOne());
       parquetSerializer.serialize(getDataTwo());
       parquetSerializer.close();

@@ -49,7 +49,7 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
         .record(name)
         .namespace(namespace)
         .fields();
-    getSchemaContext().fields().forEach(f -> {
+    getDuzzySchema().fields().forEach(f -> {
       switch (f.type()) {
         case INTEGER -> createAvroField(fields, f).intType().noDefault();
         case LONG -> createAvroField(fields, f).longType().noDefault();
