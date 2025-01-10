@@ -4,6 +4,7 @@ import io.duzzy.core.DataItems;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.serializer.Serializer;
+import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.OutputStream;
 
 public abstract class Sink implements Plugin {
@@ -12,7 +13,7 @@ public abstract class Sink implements Plugin {
   protected final OutputStream outputStream;
 
   public Sink(Serializer<?> serializer, OutputStream outputStream) {
-    this.serializer = serializer;
+    this.serializer = serializer == null ? new JsonSerializer() : serializer;
     this.outputStream = outputStream;
   }
 
