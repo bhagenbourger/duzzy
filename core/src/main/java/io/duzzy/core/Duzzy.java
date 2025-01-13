@@ -4,7 +4,7 @@ import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
-import io.duzzy.core.reflection.ReflectionUtility;
+import io.duzzy.core.provider.ProviderUtil;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.parser.DuzzySchemaParser;
 import java.io.File;
@@ -42,9 +42,8 @@ public class Duzzy {
     final Long start = Instant.now().toEpochMilli();
     final Sink sink = duzzyContext.sink();
     sink.init(duzzyContext.schemaContext());
-    final List<Provider<?>> providers = ReflectionUtility.loadDuzzyProviders();
     for (Long index = 0L; index < duzzyContext.rows(); index++) {
-      processRow(duzzyContext, index, providers, sink);
+      processRow(duzzyContext, index, ProviderUtil.RANDOM_PROVIDERS, sink);
     }
     sink.close();
     final Long end = Instant.now().toEpochMilli();

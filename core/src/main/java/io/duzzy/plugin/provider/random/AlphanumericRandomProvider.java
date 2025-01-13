@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.field.FieldContext;
+import io.duzzy.core.provider.ProviderUtil;
 import io.duzzy.core.provider.corrupted.StringCorruptedProvider;
 
 public class AlphanumericRandomProvider implements StringCorruptedProvider {
-
-  private static final int LEFT_LIMIT = 48; // numeral '0'
-  private static final int RIGHT_LIMIT = 122; // letter 'z'
 
   private final int minLength;
   private final int maxLength;
@@ -30,13 +28,7 @@ public class AlphanumericRandomProvider implements StringCorruptedProvider {
   @Override
   public String value(FieldContext fieldContext) {
     int length = fieldContext.random().nextInt(minLength, maxLength + 1);
-    return fieldContext
-        .random()
-        .ints(LEFT_LIMIT, RIGHT_LIMIT + 1)
-        .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-        .limit(length)
-        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-        .toString();
+    return ProviderUtil.randomString(fieldContext.random(), length);
   }
 
   @Override
