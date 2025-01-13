@@ -140,7 +140,3 @@ fields:
       - identifier: "io.duzzy.plugin.provider.random.LongRandomProvider"
         min: 1000
         max: 10000
-sink:
-  identifier: "io.duzzy.plugin.sink.ConsoleSink"
-  serializer:
-    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
