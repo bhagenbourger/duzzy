@@ -61,7 +61,7 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
             .name(f.name())
             .type(LogicalTypes.uuid().addToSchema(Schema.create(Schema.Type.STRING)))
             .noDefault();
-        case DATE -> fields
+        case LOCAL_DATE -> fields
             .name(f.name())
             .type(LogicalTypes.date().addToSchema(Schema.create(Schema.Type.INT)))
             .noDefault();
@@ -110,7 +110,7 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
   private static Object toPrimitiveType(DataItem item) {
     return switch (item.type()) {
       case UUID -> item.value().toString();
-      case DATE -> ((LocalDate) item.value()).toEpochDay();
+      case LOCAL_DATE -> ((LocalDate) item.value()).toEpochDay();
       case TIMESTAMP_MILLIS -> ((Instant) item.value()).toEpochMilli();
       case TIMESTAMP_MICROS -> ChronoUnit.MICROS.between(Instant.EPOCH, ((Instant) item.value()));
       default -> item.value();

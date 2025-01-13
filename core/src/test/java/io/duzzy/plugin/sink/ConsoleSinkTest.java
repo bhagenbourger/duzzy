@@ -6,7 +6,7 @@ import static io.duzzy.tests.Data.getDataTwo;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.DuzzyContext;
+import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.ByteArrayOutputStream;
@@ -34,7 +34,7 @@ public class ConsoleSinkTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-    consoleSink.init(DuzzyContext.DEFAULT.schemaContext());
+    consoleSink.init(new SchemaContext(null));
     consoleSink.write(getDataOne());
     consoleSink.write(getDataTwo());
     consoleSink.write(getDataOne());
