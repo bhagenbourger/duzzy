@@ -15,13 +15,6 @@ public record DuzzyContext(
   private static final Random RANDOM = new Random();
   private static final Long DEFAULT_ROWS = 10L;
 
-  public static final DuzzyContext DEFAULT = new DuzzyContext(
-      null,
-      null,
-      null,
-      null
-  );
-
   public DuzzyContext(SchemaContext schemaContext) {
     this(schemaContext, null);
   }

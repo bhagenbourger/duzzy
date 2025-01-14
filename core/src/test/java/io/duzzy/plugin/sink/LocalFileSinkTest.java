@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import io.duzzy.core.DuzzyContext;
+import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.File;
@@ -49,7 +49,7 @@ public class LocalFileSinkTest {
         filename,
         true
     );
-    localFileSink.init(DuzzyContext.DEFAULT.schemaContext());
+    localFileSink.init(new SchemaContext(null));
     localFileSink.write(getDataOne());
     localFileSink.write(getDataTwo());
     localFileSink.write(getDataTwo());

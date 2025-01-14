@@ -5,6 +5,7 @@ import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.provider.ProviderUtil;
+import io.duzzy.core.schema.SchemaContext;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.parser.DuzzySchemaParser;
 import java.io.File;
@@ -63,7 +64,8 @@ public class Duzzy {
       Parser parser,
       DuzzyConfig duzzyConfig
   ) throws IOException {
-    return (schema == null ? DuzzyContext.DEFAULT : parser.parse(schema, duzzyConfig))
+    final SchemaContext schemaContext = schema == null ? null : parser.parse(schema, duzzyConfig);
+    return new DuzzyContext(schemaContext)
         .withSeed(this.seed)
         .withRows(this.rows)
         .withSink(duzzyConfig == null ? null : duzzyConfig.sink());

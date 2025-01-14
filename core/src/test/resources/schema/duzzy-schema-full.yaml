@@ -6,7 +6,3 @@ fields:
       - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
         minLength: 20
         maxLength: 25
-sink:
-  identifier: "io.duzzy.plugin.sink.ConsoleSink"
-  serializer:
-    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
