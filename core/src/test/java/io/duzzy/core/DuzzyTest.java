@@ -75,8 +75,15 @@ public class DuzzyTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema-xml.yaml");
+    final File configFile = getFromResources(getClass(), "config/duzzy-config-xml.yaml");
 
-    final DuzzyResult duzzyResult = new Duzzy(duzzySchemaFile, null, 1L, null, null).generate();
+    final DuzzyResult duzzyResult = new Duzzy(
+        duzzySchemaFile,
+        configFile,
+        1L,
+        null,
+        null)
+        .generate();
 
     assertThat(duzzyResult.rows()).isEqualTo(10L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);

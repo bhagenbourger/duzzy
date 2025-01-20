@@ -1,0 +1,10 @@
+CREATE TABLE test (
+ i INTEGER,
+ v VARCHAR,
+ b BOOLEAN,
+ l BIGINT,
+ d DOUBLE,
+ f FLOAT,
+ u UUID,
+ tmi TIMESTAMP
+);

@@ -4,9 +4,3 @@ fields:
     type: STRING
     providers:
       - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
-sink:
-  identifier: "io.duzzy.plugin.sink.ConsoleSink"
-  serializer:
-    identifier: "io.duzzy.plugin.serializer.XmlSerializer"
-    rootTag: countries
-    rowTag: country
