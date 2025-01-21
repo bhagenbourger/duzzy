@@ -1,13 +1,13 @@
 dependencies {
-    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jackson"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jackson"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion"
     implementation 'commons-codec:commons-codec:1.17.1'
     implementation 'com.google.guava:guava:33.3.1-jre'
     implementation 'org.jooq:jooq:3.19.16'
-    implementation "org.apache.avro:avro:$avro"
+    implementation "org.apache.avro:avro:$avroVersion"
 
     testImplementation 'org.hsqldb:hsqldb:2.7.4'
 }

@@ -1,6 +1,6 @@
 dependencies {
     compileOnly project(":core")
-    compileOnly "com.fasterxml.jackson.core:jackson-annotations:$jackson"
+    compileOnly "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
     implementation 'org.apache.kafka:kafka-clients:3.7.1'
 

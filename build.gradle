@@ -1,5 +1,7 @@
 plugins {
     id 'application'
+    id 'com.gradleup.shadow' version '8.3.5'
+    id 'ru.vyarus.pom' version '3.0.0' apply false
     id 'org.graalvm.buildtools.native' version '0.10.3'
     id 'com.github.spotbugs' version '6.0.27'
     id 'jacoco'
@@ -21,25 +23,75 @@ graalvmNative {
     testSupport = true
 }
 
+startScripts {
+    unixStartScriptGenerator.template = resources.text.fromFile('config/start-scripts/duzzyUnixStartScript.txt')
+    windowsStartScriptGenerator.template = resources.text.fromFile('config/start-scripts/duzzyWindowsStartScript.txt')
+}
+
 tasks.named('check') {
     dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
 }
 
 ext {
-    avro = "1.12.0"
-    jackson = "2.18.0"
-    log4j2 = "2.24.3"
+    pluginTitle = ''
+    pluginDescription = ''
+    pluginVendor = 'Duzzy'
+    avroVersion = '1.12.0'
+    jacksonVersion = '2.18.0'
+    log4j2Version = '2.24.3'
+}
+
+project(':plugin-avro') {
+    ext {
+        pluginTitle = 'Avro plugin'
+        pluginDescription = 'Avro parser and avro serializer'
+    }
+}
+
+project(':plugin-duckdb') {
+    ext{
+        pluginTitle = 'Duckdb plugin'
+        pluginDescription = 'Duckdb sink'
+    }
+}
+
+project(':plugin-hdfs') {
+    ext{
+        pluginTitle = 'Hdfs plugin'
+        pluginDescription = 'Hdfs sink'
+    }
+}
+
+project(':plugin-kafka') {
+    ext {
+        pluginTitle = 'Kafka plugin'
+        pluginDescription = 'Kafka sink'
+    }
+}
+
+project(':plugin-mysql') {
+    ext {
+        pluginTitle = 'MySQL plugin'
+        pluginDescription = 'MySQL sink'
+    }
+}
+
+project(':plugin-parquet') {
+    ext {
+        pluginTitle = 'Parquet plugin'
+        pluginDescription = 'Parquet serializer'
+    }
+}
+
+project(':plugin-postgresql') {
+    ext {
+        pluginTitle = 'Postgres plugin'
+        pluginDescription = 'Postgres sink'
+    }
 }
 
 dependencies {
     implementation project(":cli")
-    implementation project(":plugin-avro")
-    implementation project(":plugin-parquet")
-    implementation project(":plugin-hdfs")
-    implementation project(":plugin-kafka")
-    implementation project(":plugin-duckdb")
-    implementation project(":plugin-postgresql")
-    implementation project(":plugin-mysql")
 }
 
 allprojects {
@@ -76,14 +128,36 @@ allprojects {
     }
 }
 
-subprojects {
-    apply plugin: 'maven-publish'
 
+/**
+ * Shadow jar and MANIFEST.MF for plugins
+ */
+subprojects {
+    if (project.name.startsWith('plugin-')) {
+        apply plugin: 'com.gradleup.shadow'
+
+        jar {
+            manifest {
+                attributes 'Implementation-Vendor': "${pluginVendor}"
+                attributes 'Implementation-Title': "${pluginTitle}"
+                attributes 'Implementation-Version': project.version
+                attributes 'Duzzy-Plugin-Group-Id': project.group
+                attributes 'Duzzy-Plugin-Artifact-Id': project.name
+                attributes 'Duzzy-Plugin-Description': "${pluginDescription}"
+            }
+        }
+    }
+}
+
+/**
+ * Dependencies for all modules
+ */
+subprojects {
     dependencies {
         implementation 'org.slf4j:slf4j-api:2.0.16'
-        implementation "org.apache.logging.log4j:log4j-api:$log4j2"
-        implementation "org.apache.logging.log4j:log4j-core:$log4j2"
-        implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4j2"
+        implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4j2Version"
 
 
         testImplementation project(":tests")
@@ -96,35 +170,49 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+}
+
+/**
+ * Publication for core and plugins
+ */
+subprojects {
+    apply plugin: 'maven-publish'
+    apply plugin: 'ru.vyarus.pom'
+
+    maven.pom {
+        name = 'Duzzy'
+        description = 'Give me your schema, I\'ll give you your test data.'
+        url = 'https://github.com/bhagenbourger/duzzy'
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        developers {
+            developer {
+                id = 'bhagenbourger'
+                name = 'Benoît Hagenbourger'
+                email = 'benoit@hagenbourger.fr'
+            }
+        }
+        scm {
+            connection = 'scm:git:git://github.com/bhagenbourger/duzzy.git'
+            developerConnection = 'scm:git:ssh://github.com/bhagenbourger/duzzy.git'
+            url = 'https://github.com/bhagenbourger/duzzy'
+        }
+    }
 
     publishing {
         publications {
-            if (!project.name.equals('cli') && !project.name.equals('tests')) {
+            if (project.name.equals('core')) {
                 maven(MavenPublication) {
                     from components.java
-                    pom {
-                        name = 'Duzzy'
-                        description = 'Give me your schema, I\'ll give you your test data.'
-                        url = 'https://github.com/bhagenbourger/duzzy'
-                        licenses {
-                            license {
-                                name = 'The Apache License, Version 2.0'
-                                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            }
-                        }
-                        developers {
-                            developer {
-                                id = 'bhagenbourger'
-                                name = 'Benoît Hagenbourger'
-                                email = 'benoit@hagenbourger.fr'
-                            }
-                        }
-                        scm {
-                            connection = 'scm:git:git://github.com/bhagenbourger/duzzy.git'
-                            developerConnection = 'scm:git:ssh://github.com/bhagenbourger/duzzy.git'
-                            url = 'https://github.com/bhagenbourger/duzzy'
-                        }
-                    }
+                }
+            }
+            if (project.name.startsWith('plugin-')) {
+                shadow(MavenPublication) {
+                    from components.shadow
                 }
             }
         }

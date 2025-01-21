@@ -25,25 +25,18 @@ import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
 public class AppTest {
+  private static final String HELP = """
+      Usage: duzzy [-hV] [COMMAND]
+      Give me your schema, I'll give you your test data.
+        -h, --help      Show this help message and exit.
+        -V, --version   Print version information and exit.
+      Commands:
+        run     Generate your test data
+        plugin  Manage your plugins
+      """;
+
   @Test
   void shouldPrintHelp() {
-    final String help = """
-        Usage: duzzy [-hV] [-c=File] [-f=File] [-o=OutputFormat] [-p=Class] [-r=Long]
-                     [-s=Long]
-          -c, --config-file=File   Config file used to enrich the schema
-          -f, --schema-file=File   Schema source file
-          -h, --help               Show this help message and exit.
-          -o, --output=OutputFormat
-                                   Output format, supported values: RAW, TXT, JSON,
-                                     XML, YAML
-          -p, --schema-parser=Class
-                                   Qualified name of the parser class used to parse
-                                     schema file
-          -r, --rows=Long          Number of rows to generate
-          -s, --seed=Long          Seed used to generate
-          -V, --version            Print version information and exit.
-        """;
-
     final App app = new App();
     final CommandLine cmd = new CommandLine(app);
 
@@ -52,12 +45,12 @@ public class AppTest {
 
     final int exitCode = cmd.execute("-h");
     assertThat(exitCode).isEqualTo(0);
-    assertThat(sw.toString()).isEqualTo(help);
+    assertThat(sw.toString()).isEqualTo(HELP);
   }
 
   @Test
   void shouldPrintVersion() {
-    final String version = "1.0\n";
+    final String version = "0.0.0\n";
 
     final App app = new App();
     final CommandLine cmd = new CommandLine(app);
@@ -68,6 +61,19 @@ public class AppTest {
     final int exitCode = cmd.execute("-V");
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo(version);
+  }
+
+  @Test
+  void shouldPrintUsageWhenArgsIsEmpty() {
+    final App app = new App();
+    final CommandLine cmd = new CommandLine(app);
+
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+
+    final int exitCode = cmd.execute();
+    assertThat(exitCode).isEqualTo(0);
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo(HELP);
   }
 
   @Test
@@ -85,6 +91,7 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
+        "run",
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
         "-p=io.duzzy.plugin.parser.AvroSchemaParser",
         "-c=../cli/src/test/resources/config/duzzy-config-full-xml.yaml",
@@ -119,6 +126,7 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
+        "run",
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
         "-p=io.duzzy.plugin.parser.AvroSchemaParser",
         "-c=../cli/src/test/resources/config/duzzy-config-full-json.yaml",
@@ -153,6 +161,7 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
+        "run",
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
         "-p=io.duzzy.plugin.parser.AvroSchemaParser",
         "-c=../cli/src/test/resources/config/duzzy-config-full-csv.yaml",
@@ -184,6 +193,7 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
+        "run",
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
         "-p=io.duzzy.plugin.parser.AvroSchemaParser",
         "-c=../cli/src/test/resources/config/duzzy-config-full-avro-with-schema.yaml",
@@ -226,6 +236,7 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
+        "run",
         "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
         "-p=io.duzzy.plugin.parser.AvroSchemaParser",
         "-c=../cli/src/test/resources/config/duzzy-config-full-avro-schemaless.yaml",
@@ -254,5 +265,51 @@ public class AppTest {
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
         .startsWith("Duzzy generated 3 rows in PT0")
         .endsWith("S with seed 1234\n");
+  }
+
+  @Test
+  void shouldPrintPluginUsage() {
+    final App app = new App();
+    final CommandLine cmd = new CommandLine(app);
+
+    final StringWriter sw = new StringWriter();
+    cmd.setOut(new PrintWriter(sw));
+
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
+
+    final int exitCode = cmd.execute("plugin");
+    assertThat(exitCode).isEqualTo(0);
+    assertThat(sw.toString()).isEqualTo("");
+    assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8)).isEqualTo("""
+        Usage: plugin [-hV] [COMMAND]
+        Manage your plugins
+          -h, --help      Show this help message and exit.
+          -V, --version   Print version information and exit.
+        Commands:
+          install    Install a plugin
+          list       List all installed plugins
+          uninstall  Uninstall a plugin
+        """);
+  }
+
+  @Test
+  void installPluginRequiredSourceOption() {
+    final App app = new App();
+    final CommandLine cmd = new CommandLine(app);
+
+    final StringWriter sw = new StringWriter();
+    cmd.setErr(new PrintWriter(sw));
+
+    final int exitCode = cmd.execute("plugin", "install");
+    assertThat(exitCode).isEqualTo(2);
+    assertThat(sw.toString()).isEqualTo("""
+Missing required option: '--source=String'
+Usage: duzzy plugin install [-hV] -s=String
+Install a plugin
+  -h, --help            Show this help message and exit.
+  -s, --source=String   Url or local path to the plugin
+  -V, --version         Print version information and exit.
+        """);
   }
 }
