@@ -39,6 +39,7 @@ dependencies {
     implementation project(":plugin-kafka")
     implementation project(":plugin-duckdb")
     implementation project(":plugin-postgresql")
+    implementation project(":plugin-mysql")
 }
 
 allprojects {
