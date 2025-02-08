@@ -1,0 +1,5 @@
+---
+identifier: "io.duzzy.plugin.sink.MysqlSink"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+  table_name: "my_table"
