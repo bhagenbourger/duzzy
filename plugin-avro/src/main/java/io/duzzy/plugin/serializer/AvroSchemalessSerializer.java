@@ -37,4 +37,9 @@ public class AvroSchemalessSerializer extends AvroSerializer<BinaryEncoderClosea
         writer.binaryEncoder()
     );
   }
+
+  @Override
+  public AvroSchemalessSerializer fork(Long threadId) {
+    return new AvroSchemalessSerializer(name, namespace, schemaFile);
+  }
 }

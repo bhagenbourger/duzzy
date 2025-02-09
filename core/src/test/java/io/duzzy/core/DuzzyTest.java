@@ -9,6 +9,13 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 public class DuzzyTest {
@@ -31,7 +38,14 @@ public class DuzzyTest {
 
     final File duzzySchemaFile = getFromResources(getClass(), "schema/duzzy-schema.yaml");
 
-    final DuzzyResult duzzyResult = new Duzzy(duzzySchemaFile, null, 1L, null, null).generate();
+    final DuzzyResult duzzyResult = new Duzzy(
+        duzzySchemaFile,
+        null,
+        1L,
+        null,
+        null,
+        null
+    ).generate();
 
     assertThat(duzzyResult.rows()).isEqualTo(10L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);
@@ -49,7 +63,14 @@ public class DuzzyTest {
 
     final File duzzySchemaFile =
         getFromResources(getClass(), "schema/duzzy-schema-all-fields.yaml");
-    final DuzzyResult duzzyResult = new Duzzy(duzzySchemaFile, null, 1L, 42L, null).generate();
+    final DuzzyResult duzzyResult = new Duzzy(
+        duzzySchemaFile,
+        null,
+        1L,
+        42L,
+        null,
+        null
+    ).generate();
 
     assertThat(duzzyResult.rows()).isEqualTo(42L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);
@@ -82,8 +103,9 @@ public class DuzzyTest {
         configFile,
         1L,
         null,
-        null)
-        .generate();
+        null,
+        null
+    ).generate();
 
     assertThat(duzzyResult.rows()).isEqualTo(10L);
     assertThat(duzzyResult.seed()).isEqualTo(1L);

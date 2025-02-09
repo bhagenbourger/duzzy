@@ -3,6 +3,7 @@ package io.duzzy.core.sink;
 import io.duzzy.core.DataItems;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,9 +16,12 @@ public abstract class JdbcSink extends Sink {
 
   private static final Logger logger = LoggerFactory.getLogger(JdbcSink.class);
 
+  protected final String url;
+  protected final String user;
+  protected final String password;
+  protected final Boolean failOnError;
   private Connection connection;
   private Statement statement;
-  private final boolean failOnError;
 
   public JdbcSink(
       SqlSerializer serializer,
@@ -26,7 +30,10 @@ public abstract class JdbcSink extends Sink {
       String password,
       Boolean failOnError
   ) {
-    super(serializer, new ByteArrayOutputStream());
+    super(serializer);
+    this.url = url;
+    this.user = user;
+    this.password = password;
     this.failOnError = failOnError == null || failOnError;
     try {
       this.connection = DriverManager.getConnection(url, user, password);
@@ -37,17 +44,23 @@ public abstract class JdbcSink extends Sink {
   }
 
   @Override
+  public OutputStream outputStreamSupplier() {
+    return new ByteArrayOutputStream();
+  }
+
+  @Override
   public void write(DataItems data) throws Exception {
     super.write(data);
     try {
-      statement.execute(((ByteArrayOutputStream) outputStream).toString(StandardCharsets.UTF_8));
+      statement.execute(
+          ((ByteArrayOutputStream) getOutputStream()).toString(StandardCharsets.UTF_8));
     } catch (SQLException e) {
       logger.warn("Error while writing data", e);
       if (failOnError) {
         throw e;
       }
     }
-    ((ByteArrayOutputStream) outputStream).reset();
+    ((ByteArrayOutputStream) getOutputStream()).reset();
   }
 
   @Override

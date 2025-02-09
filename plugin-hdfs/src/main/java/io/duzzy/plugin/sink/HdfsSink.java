@@ -1,5 +1,7 @@
 package io.duzzy.plugin.sink;
 
+import static io.duzzy.core.sink.FileSink.addFilePart;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
@@ -12,21 +14,25 @@ import org.apache.hadoop.fs.Path;
 
 public class HdfsSink extends Sink {
 
+  private final String coreSitePath;
+  private final String hdfsSitePath;
+  private final String filename;
+
   @JsonCreator
   public HdfsSink(
       @JsonProperty("serializer") Serializer<?> serializer,
       @JsonProperty("coreSiteFile") String coreSitePath,
       @JsonProperty("hdfsSitePath") String hdfsSitePath,
       @JsonProperty("filename") String filename
-  ) throws IOException {
-    super(serializer, buildOutputStream(coreSitePath, hdfsSitePath, filename));
+  ) {
+    super(serializer);
+    this.coreSitePath = coreSitePath;
+    this.hdfsSitePath = hdfsSitePath;
+    this.filename = filename;
   }
 
-  private static OutputStream buildOutputStream(
-      String coreSitePath,
-      String hdfsSitePath,
-      String filename
-  ) throws IOException {
+  @Override
+  public OutputStream outputStreamSupplier() throws IOException {
     final Configuration configuration = new Configuration();
     if (coreSitePath != null) {
       configuration.addResource(new Path(coreSitePath));
@@ -34,8 +40,16 @@ public class HdfsSink extends Sink {
     if (hdfsSitePath != null) {
       configuration.addResource(new Path(hdfsSitePath));
     }
-    final FileSystem hdfs = FileSystem.get(configuration);
-    final Path file = new Path(filename);
-    return hdfs.create(file);
+    return FileSystem.get(configuration).create(new Path(filename));
+  }
+
+  @Override
+  public HdfsSink fork(Long threadId) throws Exception {
+    return new HdfsSink(
+        serializer.fork(threadId),
+        coreSitePath,
+        hdfsSitePath,
+        addFilePart(filename, threadId)
+    );
   }
 }

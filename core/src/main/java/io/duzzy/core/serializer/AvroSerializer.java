@@ -24,9 +24,9 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
   private static final String DEFAULT_NAME = "name";
   private static final String DEFAULT_NAMESPACE = "namespace";
 
-  private final String name;
-  private final String namespace;
-  private final File schemaFile;
+  protected final String name;
+  protected final String namespace;
+  protected final File schemaFile;
   private Schema schema;
 
   public AvroSerializer(String name, String namespace, File schemaFile) {

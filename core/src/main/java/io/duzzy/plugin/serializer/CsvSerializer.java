@@ -66,4 +66,9 @@ public class CsvSerializer extends Serializer<SequenceWriter> {
   public Boolean hasSchema() {
     return false;
   }
+
+  @Override
+  public CsvSerializer fork(Long threadId) {
+    return new CsvSerializer(quoteChar, columnSeparator, lineSeparator);
+  }
 }

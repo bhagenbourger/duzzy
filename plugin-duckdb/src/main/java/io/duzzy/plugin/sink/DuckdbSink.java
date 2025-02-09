@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.sink.JdbcSink;
+import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.SqlSerializer;
 
 public final class DuckdbSink extends JdbcSink {
@@ -19,5 +20,16 @@ public final class DuckdbSink extends JdbcSink {
       Boolean failOnError
   ) {
     super(serializer, url, user, password, failOnError);
+  }
+
+  @Override
+  public Sink fork(Long threadId) throws Exception {
+    return new DuckdbSink(
+        (SqlSerializer) serializer.fork(threadId),
+        url,
+        user,
+        password,
+        failOnError
+    );
   }
 }

@@ -45,7 +45,7 @@ public class RunCommand implements Callable<Integer> {
   @Option(
       names = {"-s", "--seed"},
       paramLabel = "Long",
-      description = "Seed used to generate"
+      description = "Seed used to generate data"
   )
   Long seed;
 
@@ -63,10 +63,24 @@ public class RunCommand implements Callable<Integer> {
   )
   OutputFormat outputFormat = OutputFormat.RAW;
 
+  @Option(
+      names = {"-t", "--threads"},
+      paramLabel = "Integer",
+      description = "Number of threads to use to generate data"
+  )
+  Integer threads = 1;
+
   @Override
   public Integer call() {
     try {
-      final DuzzyResult duzzyResult = new Duzzy(schema, config, seed, rows, parser).generate();
+      final DuzzyResult duzzyResult = new Duzzy(
+          schema,
+          config,
+          seed,
+          rows,
+          threads,
+          parser
+      ).generate();
       System.out.println(outputFormat.getDuzzyResultVisitor().format(duzzyResult));
     } catch (Exception e) {
       logger.error("An error occurred while running Duzzy:", e);

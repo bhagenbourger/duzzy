@@ -30,4 +30,9 @@ public class JsonSerializer extends Serializer<SequenceWriter> {
   public Boolean hasSchema() {
     return false;
   }
+
+  @Override
+  public JsonSerializer fork(Long threadId) {
+    return new JsonSerializer();
+  }
 }

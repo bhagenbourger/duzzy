@@ -1,5 +1,6 @@
 package io.duzzy.plugin.serializer;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -18,21 +19,23 @@ public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
   private static final String DEFAULT_ROW_TAG = "row";
 
   private final String rootTag;
+  private final String rowTag;
   private final XmlMapper mapper;
 
   @JsonCreator
   public XmlSerializer(
-      @JsonProperty("rootTag") String rootTag,
-      @JsonProperty("rowTag") String rowTag
+      @JsonProperty("root_tag")
+      @JsonAlias({"rootTag", "root-tag"})
+      String rootTag,
+      @JsonProperty("row_tag")
+      @JsonAlias({"rowTag", "row-tag"})
+      String rowTag
   ) {
     this.rootTag = rootTag == null ? DEFAULT_ROOT_TAG : rootTag;
+    this.rowTag = rowTag == null ? DEFAULT_ROW_TAG : rowTag;
     this.mapper = (XmlMapper) new XmlMapper()
         .registerModule(new JavaTimeModule())
-        .setConfig(
-            new XmlMapper()
-                .getSerializationConfig()
-                .withRootName(rowTag == null ? DEFAULT_ROW_TAG : rowTag)
-        );
+        .setConfig(new XmlMapper().getSerializationConfig().withRootName(this.rowTag));
   }
 
   @Override
@@ -57,5 +60,10 @@ public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
   @Override
   public Boolean hasSchema() {
     return false;
+  }
+
+  @Override
+  public XmlSerializer fork(Long threadId) {
+    return new XmlSerializer(rootTag, rowTag);
   }
 }
