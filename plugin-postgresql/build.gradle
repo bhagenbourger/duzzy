@@ -1,10 +1,10 @@
 dependencies {
     compileOnly project(":core")
-    compileOnly "com.fasterxml.jackson.core:jackson-annotations:$jackson"
+    compileOnly "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
     implementation 'org.postgresql:postgresql:42.7.4'
 
     testImplementation project(":core")
-    testImplementation "com.fasterxml.jackson.core:jackson-databind:$jackson"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     testImplementation 'org.testcontainers:postgresql:1.20.0'
 }
