@@ -1,0 +1,16 @@
+---
+fields:
+  - name: id
+    type: INTEGER
+    providers:
+      - identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
+  - name: city
+    type: STRING
+    providers:
+      - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
+  - name: zip_code
+    type: INTEGER
+    providers:
+      - identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
+        min: 0
+        max: 99999

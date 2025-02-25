@@ -10,4 +10,5 @@ dependencies {
     implementation "org.apache.avro:avro:$avroVersion"
 
     testImplementation 'org.hsqldb:hsqldb:2.7.4'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
 }

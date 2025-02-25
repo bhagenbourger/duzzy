@@ -41,4 +41,9 @@ public class ParquetSerializer extends AvroSerializer<ParquetWriter<GenericData.
       throws IOException {
     writer.write(serializeToRecord(data));
   }
+
+  @Override
+  public ParquetSerializer fork(Long threadId) {
+    return new ParquetSerializer(name, namespace, schemaFile);
+  }
 }

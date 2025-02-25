@@ -1,13 +1,14 @@
 package io.duzzy.core.serializer;
 
 import io.duzzy.core.DataItems;
+import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.SchemaContext;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public abstract class Serializer<W extends Closeable> implements Plugin {
+public abstract class Serializer<W extends Closeable> implements Plugin, Forkable<Serializer<W>> {
 
   private W writer;
   private SchemaContext schemaContext;

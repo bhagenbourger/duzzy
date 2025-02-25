@@ -41,4 +41,9 @@ public class AvroWithSchemaSerializer extends AvroSerializer<DataFileWriter<Gene
       throws IOException {
     writer.append(serializeToRecord(data));
   }
+
+  @Override
+  public AvroWithSchemaSerializer fork(Long threadId) {
+    return new AvroWithSchemaSerializer(name, namespace, schemaFile);
+  }
 }

@@ -42,4 +42,9 @@ public class SqlSerializer extends Serializer<OutputStream> {
   public Boolean hasSchema() {
     return true;
   }
+
+  @Override
+  public SqlSerializer fork(Long threadId) {
+    return new SqlSerializer(tableName);
+  }
 }

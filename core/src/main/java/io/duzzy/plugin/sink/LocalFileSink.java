@@ -1,5 +1,7 @@
 package io.duzzy.plugin.sink;
 
+import static io.duzzy.core.sink.FileSink.addFilePart;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,10 +9,15 @@ import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class LocalFileSink extends Sink {
+
+  private final String filename;
+  private final Boolean createIfNotExists;
+
 
   @JsonCreator
   public LocalFileSink(
@@ -22,13 +29,13 @@ public class LocalFileSink extends Sink {
       @JsonAlias({"createIfNotExists", "create-if-not-exists"})
       Boolean createIfNotExists
   ) throws IOException {
-    super(serializer, buildFileOutputStream(filename, createIfNotExists));
+    super(serializer);
+    this.filename = filename;
+    this.createIfNotExists = createIfNotExists;
   }
 
-  private static FileOutputStream buildFileOutputStream(
-      String filename,
-      Boolean createIfNotExists
-  ) throws IOException {
+  @Override
+  public OutputStream outputStreamSupplier() throws IOException {
     if (createIfNotExists != null && createIfNotExists) {
       final Path folder = Path.of(filename).getParent();
       if (folder != null && !Files.exists(folder)) {
@@ -36,5 +43,14 @@ public class LocalFileSink extends Sink {
       }
     }
     return new FileOutputStream(filename);
+  }
+
+  @Override
+  public LocalFileSink fork(Long threadId) throws Exception {
+    return new LocalFileSink(
+        serializer.fork(threadId),
+        addFilePart(filename, threadId),
+        createIfNotExists
+    );
   }
 }

@@ -4,6 +4,7 @@ import static io.duzzy.core.parser.Parser.YAML_MAPPER;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.duzzy.core.Duzzy;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import io.duzzy.tests.Data;
@@ -14,8 +15,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DuckdbSinkTest {
@@ -25,8 +26,8 @@ public class DuckdbSinkTest {
   private static final String DROP_TABLE = "DROP TABLE test;";
   private static final String COUNT = "SELECT count(*) AS rows FROM test;";
 
-  @BeforeAll
-  static void beforeAll() throws SQLException {
+  @BeforeEach
+  void setUp() throws SQLException {
     try (
         final Connection connection = DriverManager.getConnection(URL);
         final Statement statement = connection.createStatement()
@@ -35,8 +36,8 @@ public class DuckdbSinkTest {
     }
   }
 
-  @AfterAll
-  static void afterAll() throws SQLException {
+  @AfterEach
+  void tearDown() throws SQLException {
     try (
         final Connection connection = DriverManager.getConnection(URL);
         final Statement statement = connection.createStatement()
@@ -77,6 +78,23 @@ public class DuckdbSinkTest {
       final ResultSet resultSet = statement.executeQuery(COUNT);
       resultSet.next();
       assertThat(resultSet.getInt("rows")).isEqualTo(3);
+    }
+  }
+
+  @Test
+  void writeWithMultiThreads() throws Exception {
+    final File schema = getFromResources(getClass(), "schema/duzzy-schema.yaml");
+    final File config = getFromResources(getClass(), "config/duzzy-config-duckdb.yaml");
+
+    new Duzzy(schema, config, 1234L, 50L, 5, null).generate();
+
+    try (
+        final Connection connection = DriverManager.getConnection(URL);
+        final Statement statement = connection.createStatement()
+    ) {
+      final ResultSet resultSet = statement.executeQuery(COUNT);
+      resultSet.next();
+      assertThat(resultSet.getInt("rows")).isEqualTo(50);
     }
   }
 }
