@@ -34,6 +34,15 @@ public class AppTest {
         run     Generate your test data
         plugin  Manage your plugins
       """;
+  private static final String RUN_ACTION = "run";
+  private static final String SCHEMA_FILE_OPTION =
+      "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc";
+  private static final String PARSER_OPTION = "-p=io.duzzy.plugin.parser.AvroSchemaParser";
+  private static final String ROWS_OPTION = "-r=3";
+  private static final String SEAD_OPTION = "-s=1234";
+  private static final String OUTPUT_OPTION = "-o=TXT";
+  private static final String RESULT_STARTS_WITH = "Duzzy generated 3 rows in PT0";
+  private static final String RESULT_ENDS_WITH = "S with seed 1234\n";
 
   @Test
   void shouldPrintHelp() {
@@ -91,13 +100,13 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
-        "run",
-        "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
-        "-p=io.duzzy.plugin.parser.AvroSchemaParser",
+        RUN_ACTION,
+        SCHEMA_FILE_OPTION,
+        PARSER_OPTION,
         "-c=../cli/src/test/resources/config/duzzy-config-full-xml.yaml",
-        "-r=3",
-        "-s=1234",
-        "-o=TXT"
+        ROWS_OPTION,
+        SEAD_OPTION,
+        OUTPUT_OPTION
     );
 
     final File resultFile = new File("build/avro-with-config-result.xml");
@@ -107,8 +116,8 @@ public class AppTest {
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("Duzzy generated 3 rows in PT0")
-        .endsWith("S with seed 1234\n");
+        .startsWith(RESULT_STARTS_WITH)
+        .endsWith(RESULT_ENDS_WITH);
   }
 
   @Test
@@ -126,13 +135,13 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
-        "run",
-        "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
-        "-p=io.duzzy.plugin.parser.AvroSchemaParser",
+        RUN_ACTION,
+        SCHEMA_FILE_OPTION,
+        PARSER_OPTION,
         "-c=../cli/src/test/resources/config/duzzy-config-full-json.yaml",
-        "-r=3",
-        "-s=1234",
-        "-o=TXT"
+        ROWS_OPTION,
+        SEAD_OPTION,
+        OUTPUT_OPTION
     );
 
     final File resultFile = new File("build/avro-with-config-result.json");
@@ -142,8 +151,8 @@ public class AppTest {
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("Duzzy generated 3 rows in PT0")
-        .endsWith("S with seed 1234\n");
+        .startsWith(RESULT_STARTS_WITH)
+        .endsWith(RESULT_ENDS_WITH);
   }
 
   @Test
@@ -161,13 +170,13 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
-        "run",
-        "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
-        "-p=io.duzzy.plugin.parser.AvroSchemaParser",
+        RUN_ACTION,
+        SCHEMA_FILE_OPTION,
+        PARSER_OPTION,
         "-c=../cli/src/test/resources/config/duzzy-config-full-csv.yaml",
-        "-r=3",
-        "-s=1234",
-        "-o=TXT"
+        ROWS_OPTION,
+        SEAD_OPTION,
+        OUTPUT_OPTION
     );
 
     final File resultFile = new File("build/avro-with-config-result.csv");
@@ -177,8 +186,8 @@ public class AppTest {
     assertThat(sw.toString()).isEqualTo("");
     assertThat(result).isEqualTo(expected);
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("Duzzy generated 3 rows in PT0")
-        .endsWith("S with seed 1234\n");
+        .startsWith(RESULT_STARTS_WITH)
+        .endsWith(RESULT_ENDS_WITH);
   }
 
   @Test
@@ -193,13 +202,13 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
-        "run",
-        "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
-        "-p=io.duzzy.plugin.parser.AvroSchemaParser",
+        RUN_ACTION,
+        SCHEMA_FILE_OPTION,
+        PARSER_OPTION,
         "-c=../cli/src/test/resources/config/duzzy-config-full-avro-with-schema.yaml",
-        "-r=3",
-        "-s=1234",
-        "-o=TXT"
+        ROWS_OPTION,
+        SEAD_OPTION,
+        OUTPUT_OPTION
     );
 
     final File expectedFile = getFromResources(
@@ -219,8 +228,8 @@ public class AppTest {
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-          .startsWith("Duzzy generated 3 rows in PT0")
-          .endsWith("S with seed 1234\n");
+          .startsWith(RESULT_STARTS_WITH)
+          .endsWith(RESULT_ENDS_WITH);
     }
   }
 
@@ -236,13 +245,13 @@ public class AppTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final int exitCode = cmd.execute(
-        "run",
-        "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc",
-        "-p=io.duzzy.plugin.parser.AvroSchemaParser",
+        RUN_ACTION,
+        SCHEMA_FILE_OPTION,
+        PARSER_OPTION,
         "-c=../cli/src/test/resources/config/duzzy-config-full-avro-schemaless.yaml",
-        "-r=3",
-        "-s=1234",
-        "-o=TXT"
+        ROWS_OPTION,
+        SEAD_OPTION,
+        OUTPUT_OPTION
     );
 
     final Schema schema = new Schema
@@ -263,8 +272,8 @@ public class AppTest {
     assertThat(exitCode).isEqualTo(0);
     assertThat(sw.toString()).isEqualTo("");
     assertThat(outputStreamCaptor.toString(StandardCharsets.UTF_8))
-        .startsWith("Duzzy generated 3 rows in PT0")
-        .endsWith("S with seed 1234\n");
+        .startsWith(RESULT_STARTS_WITH)
+        .endsWith(RESULT_ENDS_WITH);
   }
 
   @Test
@@ -304,12 +313,12 @@ public class AppTest {
     final int exitCode = cmd.execute("plugin", "install");
     assertThat(exitCode).isEqualTo(2);
     assertThat(sw.toString()).isEqualTo("""
-Missing required option: '--source=String'
-Usage: duzzy plugin install [-hV] -s=String
-Install a plugin
-  -h, --help            Show this help message and exit.
-  -s, --source=String   Url or local path to the plugin
-  -V, --version         Print version information and exit.
+        Missing required option: '--source=String'
+        Usage: duzzy plugin install [-hV] -s=String
+        Install a plugin
+          -h, --help            Show this help message and exit.
+          -s, --source=String   Url or local path to the plugin
+          -V, --version         Print version information and exit.
         """);
   }
 }

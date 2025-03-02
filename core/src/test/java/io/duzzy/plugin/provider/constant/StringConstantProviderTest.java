@@ -1,8 +1,8 @@
 package io.duzzy.plugin.provider.constant;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestUtility.SEEDED_FIVE_FIELD_CONTEXT;
-import static io.duzzy.test.TestUtility.SEEDED_ONE_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.SEEDED_FIVE_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.SEEDED_ONE_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +12,8 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class StringConstantProviderTest {
+
+  private static final String MY_VALUE = "myValue";
 
   @Test
   void parsedFromYaml() throws IOException {
@@ -36,21 +38,21 @@ public class StringConstantProviderTest {
   @Test
   void computeValueIsIdempotent() {
     final String value =
-        new StringConstantProvider("myValue").value(SEEDED_ONE_FIELD_CONTEXT.get());
-    assertThat(value).isEqualTo("myValue");
+        new StringConstantProvider(MY_VALUE).value(SEEDED_ONE_FIELD_CONTEXT.get());
+    assertThat(value).isEqualTo(MY_VALUE);
   }
 
   @Test
   void computeValueIsConstant() {
     final String value =
-        new StringConstantProvider("myValue").value(SEEDED_FIVE_FIELD_CONTEXT.get());
-    assertThat(value).isEqualTo("myValue");
+        new StringConstantProvider(MY_VALUE).value(SEEDED_FIVE_FIELD_CONTEXT.get());
+    assertThat(value).isEqualTo(MY_VALUE);
   }
 
   @Test
   void corruptedValueIsIdempotent() {
     final String value =
-        new StringConstantProvider("myValue").corruptedValue(SEEDED_ONE_FIELD_CONTEXT.get());
+        new StringConstantProvider(MY_VALUE).corruptedValue(SEEDED_ONE_FIELD_CONTEXT.get());
     assertThat(value).isEqualTo("Od`");
   }
 }

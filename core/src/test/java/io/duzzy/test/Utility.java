@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class TestUtility {
+public class Utility {
   public static final Supplier<FieldContext> SEEDED_ONE_FIELD_CONTEXT =
       () -> new FieldContext(List.of(), false, new Random(1L), 1L, 1L);
 

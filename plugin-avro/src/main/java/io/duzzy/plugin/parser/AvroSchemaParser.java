@@ -100,13 +100,13 @@ public class AvroSchemaParser implements Parser {
           new LocalDateRandomProvider()
       );
       case "decimal" -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro logical type 'decimal' is not supported"
+          notSupported(fieldName, "decimal")
       );
       case "time-millis" -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro logical type 'time-millis' is not supported"
+          notSupported(fieldName, "time-millis")
       );
       case "time-micros" -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro logical type 'time-micros' is not supported"
+          notSupported(fieldName, "time-micros")
       );
       case "timestamp-millis" -> getField(
           fieldName,
@@ -123,15 +123,13 @@ public class AvroSchemaParser implements Parser {
           new InstantRandomProvider()
       );
       case "local-timestamp-millis" -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName
-              + "' - avro logical type 'local-timestamp-millis' is not supported"
+          notSupported(fieldName, "local-timestamp-millis")
       );
       case "local-timestamp-micros" -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName
-              + "' - avro logical type 'local-timestamp-micros' is not supported"
+          notSupported(fieldName, "local-timestamp-micros")
       );
       case null, default -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro logical type 'null' is not supported"
+          notSupported(fieldName, "null")
       );
     };
   }
@@ -186,25 +184,29 @@ public class AvroSchemaParser implements Parser {
           new BooleanRandomProvider()
       );
       case Schema.Type.ENUM -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'ENUM' is not supported");
+          notSupported(fieldName, Schema.Type.ENUM.getName()));
       case Schema.Type.UNION -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'UNION' is not supported");
+          notSupported(fieldName, Schema.Type.UNION.getName()));
       case Schema.Type.RECORD -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'RECORD' is not supported");
+          notSupported(fieldName, Schema.Type.RECORD.getName()));
       case Schema.Type.ARRAY -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'ARRAY' is not supported");
+          notSupported(fieldName, Schema.Type.ARRAY.getName()));
       case Schema.Type.MAP -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'MAP' is not supported");
+          notSupported(fieldName, Schema.Type.MAP.getName()));
       case Schema.Type.FIXED -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'FIXED' is not supported");
+          notSupported(fieldName, Schema.Type.FIXED.getName()));
       case Schema.Type.BYTES -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'BYTES' is not supported");
+          notSupported(fieldName, Schema.Type.BYTES.getName()));
       case Schema.Type.NULL -> throw new UnsupportedOperationException(
-          "Field name '" + fieldName + "' - avro type 'NULL' is not supported");
+          notSupported(fieldName, Schema.Type.NULL.getName()));
     };
   }
 
   private static float getNullRate(Schema schema) {
     return schema.isNullable() ? 0.1f : 0f;
+  }
+
+  private static String notSupported(String fieldName, String type) {
+    return "Field name '" + fieldName + "' - avro type '" + type + "' is not supported";
   }
 }

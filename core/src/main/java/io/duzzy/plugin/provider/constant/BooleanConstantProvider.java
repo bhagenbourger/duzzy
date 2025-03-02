@@ -16,6 +16,6 @@ public class BooleanConstantProvider extends ConstantProvider<Boolean> {
 
   @Override
   public Boolean corruptedValue(FieldContext fieldContext) {
-    return !getValue();
+    return !getConstantValue();
   }
 }

@@ -1,7 +1,7 @@
 package io.duzzy.core.field;
 
-import static io.duzzy.test.TestUtility.RANDOM_FIELD_CONTEXT;
-import static io.duzzy.test.TestUtility.providersFieldContext;
+import static io.duzzy.test.Utility.RANDOM_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.providersFieldContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

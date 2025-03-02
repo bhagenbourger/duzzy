@@ -1,8 +1,8 @@
 package io.duzzy.plugin.provider.constant;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestUtility.SEEDED_FIVE_FIELD_CONTEXT;
-import static io.duzzy.test.TestUtility.SEEDED_ONE_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.SEEDED_FIVE_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.SEEDED_ONE_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,10 +15,14 @@ import org.junit.jupiter.api.Test;
 
 public class StringWeightedListConstantProviderTest {
 
+  private static final String ONE = "one";
+  private static final String TWO = "two";
+  private static final String THREE = "three";
+
   private static final List<WeightedItem<String>> VALUES = List.of(
-      new WeightedItem<>("one", 1),
-      new WeightedItem<>("two", 2),
-      new WeightedItem<>("three", 3)
+      new WeightedItem<>(ONE, 1),
+      new WeightedItem<>(TWO, 2),
+      new WeightedItem<>(THREE, 3)
   );
 
   @Test
@@ -30,7 +34,7 @@ public class StringWeightedListConstantProviderTest {
     final Provider<?> provider = YAML_MAPPER.readValue(providerFile, Provider.class);
 
     assertThat(provider).isInstanceOf(StringWeightedListConstantProvider.class);
-    assertThat(provider.value(SEEDED_ONE_FIELD_CONTEXT.get())).isEqualTo("three");
+    assertThat(provider.value(SEEDED_ONE_FIELD_CONTEXT.get())).isEqualTo(THREE);
   }
 
   @Test
@@ -49,14 +53,14 @@ public class StringWeightedListConstantProviderTest {
   void computeValueIsIdempotent() {
     final String value = new StringWeightedListConstantProvider(VALUES)
         .value(SEEDED_ONE_FIELD_CONTEXT.get());
-    assertThat(value).isEqualTo("three");
+    assertThat(value).isEqualTo(THREE);
   }
 
   @Test
   void computeValueIsInConstants() {
     final String value = new StringWeightedListConstantProvider(VALUES)
         .value(SEEDED_FIVE_FIELD_CONTEXT.get());
-    assertThat(value).isEqualTo("three");
+    assertThat(value).isEqualTo(THREE);
   }
 
   @Test

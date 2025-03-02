@@ -98,6 +98,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
     apply plugin: 'com.github.spotbugs'
+    apply plugin: 'pmd'
     apply plugin: 'jacoco'
 
     group = 'io.duzzy'
@@ -117,6 +118,13 @@ allprojects {
     spotbugs {
         toolVersion = '4.8.6'
         excludeFilter = file('../config/spotbugs/spotbugs-exclude.xml')
+    }
+
+    pmd {
+        consoleOutput = true
+        toolVersion = "7.10.0"
+//        rulesMinimumPriority = 5
+//        ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
     }
 
     test {

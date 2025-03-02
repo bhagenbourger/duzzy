@@ -91,10 +91,16 @@ public class PluginManager {
           .stream()
           .map(PluginIdentifier::qualifiedName)
           .map(n -> "You must uninstall this version before: duzzy plugin uninstall " + n)
+          .sorted()
           .collect(joining("\n"));
+      final String installedVersionNames = installedVersions
+          .stream()
+          .map(PluginIdentifier::version)
+          .sorted()
+          .collect(joining(", "));
       return "Plugin " + pluginIdentifier.title()
           + " is already installed in versions "
-          + installedVersions.stream().map(PluginIdentifier::version).collect(joining(", "))
+          + installedVersionNames
           + ".\n"
           + uninstallCommands;
     } else {
@@ -159,9 +165,11 @@ public class PluginManager {
     final String jarName = split[split.length - 1];
     final String temp = Files.createTempDirectory(DUZZY).toFile().getAbsolutePath();
     final Path tempPath = Paths.get(temp, jarName).toAbsolutePath();
-    final ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-    try (final FileOutputStream fileOutputStream = new FileOutputStream(tempPath.toString())) {
-      final FileChannel fileChannel = fileOutputStream.getChannel();
+    try (
+        final ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+        final FileOutputStream fileOutputStream = new FileOutputStream(tempPath.toString());
+        final FileChannel fileChannel = fileOutputStream.getChannel();
+    ) {
       fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
     }
     return tempPath;

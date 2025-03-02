@@ -73,9 +73,9 @@ public class DuckdbSinkTest {
 
     try (
         final Connection connection = DriverManager.getConnection(URL);
-        final Statement statement = connection.createStatement()
+        final Statement statement = connection.createStatement();
+        final ResultSet resultSet = statement.executeQuery(COUNT)
     ) {
-      final ResultSet resultSet = statement.executeQuery(COUNT);
       resultSet.next();
       assertThat(resultSet.getInt("rows")).isEqualTo(3);
     }
@@ -90,9 +90,9 @@ public class DuckdbSinkTest {
 
     try (
         final Connection connection = DriverManager.getConnection(URL);
-        final Statement statement = connection.createStatement()
+        final Statement statement = connection.createStatement();
+        final ResultSet resultSet = statement.executeQuery(COUNT)
     ) {
-      final ResultSet resultSet = statement.executeQuery(COUNT);
       resultSet.next();
       assertThat(resultSet.getInt("rows")).isEqualTo(50);
     }
