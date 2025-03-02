@@ -20,6 +20,6 @@ public class StringConstantProvider extends ConstantProvider<String>
 
   @Override
   public String corruptedValue(FieldContext fieldContext) {
-    return StringCorruptedProvider.corruptedValue(fieldContext, getValue().length());
+    return StringCorruptedProvider.corruptedValue(fieldContext, getConstantValue().length());
   }
 }

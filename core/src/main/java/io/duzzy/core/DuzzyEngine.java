@@ -1,5 +1,6 @@
 package io.duzzy.core;
 
+import static io.duzzy.core.Forkable.MONO_THREAD;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class DuzzyEngine {
   }
 
   public void processing() throws Exception {
-    if (duzzyContext.threads() <= 1) {
+    if (duzzyContext.threads() <= MONO_THREAD) {
       monoThreadProcessing();
     } else {
       multiThreadProcessing();

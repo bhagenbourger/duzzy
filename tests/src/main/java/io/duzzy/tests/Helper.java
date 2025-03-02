@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class Helper {
 
   public static File getFromResources(Class<?> clazz, String name) {
-    final URL resource = clazz.getClassLoader().getResource(name);
+    final URL resource = Thread.currentThread().getContextClassLoader().getResource(name);
     assert resource != null;
     return new File(resource.getFile());
   }

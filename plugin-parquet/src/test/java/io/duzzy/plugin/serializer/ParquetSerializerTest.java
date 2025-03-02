@@ -70,18 +70,21 @@ public class ParquetSerializerTest {
       parquetSerializer.close();
     }
 
-    final ParquetReader<GenericRecord> reader = AvroParquetReader
-        .<GenericRecord>builder(new AvroReadSupport<>(), new Path(file.getPath()))
-        .build();
-    GenericRecord record = reader.read();
-    assertThat(record.get(KEY_C1)).isEqualTo(INTEGER_ONE);
-    assertThat(record.get(KEY_C2).toString()).isEqualTo(STRING_ONE);
+    try (
+        final ParquetReader<GenericRecord> reader = AvroParquetReader
+            .<GenericRecord>builder(new AvroReadSupport<>(), new Path(file.getPath()))
+            .build()
+    ) {
+      GenericRecord record = reader.read();
+      assertThat(record.get(KEY_C1)).isEqualTo(INTEGER_ONE);
+      assertThat(record.get(KEY_C2).toString()).isEqualTo(STRING_ONE);
 
-    record = reader.read();
-    assertThat(record.get(KEY_C1)).isEqualTo(INTEGER_TWO);
-    assertThat(record.get(KEY_C2).toString()).isEqualTo(STRING_TWO);
+      record = reader.read();
+      assertThat(record.get(KEY_C1)).isEqualTo(INTEGER_TWO);
+      assertThat(record.get(KEY_C2).toString()).isEqualTo(STRING_TWO);
 
-    record = reader.read();
-    assertThat(record).isNull();
+      record = reader.read();
+      assertThat(record).isNull();
+    }
   }
 }

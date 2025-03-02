@@ -49,14 +49,17 @@ public class KafkaSinkTest {
     kafkaSink.write(getDataTwo());
     kafkaSink.close();
 
-    final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties("json"));
-    consumer.subscribe(Collections.singleton(topic));
-    final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
-    final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
-    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
-        .isEqualTo("{\"c1\":1,\"c2\":\"one\"}");
-    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
-        .isEqualTo("{\"c1\":2,\"c2\":\"two\"}");
+    try (
+        final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties("json"))
+    ) {
+      consumer.subscribe(Collections.singleton(topic));
+      final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
+      final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
+      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
+          .isEqualTo("{\"c1\":1,\"c2\":\"one\"}");
+      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
+          .isEqualTo("{\"c1\":2,\"c2\":\"two\"}");
+    }
   }
 
   @Test
@@ -73,14 +76,17 @@ public class KafkaSinkTest {
     kafkaSink.write(getDataTwo());
     kafkaSink.close();
 
-    final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties("xml"));
-    consumer.subscribe(Collections.singleton(topic));
-    final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
-    final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
-    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
-        "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>1</c1><c2>one</c2></row></rows>");
-    assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
-        "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>2</c1><c2>two</c2></row></rows>");
+    try (
+        final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties("xml"))
+    ) {
+      consumer.subscribe(Collections.singleton(topic));
+      final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
+      final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
+      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
+          "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>1</c1><c2>one</c2></row></rows>");
+      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
+          "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>2</c1><c2>two</c2></row></rows>");
+    }
   }
 
   private static @NotNull Properties getProperties(String groupId) {

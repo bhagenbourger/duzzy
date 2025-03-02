@@ -1,8 +1,8 @@
 package io.duzzy.plugin.provider.constant;
 
 import static io.duzzy.core.parser.Parser.YAML_MAPPER;
-import static io.duzzy.test.TestUtility.SEEDED_FIVE_FIELD_CONTEXT;
-import static io.duzzy.test.TestUtility.SEEDED_ONE_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.SEEDED_FIVE_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.SEEDED_ONE_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 

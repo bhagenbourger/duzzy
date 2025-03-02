@@ -1,10 +1,9 @@
 package io.duzzy.plugin.parser;
 
-import static io.duzzy.test.TestUtility.RANDOM_FIELD_CONTEXT;
+import static io.duzzy.test.Utility.RANDOM_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.SchemaContext;

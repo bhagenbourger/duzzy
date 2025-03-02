@@ -80,7 +80,7 @@ public class AvroSchemaParserTest {
         getFromResources(getClass(), "avro-schemas/all-unsupported-fields.avsc");
     assertThatThrownBy(() -> new AvroSchemaParser().parse(avroSchema, null))
         .isInstanceOf(RuntimeException.class)
-        .hasMessage("Field name 'decimal_field' - avro logical type 'decimal' is not supported");
+        .hasMessage("Field name 'decimal_field' - avro type 'decimal' is not supported");
   }
 
   @Test

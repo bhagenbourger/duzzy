@@ -65,7 +65,7 @@ public class JdbcSinkTest {
   @Test
   void writeData() throws Exception {
     final HsqldbSink sink = new HsqldbSink(
-        new SqlSerializer("my_table"),
+        new SqlSerializer(TABLE_NAME),
         URL,
         null,
         null,
@@ -79,11 +79,9 @@ public class JdbcSinkTest {
 
     try (
         final Connection connection = DriverManager.getConnection(URL);
-        final Statement statement = connection.createStatement()
+        final Statement statement = connection.createStatement();
+        final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME)
     ) {
-
-      final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
-
       final boolean first = resultSet.next();
       final int firstId = resultSet.getInt(1);
       final String firstName = resultSet.getString(2);
@@ -107,7 +105,7 @@ public class JdbcSinkTest {
   @Test
   void failWhenIntegrityConstraintNotRespected() throws Exception {
     final HsqldbSink sink = new HsqldbSink(
-        new SqlSerializer("my_table"),
+        new SqlSerializer(TABLE_NAME),
         URL,
         null,
         null,
@@ -129,7 +127,7 @@ public class JdbcSinkTest {
   @Test
   void notFailWhenIntegrityConstraintNotRespected() throws Exception {
     final HsqldbSink sink = new HsqldbSink(
-        new SqlSerializer("my_table"),
+        new SqlSerializer(TABLE_NAME),
         URL,
         null,
         null,
@@ -144,12 +142,11 @@ public class JdbcSinkTest {
 
     try (
         final Connection connection = DriverManager.getConnection(URL);
-        final Statement statement = connection.createStatement()
+        final Statement statement = connection.createStatement();
+        final ResultSet resultSet = statement.executeQuery(
+            "SELECT count(*) as COUNT_ROWS FROM " + TABLE_NAME
+        )
     ) {
-      final ResultSet resultSet = statement.executeQuery(
-          "SELECT count(*) as COUNT_ROWS FROM " + TABLE_NAME
-      );
-
       resultSet.next();
       final int rows = resultSet.getInt(1);
 

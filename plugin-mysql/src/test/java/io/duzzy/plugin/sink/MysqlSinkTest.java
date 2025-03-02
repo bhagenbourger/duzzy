@@ -84,9 +84,9 @@ public class MysqlSinkTest {
 
     try (
         final Connection connection = getConnection();
-        final Statement statement = connection.createStatement()
+        final Statement statement = connection.createStatement();
+        final ResultSet resultSet = statement.executeQuery(COUNT)
     ) {
-      final ResultSet resultSet = statement.executeQuery(COUNT);
       resultSet.next();
       assertThat(resultSet.getInt("rows")).isEqualTo(3);
     }
