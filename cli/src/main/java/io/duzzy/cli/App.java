@@ -2,6 +2,9 @@ package io.duzzy.cli;
 
 import io.duzzy.cli.command.PluginCommand;
 import io.duzzy.cli.command.RunCommand;
+import io.duzzy.cli.documentation.DocMarkdownFormatter;
+import io.duzzy.core.documentation.DuzzyDoc;
+import java.io.IOException;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -19,6 +22,11 @@ public class App implements Runnable {
   @Override
   public void run() {
     new CommandLine(new App()).usage(System.out);
+  }
+
+  @Command(name = "doc", description = "Print Duzzy documentation")
+  void subCommandDocMethod() throws IOException {
+    System.out.println(DocMarkdownFormatter.format(DuzzyDoc.generate()));
   }
 
   public static void main(String[] args) {
