@@ -3,8 +3,9 @@ package io.duzzy.core.sink;
 import io.duzzy.core.DataItems;
 import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
+import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -14,13 +15,13 @@ public abstract class Sink implements Plugin, Forkable<Sink> {
   protected final Serializer<?> serializer;
 
   public Sink(Serializer<?> serializer) {
-    this.serializer = serializer;
+    this.serializer = serializer == null ? new JsonSerializer() : serializer;
   }
 
   public abstract OutputStream outputStreamSupplier() throws IOException;
 
-  public void init(SchemaContext schemaContext) throws Exception {
-    this.serializer.init(getOutputStream(), schemaContext);
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    this.serializer.init(getOutputStream(), duzzySchema);
   }
 
   public void write(DataItems data) throws Exception {

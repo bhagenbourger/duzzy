@@ -123,8 +123,6 @@ allprojects {
     pmd {
         consoleOutput = true
         toolVersion = "7.10.0"
-//        rulesMinimumPriority = 5
-//        ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
     }
 
     test {

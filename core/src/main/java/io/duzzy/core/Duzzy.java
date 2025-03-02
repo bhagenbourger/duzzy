@@ -2,7 +2,7 @@ package io.duzzy.core;
 
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.parser.Parser;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.parser.DuzzySchemaParser;
 import java.io.File;
 import java.io.IOException;
@@ -60,8 +60,8 @@ public class Duzzy {
       Parser parser,
       DuzzyConfig duzzyConfig
   ) throws IOException {
-    final SchemaContext schemaContext = schema == null ? null : parser.parse(schema, duzzyConfig);
-    return new DuzzyContext(schemaContext)
+    final DuzzySchema duzzySchema = schema == null ? null : parser.parse(schema, duzzyConfig);
+    return new DuzzyContext(duzzySchema)
         .withSeed(this.seed)
         .withRows(this.rows)
         .withThreads(this.threads)

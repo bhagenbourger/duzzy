@@ -6,7 +6,7 @@ import static io.duzzy.tests.Data.getDataTwo;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,7 +33,7 @@ public class XmlSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
-    xmlSerializer.init(outputStream, new SchemaContext(null));
+    xmlSerializer.init(outputStream, new DuzzySchema(null));
     xmlSerializer.serialize(getDataOne());
     xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();
@@ -51,7 +51,7 @@ public class XmlSerializerTest {
 
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
     final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
-    xmlSerializer.init(outputStream, new SchemaContext(null));
+    xmlSerializer.init(outputStream, new DuzzySchema(null));
     xmlSerializer.serialize(getDataOne());
     xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();

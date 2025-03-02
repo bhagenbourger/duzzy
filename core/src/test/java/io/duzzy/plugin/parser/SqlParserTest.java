@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.provider.random.IntegerRandomProvider;
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +18,10 @@ public class SqlParserTest {
   @Test
   void parsedFromFile() throws IOException {
     final File sqlFile = getFromResources(getClass(), "schema/table.sql");
-    final SchemaContext schemaContext = new SqlParser().parse(sqlFile, null);
+    final DuzzySchema duzzySchema = new SqlParser().parse(sqlFile, null);
 
-    assertThat(schemaContext.fields()).hasSize(8);
-    final Field first = schemaContext.fields().getFirst();
+    assertThat(duzzySchema.fields()).hasSize(8);
+    final Field first = duzzySchema.fields().getFirst();
     assertThat(first.name()).isEqualTo("I");
     assertThat(first.type()).isEqualTo(Type.INTEGER);
     assertThat(first.nullRate()).isEqualTo(0.1f);

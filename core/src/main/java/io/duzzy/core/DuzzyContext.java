@@ -1,13 +1,13 @@
 package io.duzzy.core;
 
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.sink.ConsoleSink;
 import java.util.Random;
 
 public record DuzzyContext(
-    SchemaContext schemaContext,
+    DuzzySchema duzzySchema,
     Sink sink,
     Long rows,
     Long seed,
@@ -17,16 +17,16 @@ public record DuzzyContext(
   private static final Long DEFAULT_ROWS = 10L;
   private static final Integer DEFAULT_THREADS = 1;
 
-  public DuzzyContext(SchemaContext schemaContext) {
-    this(schemaContext, null);
+  public DuzzyContext(DuzzySchema duzzySchema) {
+    this(duzzySchema, null);
   }
 
-  public DuzzyContext(SchemaContext schemaContext, Sink sink) {
-    this(schemaContext, sink, null, null, null);
+  public DuzzyContext(DuzzySchema duzzySchema, Sink sink) {
+    this(duzzySchema, sink, null, null, null);
   }
 
   public DuzzyContext {
-    schemaContext = schemaContext == null ? new SchemaContext(null) : schemaContext;
+    duzzySchema = duzzySchema == null ? new DuzzySchema(null) : duzzySchema;
     sink = sink == null ? new ConsoleSink(new JsonSerializer()) : sink;
     rows = rows == null ? DEFAULT_ROWS : rows;
     seed = seed == null ? Long.valueOf(RANDOM.nextLong()) : seed;
@@ -35,7 +35,7 @@ public record DuzzyContext(
 
   public DuzzyContext withSeed(Long seed) {
     return seed == null ? this : new DuzzyContext(
-        this.schemaContext,
+        this.duzzySchema,
         this.sink,
         this.rows,
         seed,
@@ -45,7 +45,7 @@ public record DuzzyContext(
 
   public DuzzyContext withRows(Long rows) {
     return rows == null ? this : new DuzzyContext(
-        this.schemaContext,
+        this.duzzySchema,
         this.sink,
         rows,
         this.seed,
@@ -54,7 +54,7 @@ public record DuzzyContext(
 
   public DuzzyContext withSink(Sink sink) {
     return sink == null ? this : new DuzzyContext(
-        this.schemaContext,
+        this.duzzySchema,
         sink,
         this.rows,
         this.seed,
@@ -63,11 +63,11 @@ public record DuzzyContext(
 
   public DuzzyContext withThreads(Integer threads) {
     return threads == null ? this : new DuzzyContext(
-            this.schemaContext,
-            this.sink,
-            this.rows,
-            this.seed,
-            threads);
+        this.duzzySchema,
+        this.sink,
+        this.rows,
+        this.seed,
+        threads);
   }
 
   @Override

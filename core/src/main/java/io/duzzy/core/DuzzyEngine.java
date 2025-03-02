@@ -29,7 +29,7 @@ public class DuzzyEngine {
     new DuzzyProcessing(
         0L,
         duzzyContext.rows(),
-        duzzyContext.schemaContext(),
+        duzzyContext.duzzySchema(),
         duzzyContext.sink(),
         duzzyContext.seed()
     ).run();
