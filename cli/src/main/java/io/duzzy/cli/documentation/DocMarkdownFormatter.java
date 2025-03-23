@@ -31,17 +31,17 @@ public class DocMarkdownFormatter {
 
   private static String format(Documentation documentation) {
     return "\n### " + documentation.identifier()
-        + "\nIdentifier: " + documentation.identifier()
-        + "\nDescription: " + documentation.description()
+        + "  \nIdentifier: " + documentation.identifier()
+        + "  \nDescription: " + documentation.description()
         + print(
-        "\nParameters: \n",
+        "  \n\nParameters: \n",
         Arrays
             .stream(documentation.parameters())
             .map(DocMarkdownFormatter::format)
             .collect(Collectors.joining("\n"))
     )
         + print(
-        "\nExample: \n```\n",
+        "  \n\nExample: \n```\n",
         documentation.example(),
         "```"
     );
@@ -49,9 +49,9 @@ public class DocMarkdownFormatter {
 
   private static String format(Parameter parameter) {
     return "  - Name: " + parameter.name()
-        + print("\n    Aliases: ", String.join(", ", parameter.aliases()))
-        + "\n    Description: " + parameter.description()
-        + print("\n    Default value: ", parameter.defaultValue());
+        + print("\n\n    Aliases: ", String.join(", ", parameter.aliases()))
+        + "\n\n    Description: " + parameter.description()
+        + print("\n\n    Default value: ", parameter.defaultValue());
   }
 
   private static String print(String header, String value) {
