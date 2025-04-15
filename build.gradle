@@ -49,14 +49,14 @@ project(':plugin-avro') {
 }
 
 project(':plugin-duckdb') {
-    ext{
+    ext {
         pluginTitle = 'Duckdb plugin'
         pluginDescription = 'Duckdb sink'
     }
 }
 
 project(':plugin-hdfs') {
-    ext{
+    ext {
         pluginTitle = 'Hdfs plugin'
         pluginDescription = 'Hdfs sink'
     }
@@ -102,7 +102,7 @@ allprojects {
     apply plugin: 'jacoco'
 
     group = 'io.duzzy'
-    version = '0.0.0-SNAPSHOT'
+    version = System.getenv("GITHUB_VERSION") ?: project.version
 
     java {
         sourceCompatibility = JavaVersion.VERSION_21
@@ -141,6 +141,10 @@ allprojects {
 subprojects {
     if (project.name.startsWith('plugin-')) {
         apply plugin: 'com.gradleup.shadow'
+
+        shadowJar {
+            archiveClassifier.set('all')
+        }
 
         jar {
             manifest {
@@ -211,15 +215,8 @@ subprojects {
 
     publishing {
         publications {
-            if (project.name.equals('core')) {
-                maven(MavenPublication) {
-                    from components.java
-                }
-            }
-            if (project.name.startsWith('plugin-')) {
-                shadow(MavenPublication) {
-                    from components.shadow
-                }
+            maven(MavenPublication) {
+                from components.java
             }
         }
         repositories {

@@ -20,9 +20,9 @@ Duzzy wants to be as simple as possible, to be able to run without any parameter
 
 Did you already hear these sentences or maybe, did you already say that?  
 
-Generate data shouldn't be a complicated, time-consuming or boring task.  
+Generating data shouldn't be a complicated, time-consuming or boring task.  
 Duzzy wants to solve these problems and provide a no-brainer way to generate data for your need.  
-So know, when you need data: duzzy it!  
+So now, when you need data: duzzy it!  
 
 ## 🚀 Getting started
 ♨️ Duzzy is built with Java 21, so you need java 21 to run it. ♨️
@@ -434,13 +434,20 @@ fields:
 
 The list of all core components is available [here](docs/core_components.md).  
 Some core plugins are available to extend Duzzy:  
-[plugin_avro](docs/plugin_avro.md)  
-[plugin_duckdb](docs/plugin_duckdb.md)  
-[plugin_hdfs](docs/plugin_hdfs.md)  
-[plugin_kafka](docs/plugin_kafka.md)  
-[plugin_mysql](docs/plugin_mysql.md)  
-[plugin_parquet](docs/plugin_parquet.md)  
-[plugin_postgresql](docs/plugin_postgresql.md)
+[plugin-avro](docs/plugin_avro.md)  
+[plugin-duckdb](docs/plugin_duckdb.md)  
+[plugin-hdfs](docs/plugin_hdfs.md)  
+[plugin-kafka](docs/plugin_kafka.md)  
+[plugin-mysql](docs/plugin_mysql.md)  
+[plugin-parquet](docs/plugin_parquet.md)  
+[plugin-postgresql](docs/plugin_postgresql.md)
+
+To install a core plugin, you can use the command:
+```
+DUZZY_VERSION=0.0.0
+PLUGIN_ARTIFACT_ID=plugin-avro
+duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/download/v${DUZZY_VERSION}/${PLUGIN_ARTIFACT_ID}-${DUZZY_VERSION}-all.jar"
+```
 
 ## 🤝 Contributing
 Contributions are welcome! Feel free to report issues, submit a pull request or improve documentation.

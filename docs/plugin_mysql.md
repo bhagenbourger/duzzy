@@ -1,5 +1,16 @@
 # MySQL plugin
+
+## Overview
 MySQL sink.
+
+### Plugin information
+groupId: io.duzzy  
+artifactId: plugin-mysql
+
+### Installation
+```
+duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/download/v${DUZZY_VERSION}/plugin-mysql-${DUZZY_VERSION}-all.jar"
+```
 
 ## Sink
 A sink is a component that enables to specify where and in which format (via a serializer) data are written.  

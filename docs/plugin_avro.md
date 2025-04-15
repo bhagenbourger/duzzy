@@ -1,5 +1,16 @@
 # Avro plugin
+
+## Overview
 Avro parser and avro serializers.
+
+### Plugin information
+groupId: io.duzzy  
+artifactId: plugin-avro
+
+### Installation
+```
+duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/download/v${DUZZY_VERSION}/plugin-avro-${DUZZY_VERSION}-all.jar"
+```
 
 ## Parser
 A `parser`is a component that parses the input schema and produces a `DuzzySchema` by combining the input schema and duzzy config.
@@ -16,16 +27,12 @@ Identifier: io.duzzy.plugin.serializer.AvroWithSchemaSerializer
 Description: Serialize data to Avro, schema is written with data
 
 Parameters:
-- Name: name
-
+- Name: name  
   Description: The name of the record
-- Name: namespace
-
+- Name: namespace  
   Description: The namespace that qualifies the name
-- Name: schema_file
-
-  Aliases: schemaFile, schema-file
-
+- Name: schema_file  
+  Aliases: schemaFile, schema-file  
   Description: The Avro schema file
 
 Example:
@@ -42,16 +49,12 @@ Identifier: io.duzzy.plugin.serializer.AvroSchemalessSerializer
 Description: Serialize data to Avro, schema is not written with data
 
 Parameters:
-- Name: name
-
+- Name: name  
   Description: The name of the record
-- Name: namespace
-
+- Name: namespace 
   Description: The namespace that qualifies the name
-- Name: schema_file
-
-  Aliases: schemaFile, schema-file
-
+- Name: schema_file  
+  Aliases: schemaFile, schema-file 
   Description: The Avro schema file
 
 Example:
