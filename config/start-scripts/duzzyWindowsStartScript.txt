@@ -71,7 +71,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%USERPROFILE%/.duzzy/plugins/*:$classpath
+set CLASSPATH="$classpath:%USERPROFILE%/.duzzy/plugins/*"
 <% if ( mainClassName.startsWith('--module ') ) { %>set MODULE_PATH=$modulePath<% } %>
 
 @rem Execute ${applicationName}

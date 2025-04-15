@@ -5,7 +5,7 @@ import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.provider.random.BooleanRandomProvider;
 import io.duzzy.plugin.provider.random.DoubleRandomProvider;
@@ -31,7 +31,7 @@ import org.jooq.impl.DefaultConfiguration;
 public class SqlParser implements Parser {
 
   @Override
-  public SchemaContext parse(File file, DuzzyConfig duzzyConfig) throws IOException {
+  public DuzzySchema parse(File file, DuzzyConfig duzzyConfig) throws IOException {
     final Meta meta =
         DSL
             .using(new DefaultConfiguration())
@@ -42,7 +42,7 @@ public class SqlParser implements Parser {
         .map(f -> parse(f, duzzyConfig))
         .toList();
 
-    return new SchemaContext(fields);
+    return new DuzzySchema(fields);
   }
 
   private Field parse(org.jooq.Field<?> jfield, DuzzyConfig duzzyConfig) {

@@ -6,7 +6,7 @@ import static io.duzzy.tests.Data.getDataTwo;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.ByteArrayOutputStream;
@@ -24,6 +24,7 @@ public class ConsoleSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(ConsoleSink.class);
+    assertThat(sink.getSerializer()).isInstanceOf(JsonSerializer.class);
   }
 
   @Test
@@ -34,7 +35,7 @@ public class ConsoleSinkTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-    consoleSink.init(new SchemaContext(null));
+    consoleSink.init(new DuzzySchema(null));
     consoleSink.write(getDataOne());
     consoleSink.write(getDataTwo());
     consoleSink.write(getDataOne());

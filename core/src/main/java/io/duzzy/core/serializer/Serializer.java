@@ -3,7 +3,7 @@ package io.duzzy.core.serializer;
 import io.duzzy.core.DataItems;
 import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,7 +11,7 @@ import java.io.OutputStream;
 public abstract class Serializer<W extends Closeable> implements Plugin, Forkable<Serializer<W>> {
 
   private W writer;
-  private SchemaContext schemaContext;
+  private DuzzySchema duzzySchema;
   private OutputStream outputStream;
 
   public abstract Boolean hasSchema();
@@ -24,13 +24,13 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
     if (writer == null) {
       throw new RuntimeException(
           "writer must be initiated "
-              + "- call init(OutputStream outputStream, SchemaContext schemaContext) method");
+              + "- call init(OutputStream outputStream, SchemaContext duzzySchema) method");
     }
     serialize(data, writer);
   }
 
-  public void init(OutputStream outputStream, SchemaContext schemaContext) throws IOException {
-    this.schemaContext = schemaContext;
+  public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
+    this.duzzySchema = duzzySchema;
     this.outputStream = outputStream;
     reset();
   }
@@ -45,7 +45,7 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
     writer = buildWriter(outputStream);
   }
 
-  protected SchemaContext getSchemaContext() {
-    return schemaContext;
+  protected DuzzySchema getDuzzySchema() {
+    return duzzySchema;
   }
 }

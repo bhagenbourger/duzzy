@@ -2,7 +2,7 @@ package io.duzzy.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.MockSink;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ public class DuzzyContextTest {
 
   @Test
   void threadsReturnOneByDefault() {
-    final DuzzyContext duzzyContext = new DuzzyContext(new SchemaContext(null));
+    final DuzzyContext duzzyContext = new DuzzyContext(new DuzzySchema(null));
     assertThat(duzzyContext.threads()).isEqualTo(1);
   }
 
@@ -18,7 +18,7 @@ public class DuzzyContextTest {
   void threadsReturnSpecifiedValue() {
     final int threads = 3;
     final DuzzyContext duzzyContext =
-        new DuzzyContext(new SchemaContext(null)).withThreads(threads).withSink(new MockSink());
+        new DuzzyContext(new DuzzySchema(null)).withThreads(threads).withSink(new MockSink());
     assertThat(duzzyContext.threads()).isEqualTo(threads);
   }
 
@@ -27,7 +27,7 @@ public class DuzzyContextTest {
     final int threads = 10;
     final int sinkThread = 5;
     final DuzzyContext duzzyContext =
-        new DuzzyContext(new SchemaContext(null))
+        new DuzzyContext(new DuzzySchema(null))
             .withThreads(threads)
             .withSink(new MockSink());
     assertThat(duzzyContext.threads()).isEqualTo(sinkThread);

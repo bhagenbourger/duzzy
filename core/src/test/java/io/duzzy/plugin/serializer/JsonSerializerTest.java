@@ -6,7 +6,7 @@ import static io.duzzy.tests.Data.getDataTwo;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,7 +30,7 @@ public class JsonSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final JsonSerializer jsonSerializer = new JsonSerializer();
-    jsonSerializer.init(outputStream, new SchemaContext(null));
+    jsonSerializer.init(outputStream, new DuzzySchema(null));
     jsonSerializer.serialize(getDataOne());
     jsonSerializer.serialize(getDataTwo());
 

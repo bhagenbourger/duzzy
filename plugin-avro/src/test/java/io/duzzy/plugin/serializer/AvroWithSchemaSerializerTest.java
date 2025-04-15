@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
-import io.duzzy.core.schema.SchemaContext;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
@@ -89,7 +89,7 @@ public class AvroWithSchemaSerializerTest {
 
     final AvroWithSchemaSerializer avroWithSchemaSerializer =
         new AvroWithSchemaSerializer(null, null, null);
-    avroWithSchemaSerializer.init(outputStream, new SchemaContext(fields));
+    avroWithSchemaSerializer.init(outputStream, new DuzzySchema(fields));
     avroWithSchemaSerializer.serialize(Data.getDataOne());
     avroWithSchemaSerializer.serialize(Data.getDataTwo());
     avroWithSchemaSerializer.close();
