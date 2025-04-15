@@ -2,12 +2,19 @@ name: Duzzy check
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - releases/*
+    tags:
+      - v*
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+      - releases/*
 
 permissions:
   checks: write
+  packages: write
 
 jobs:
   build:
@@ -65,3 +72,23 @@ jobs:
           name: reports
           path: "**/build/reports"
           retention-days: 7
+
+      - name: Publish snapshot
+        run: ./gradlew publish
+        if: ${{ startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/releases') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate variable for release
+        shell: bash
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          # Output tag in correct format
+          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Publish release
+        run: ./gradlew publish
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_VERSION: ${{ env.VERSION }}
