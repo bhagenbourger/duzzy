@@ -1,5 +1,12 @@
 dependencies {
     implementation project(":core")
+    implementation project(":plugin-avro")
+    implementation project(":plugin-duckdb")
+    implementation project(":plugin-hdfs")
+    implementation project(":plugin-kafka")
+    implementation project(":plugin-mysql")
+    implementation project(":plugin-parquet")
+    implementation project(":plugin-postgresql")
 
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
@@ -8,6 +15,7 @@ dependencies {
     implementation 'info.picocli:picocli:4.7.6'
     annotationProcessor 'info.picocli:picocli-codegen:4.7.6'
 
+    testImplementation project(":tests")
     testImplementation project(":plugin-avro")
     testImplementation "org.apache.avro:avro:$avroVersion"
 }

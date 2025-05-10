@@ -1,6 +1,8 @@
 package io.duzzy.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.sink.Sink;
@@ -9,6 +11,34 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@Documentation(
+    identifier = "io.duzzy.core.config.DuzzyConfig",
+    description = "Duzzy Config enables schema enrichment by specifying column provider, "
+        + "sink or serializer",
+    duzzyType = DuzzyType.DUZZY_CONFIG,
+    parameters = {},
+    example = """
+        ---
+        enrichers:
+          - query_selector: "name=city"
+            provider_identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
+            provider_parameters:
+              min_length: 3
+              max_length: 20
+          - query_selector: "type=INTEGER"
+            provider_identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
+            provider_parameters:
+              min: 1
+              max: 9999
+        sink:
+          identifier: "io.duzzy.plugin.sink.LocalFileSink"
+          filename: "/tmp/example.xml"
+          serializer:
+            identifier: "io.duzzy.plugin.serializer.XmlSerializer"
+            root_tag: myRootExample
+            row_tag: myRowExample
+        """
+)
 public record DuzzyConfig(
     List<Enricher> enrichers,
     Sink sink

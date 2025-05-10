@@ -33,6 +33,7 @@ public class AppTest {
       Commands:
         run     Generate your test data
         plugin  Manage your plugins
+        doc     Print Duzzy documentation
       """;
   private static final String RUN_ACTION = "run";
   private static final String SCHEMA_FILE_OPTION =
@@ -320,5 +321,19 @@ public class AppTest {
           -s, --source=String   Url or local path to the plugin
           -V, --version         Print version information and exit.
         """);
+  }
+
+  @Test
+  void generateDoc() {
+    final App app = new App();
+    final CommandLine cmd = new CommandLine(app);
+
+    final StringWriter sw = new StringWriter();
+    cmd.setOut(new PrintWriter(sw));
+
+    final int exitCode = cmd.execute("doc");
+
+    assertThat(exitCode).isEqualTo(0);
+    assertThat(sw.toString()).isEqualTo("");
   }
 }
