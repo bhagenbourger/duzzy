@@ -1,5 +1,16 @@
 # Parquet plugin
+
+## Overview
 Parquet serializer.
+
+### Plugin information
+groupId: io.duzzy  
+artifactId: plugin-parquet
+
+### Installation
+```
+duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/download/v${DUZZY_VERSION}/plugin-parquet-${DUZZY_VERSION}-all.jar"
+```
 
 ## Serializer
 A serializer is a component that enables to specify how data are formatted.
