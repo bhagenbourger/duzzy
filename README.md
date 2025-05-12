@@ -5,24 +5,24 @@
   Give me your schema, <br />I'll give you your test data.
 </h1>
 
-![Duzzy check](https://github.com/bhagenbourger/duzzy/actions/workflows/check.yml/badge.svg)
+![Duzzy check](https://github.com/bhagenbourger/duzzy/actions/workflows/main.yml/badge.svg)
 ![GitHub License](https://img.shields.io/github/license/bhagenbourger/duzzy?color=%234169E1)
 
-Duzzy is a data generation tool that aims to make generating test data easier.  
-Duzzy wants to be as simple as possible, to be able to run without any parameters (meaning every parameter has a default value) but fully configurable and extendable : easy start, easy tuning. 
+Duzzy is a data generation tool that aims to facilitate the generation of test data.  
+Duzzy is designed to be as simple as possible, able to run without any parameters (which means that every parameter has a default value) but fully configurable and expandable: easy to start up, easy to tune.
 
 ## 🤔 Why Duzzy?
-"Do you have a dataset to test this pipeline?"  
-"I need data to test my job."  
-"I can't reproduce this bug without data."  
-"Do you know how to publish relevant message into this Kafka topic?"  
-"Do you have a parquet file to test that case?"  
+>"Do you have a dataset to test this pipeline?"  
+>"I need data to test my job."  
+>"I can't reproduce this bug without data."  
+>"Do you know how to publish a relevant message into this Kafka topic?"  
+>"Do you have a parquet file to test that case?"  
 
-Did you already hear these sentences or maybe, did you already say that?  
+Have you ever heard these sentences, or perhaps you have already said them?
 
 Generating data shouldn't be a complicated, time-consuming or boring task.  
-Duzzy wants to solve these problems and provide a no-brainer way to generate data for your need.  
-So now, when you need data: duzzy it!  
+Duzzy aims to solve these problems and provide a no-brainer way to generate data to meet your need.  
+So now, when you need data: duzzy it!
 
 ## 🚀 Getting started
 ♨️ Duzzy is built with Java 21, so you need java 21 to run it. ♨️
