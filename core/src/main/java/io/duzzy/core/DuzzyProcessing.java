@@ -26,12 +26,13 @@ public class DuzzyProcessing {
     this.seed = seed;
   }
 
-  public void run() throws Exception {
+  public int run() throws Exception {
     sink.init(duzzySchema);
     for (Long index = start; index < end; index++) {
       processRow(index, ProviderUtil.RANDOM_PROVIDERS);
     }
     sink.close();
+    return sink.getSerializer().size();
   }
 
   private void processRow(

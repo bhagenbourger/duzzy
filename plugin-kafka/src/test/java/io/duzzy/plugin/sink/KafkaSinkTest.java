@@ -2,6 +2,7 @@ package io.duzzy.plugin.sink;
 
 import static io.duzzy.tests.Data.getDataOne;
 import static io.duzzy.tests.Data.getDataTwo;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.plugin.serializer.JsonSerializer;
@@ -55,10 +56,13 @@ public class KafkaSinkTest {
       consumer.subscribe(Collections.singleton(topic));
       final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
       final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
-      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
-          .isEqualTo("{\"c1\":1,\"c2\":\"one\"}");
-      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8))
-          .isEqualTo("{\"c1\":2,\"c2\":\"two\"}");
+      final String expected1 = "{\"c1\":1,\"c2\":\"one\"}";
+      final String expected2 = "{\"c1\":2,\"c2\":\"two\"}";
+      final int size = expected1.length() + expected2.length();
+
+      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected1);
+      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected2);
+      assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
     }
   }
 
@@ -82,10 +86,14 @@ public class KafkaSinkTest {
       consumer.subscribe(Collections.singleton(topic));
       final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
       final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
-      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
-          "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>1</c1><c2>one</c2></row></rows>");
-      assertThat(new String(iterator.next().value(), StandardCharsets.UTF_8)).isEqualTo(
-          "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>2</c1><c2>two</c2></row></rows>");
+      final String expected1 =
+          "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>1</c1><c2>one</c2></row></rows>";
+      final String expected2 =
+          "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>2</c1><c2>two</c2></row></rows>";
+      final int size = expected1.length() + expected2.length();
+      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected1);
+      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected2);
+      assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
     }
   }
 
