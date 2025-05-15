@@ -7,7 +7,9 @@ import io.duzzy.core.DataItems;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -42,16 +44,10 @@ public class KafkaSink extends Sink {
 
   @Override
   public void write(DataItems data) throws Exception {
+    reset();
     super.write(data);
     serializer.close();
-    final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
-        topic,
-        null,
-        ((ByteArrayOutputStream) getOutputStream()).toByteArray()
-    );
-    producer.send(record);
-    ((ByteArrayOutputStream) getOutputStream()).reset();
-    serializer.reset();
+    sendToKafka();
   }
 
   @Override
@@ -63,6 +59,22 @@ public class KafkaSink extends Sink {
   @Override
   public KafkaSink fork(Long threadId) throws Exception {
     return new KafkaSink(serializer.fork(threadId), topic, bootstrapServers);
+  }
+
+  private void reset() throws IOException {
+    if (((ByteArrayOutputStream) getOutputStream()).size() > 0) {
+      ((ByteArrayOutputStream) getOutputStream()).reset();
+      serializer.reset();
+    }
+  }
+
+  private void sendToKafka() throws IOException {
+    final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
+        topic,
+        null,
+        ((ByteArrayOutputStream) getOutputStream()).toByteArray()
+    );
+    producer.send(record);
   }
 
   private static Properties buildProperties(String bootstrapServers) {

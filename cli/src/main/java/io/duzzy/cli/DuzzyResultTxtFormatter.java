@@ -8,6 +8,7 @@ public class DuzzyResultTxtFormatter implements DuzzyResultFormatter {
   public String format(DuzzyResult duzzyResult) {
     return "Duzzy generated " + duzzyResult.rows()
         + " rows in " + duzzyResult.duration()
-        + " with seed " + duzzyResult.seed();
+        + " which represent " + duzzyResult.size()
+        + " bytes of data with seed " + duzzyResult.seed();
   }
 }

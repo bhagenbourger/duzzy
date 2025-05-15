@@ -5,6 +5,7 @@ import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
 import java.io.Closeable;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -12,7 +13,15 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
 
   private W writer;
   private DuzzySchema duzzySchema;
-  private OutputStream outputStream;
+  private DataOutputStream outputStream;
+
+  public long size() {
+    return size(outputStream, writer);
+  }
+
+  protected long size(OutputStream outputStream, W writer) {
+    return outputStream instanceof DataOutputStream ? ((DataOutputStream) outputStream).size() : 0;
+  }
 
   public abstract Boolean hasSchema();
 
@@ -22,16 +31,15 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
 
   public void serialize(DataItems data) throws IOException {
     if (writer == null) {
-      throw new RuntimeException(
-          "writer must be initiated "
-              + "- call init(OutputStream outputStream, SchemaContext duzzySchema) method");
+      throw new RuntimeException("writer must be initiated "
+          + "- call init(OutputStream outputStream, SchemaContext duzzySchema) method");
     }
     serialize(data, writer);
   }
 
   public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
     this.duzzySchema = duzzySchema;
-    this.outputStream = outputStream;
+    this.outputStream = new DataOutputStream(outputStream);
     reset();
   }
 

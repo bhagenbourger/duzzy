@@ -17,16 +17,12 @@ public class DuzzyEngine {
     this.duzzyContext = duzzyContext;
   }
 
-  public void processing() throws Exception {
-    if (duzzyContext.threads() <= MONO_THREAD) {
-      monoThreadProcessing();
-    } else {
-      multiThreadProcessing();
-    }
+  public long processing() throws Exception {
+    return duzzyContext.threads() <= MONO_THREAD ? monoThreadProcessing() : multiThreadProcessing();
   }
 
-  void monoThreadProcessing() throws Exception {
-    new DuzzyProcessing(
+  long monoThreadProcessing() throws Exception {
+    return new DuzzyProcessing(
         0L,
         duzzyContext.rows(),
         duzzyContext.duzzySchema(),
@@ -35,13 +31,15 @@ public class DuzzyEngine {
     ).run();
   }
 
-  void multiThreadProcessing() throws InterruptedException, ExecutionException {
+  long multiThreadProcessing() throws InterruptedException, ExecutionException {
+    long sum = 0;
     try (final ExecutorService executorService = newFixedThreadPool(duzzyContext.threads())) {
-      final List<Future<Void>> futures = executorService.invokeAll(computeTasks());
-      for (Future<Void> f : futures) {
-        f.get();
+      final List<Future<Long>> futures = executorService.invokeAll(computeTasks());
+      for (Future<Long> f : futures) {
+        sum += f.get();
       }
     }
+    return sum;
   }
 
   private List<DuzzyThread> computeTasks() {

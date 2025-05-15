@@ -42,7 +42,7 @@ public class AppTest {
   private static final String SEAD_OPTION = "-s=1234";
   private static final String OUTPUT_OPTION = "-o=TXT";
   private static final String RESULT_STARTS_WITH = "Duzzy generated 3 rows in PT0";
-  private static final String RESULT_ENDS_WITH = "S with seed 1234\n";
+  private static final String RESULT_ENDS_WITH = "bytes of data with seed 1234\n";
 
   @Test
   void shouldPrintHelp() {

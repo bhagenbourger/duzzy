@@ -35,6 +35,7 @@ public class CsvSerializerTest {
     csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(csvSerializer.size()).isEqualTo(expected.length());
   }
 
   @Test
@@ -49,5 +50,6 @@ public class CsvSerializerTest {
     csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(csvSerializer.size()).isEqualTo(expected.length());
   }
 }

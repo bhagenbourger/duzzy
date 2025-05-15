@@ -42,12 +42,13 @@ public class Duzzy {
 
   private static DuzzyResult generate(DuzzyContext duzzyContext) throws Exception {
     final Long start = Instant.now().toEpochMilli();
-    new DuzzyEngine(duzzyContext).processing();
+    final long size = new DuzzyEngine(duzzyContext).processing();
     final Long end = Instant.now().toEpochMilli();
 
     return new DuzzyResult(
         Duration.of(end - start, ChronoUnit.MILLIS),
         duzzyContext.rows(),
+        size,
         duzzyContext.seed()
     );
   }
