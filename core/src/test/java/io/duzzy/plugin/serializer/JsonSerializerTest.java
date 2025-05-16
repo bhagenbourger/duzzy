@@ -35,5 +35,6 @@ public class JsonSerializerTest {
     jsonSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(jsonSerializer.size()).isEqualTo(expected.length());
   }
 }

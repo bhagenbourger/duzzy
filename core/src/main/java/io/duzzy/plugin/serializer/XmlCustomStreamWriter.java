@@ -10,8 +10,6 @@ public record XmlCustomStreamWriter(XMLStreamWriter xmlStreamWriter) implements 
   @Override
   public void close() throws IOException {
     try {
-      xmlStreamWriter.writeEndElement();
-      xmlStreamWriter.writeEndDocument();
       xmlStreamWriter.close();
     } catch (XMLStreamException e) {
       throw new IOException(e);

@@ -35,6 +35,7 @@ public class SqlSerializer extends Serializer<OutputStream> {
         .insertInto(DSL.table(tableName))
         .values(data.toValues())
         .getSQL(ParamType.INLINED);
+    System.out.println(sql);
     writer.write(sql.getBytes(StandardCharsets.UTF_8));
   }
 
