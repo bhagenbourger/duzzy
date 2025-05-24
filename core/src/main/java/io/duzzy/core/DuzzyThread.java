@@ -2,7 +2,7 @@ package io.duzzy.core;
 
 import java.util.concurrent.Callable;
 
-public class DuzzyThread implements Callable<Integer> {
+public class DuzzyThread implements Callable<Long> {
 
   private final Long start;
   private final Long end;
@@ -15,7 +15,7 @@ public class DuzzyThread implements Callable<Integer> {
   }
 
   @Override
-  public Integer call() {
+  public Long call() {
     try {
       return new DuzzyProcessing(
           start,

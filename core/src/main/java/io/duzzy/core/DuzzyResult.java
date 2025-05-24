@@ -5,7 +5,7 @@ import java.time.Duration;
 public record DuzzyResult(
     Duration duration,
     Long rows,
-    Integer size,
+    Long size,
     Long seed
 ) {
 }

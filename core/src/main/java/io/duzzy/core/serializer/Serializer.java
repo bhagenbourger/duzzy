@@ -5,19 +5,19 @@ import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
 import java.io.Closeable;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
-public abstract class Serializer<W extends Closeable> implements Plugin, Forkable<Serializer<W>> {
-
+public abstract class Serializer<W extends Closeable, O>
+    implements Plugin, Forkable<Serializer<W, O>> {
   private W writer;
+  private O output;
   private DuzzySchema duzzySchema;
-  private DataOutputStream outputStream;
+
+  public abstract long size();
 
   public abstract Boolean hasSchema();
 
-  protected abstract W buildWriter(OutputStream outputStream) throws IOException;
+  protected abstract W buildWriter(O output) throws IOException;
 
   protected abstract void serialize(DataItems data, W writer) throws IOException;
 
@@ -30,9 +30,9 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
     serialize(data, writer);
   }
 
-  public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
+  public void init(O output, DuzzySchema duzzySchema) throws IOException {
     this.duzzySchema = duzzySchema;
-    this.outputStream = new DataOutputStream(outputStream);
+    this.output = output;
     reset();
   }
 
@@ -43,14 +43,26 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
   }
 
   public void reset() throws IOException {
-    writer = buildWriter(outputStream);
+    writer = buildWriter(output);
   }
 
-  public int size() {
-    return outputStream.size();
+  public W getWriter() {
+    return writer;
+  }
+
+  public O getOutput() {
+    return output;
+  }
+
+  protected void setOutput(O output) {
+    this.output = output;
   }
 
   protected DuzzySchema getDuzzySchema() {
     return duzzySchema;
+  }
+
+  protected void setDuzzySchema(DuzzySchema duzzySchema) {
+    this.duzzySchema = duzzySchema;
   }
 }

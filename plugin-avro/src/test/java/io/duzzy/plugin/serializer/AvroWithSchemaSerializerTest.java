@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.OutputStreamSerializer;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
@@ -28,7 +29,7 @@ public class AvroWithSchemaSerializerTest {
   void parsedFromYaml() throws IOException {
     final File serializerFile =
         getFromResources(getClass(), "serializer/avro-with-schema-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(AvroWithSchemaSerializer.class);
   }
@@ -37,7 +38,7 @@ public class AvroWithSchemaSerializerTest {
   void parsedFromYamlFull() throws IOException {
     final File serializerFile =
         getFromResources(getClass(), "serializer/avro-with-schema-serializer-full.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(AvroWithSchemaSerializer.class);
     final Schema schema = ((AvroWithSchemaSerializer) serializer).getSchema();

@@ -4,6 +4,7 @@ import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.provider.ProviderUtil;
 import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.sink.OutputStreamSink;
 import io.duzzy.core.sink.Sink;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -26,7 +27,7 @@ public class DuzzyProcessing {
     this.seed = seed;
   }
 
-  public int run() throws Exception {
+  public long run() throws Exception {
     sink.init(duzzySchema);
     for (Long index = start; index < end; index++) {
       processRow(index, ProviderUtil.RANDOM_PROVIDERS);

@@ -5,17 +5,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DataItems;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.OutputStreamSink;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-public class KafkaSink extends Sink {
+public class KafkaSink extends OutputStreamSink {
 
   private final String topic;
   private final String bootstrapServers;
@@ -24,7 +23,7 @@ public class KafkaSink extends Sink {
   @JsonCreator
   public KafkaSink(
       @JsonProperty("serializer")
-      Serializer<?> serializer,
+      Serializer<?, OutputStream> serializer,
       @JsonProperty("topic")
       String topic,
       @JsonProperty("bootstrap_servers")
@@ -38,7 +37,7 @@ public class KafkaSink extends Sink {
   }
 
   @Override
-  public OutputStream outputStreamSupplier() {
+  public OutputStream outputSupplier() {
     return new ByteArrayOutputStream();
   }
 
@@ -62,8 +61,8 @@ public class KafkaSink extends Sink {
   }
 
   private void reset() throws IOException {
-    if (((ByteArrayOutputStream) getOutputStream()).size() > 0) {
-      ((ByteArrayOutputStream) getOutputStream()).reset();
+    if (((ByteArrayOutputStream) getOutput()).size() > 0) {
+      ((ByteArrayOutputStream) getOutput()).reset();
       serializer.reset();
     }
   }
@@ -72,7 +71,7 @@ public class KafkaSink extends Sink {
     final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
         topic,
         null,
-        ((ByteArrayOutputStream) getOutputStream()).toByteArray()
+        ((ByteArrayOutputStream) getOutput()).toByteArray()
     );
     producer.send(record);
   }

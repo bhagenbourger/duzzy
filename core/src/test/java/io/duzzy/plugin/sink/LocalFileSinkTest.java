@@ -39,7 +39,7 @@ public class LocalFileSinkTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File sinkFile = getFromResources(getClass(), "sink/local-file-sink.yaml");
-    final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
+    final Sink<?> sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(LocalFileSink.class);
   }
@@ -47,7 +47,7 @@ public class LocalFileSinkTest {
   @Test
   void initFailed() throws Exception {
     final File sinkFile = getFromResources(getClass(), "sink/local-file-sink-error.yaml");
-    final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
+    final Sink<?> sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThatThrownBy(() -> sink.init(null))
         .isInstanceOf(FileNotFoundException.class)

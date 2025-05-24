@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public record DuzzyConfig(
     List<Enricher> enrichers,
-    Sink sink
+    Sink<?> sink
 ) {
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

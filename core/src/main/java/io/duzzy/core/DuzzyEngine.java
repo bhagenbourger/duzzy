@@ -17,11 +17,11 @@ public class DuzzyEngine {
     this.duzzyContext = duzzyContext;
   }
 
-  public int processing() throws Exception {
+  public long processing() throws Exception {
     return duzzyContext.threads() <= MONO_THREAD ? monoThreadProcessing() : multiThreadProcessing();
   }
 
-  int monoThreadProcessing() throws Exception {
+  long monoThreadProcessing() throws Exception {
     return new DuzzyProcessing(
         0L,
         duzzyContext.rows(),
@@ -31,11 +31,11 @@ public class DuzzyEngine {
     ).run();
   }
 
-  int multiThreadProcessing() throws InterruptedException, ExecutionException {
-    int sum = 0;
+  long multiThreadProcessing() throws InterruptedException, ExecutionException {
+    long sum = 0;
     try (final ExecutorService executorService = newFixedThreadPool(duzzyContext.threads())) {
-      final List<Future<Integer>> futures = executorService.invokeAll(computeTasks());
-      for (Future<Integer> f : futures) {
+      final List<Future<Long>> futures = executorService.invokeAll(computeTasks());
+      for (Future<Long> f : futures) {
         sum += f.get();
       }
     }

@@ -19,7 +19,7 @@ public class JsonSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/json-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(JsonSerializer.class);
   }

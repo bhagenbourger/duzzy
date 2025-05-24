@@ -19,7 +19,7 @@ public class XmlSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(XmlSerializer.class);
   }

@@ -42,7 +42,7 @@ public class Duzzy {
 
   private static DuzzyResult generate(DuzzyContext duzzyContext) throws Exception {
     final Long start = Instant.now().toEpochMilli();
-    final int size = new DuzzyEngine(duzzyContext).processing();
+    final long size = new DuzzyEngine(duzzyContext).processing();
     final Long end = Instant.now().toEpochMilli();
 
     return new DuzzyResult(
