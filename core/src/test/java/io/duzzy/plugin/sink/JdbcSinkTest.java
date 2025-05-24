@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.sink.JdbcSink;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.OutputStreamSink;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import io.duzzy.tests.Data;
 import java.nio.charset.StandardCharsets;
@@ -173,7 +173,7 @@ public class JdbcSinkTest {
     }
 
     @Override
-    public Sink fork(Long threadId) {
+    public OutputStreamSink fork(Long threadId) {
       return new HsqldbSink((SqlSerializer) serializer, url, user, password, failOnError);
     }
   }

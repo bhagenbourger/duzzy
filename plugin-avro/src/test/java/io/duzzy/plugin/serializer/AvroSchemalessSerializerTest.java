@@ -39,7 +39,7 @@ public class AvroSchemalessSerializerTest {
   void parsedFromYaml() throws IOException {
     final File serializerFile =
         getFromResources(getClass(), "serializer/avro-schemaless-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(AvroSchemalessSerializer.class);
   }

@@ -16,10 +16,10 @@ public class DuzzyProcessing {
   private final Long start;
   private final Long end;
   private final DuzzySchema duzzySchema;
-  private final Sink sink;
+  private final Sink<?> sink;
   private final Long seed;
 
-  public DuzzyProcessing(Long start, Long end, DuzzySchema duzzySchema, Sink sink, Long seed) {
+  public DuzzyProcessing(Long start, Long end, DuzzySchema duzzySchema, Sink<?> sink, Long seed) {
     this.start = start;
     this.end = end;
     this.duzzySchema = duzzySchema;

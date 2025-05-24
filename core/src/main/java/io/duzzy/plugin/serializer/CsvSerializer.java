@@ -12,11 +12,11 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.serializer.Serializer;
+import io.duzzy.core.serializer.OutputStreamSerializer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class CsvSerializer extends Serializer<SequenceWriter> {
+public class CsvSerializer extends OutputStreamSerializer<SequenceWriter> {
 
   private static final CsvMapper MAPPER = (CsvMapper) new CsvMapper()
       .registerModule(new JavaTimeModule());

@@ -4,29 +4,24 @@ import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
-import java.io.Closeable;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
-public abstract class Serializer<W extends Closeable> implements Plugin, Forkable<Serializer<W>> {
-
+public abstract class Serializer<W extends AutoCloseable, O>
+    implements Plugin, Forkable<Serializer<W, O>> {
   private W writer;
+  private O output;
   private DuzzySchema duzzySchema;
-  private DataOutputStream outputStream;
   private Long rowCount = 0L;
 
   public long size() {
-    return size(outputStream, writer);
+    return size(output, writer);
   }
 
-  protected long size(OutputStream outputStream, W writer) {
-    return outputStream instanceof DataOutputStream ? ((DataOutputStream) outputStream).size() : 0;
-  }
+  protected abstract long size(O output, W writer);
 
   public abstract Boolean hasSchema();
 
-  protected abstract W buildWriter(OutputStream outputStream) throws IOException;
+  protected abstract W buildWriter(O output) throws IOException;
 
   protected abstract void serialize(DuzzyRow row, W writer) throws IOException;
 
@@ -38,24 +33,25 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
     serialize(row, writer);
   }
 
-  public void init(OutputStream outputStream,
-                   DuzzySchema duzzySchema,
-                   Long rowCount
-  ) throws IOException {
+  public void init(O output, DuzzySchema duzzySchema, Long rowCount) throws IOException {
     this.duzzySchema = duzzySchema;
-    this.outputStream = new DataOutputStream(outputStream);
+    this.output = output;
     this.rowCount = rowCount;
     reset();
   }
 
-  public void close() throws IOException {
+  public void close() throws Exception {
     if (writer != null) {
       writer.close();
     }
   }
 
   public void reset() throws IOException {
-    writer = buildWriter(outputStream);
+    writer = buildWriter(output);
+  }
+
+  protected W getWriter() {
+    return writer;
   }
 
   protected DuzzySchema getDuzzySchema() {

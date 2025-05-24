@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.schema.AvroSchemaUtil;
 import io.duzzy.core.serializer.AvroSerializer;
 import java.io.File;
 import java.io.IOException;

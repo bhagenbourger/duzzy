@@ -20,13 +20,13 @@ public class XmlSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(XmlSerializer.class);
   }
 
   @Test
-  void serializeXmlWithDefaultValues() throws IOException {
+  void serializeXmlWithDefaultValues() throws Exception {
     final String expected =
         "<?xml version='1.0' encoding='UTF-8'?><rows>"
             + "<row><c1>1</c1><c2>one</c2></row><row><c1>2</c1><c2>two</c2></row>"
@@ -44,7 +44,7 @@ public class XmlSerializerTest {
   }
 
   @Test
-  void writXmlWithCustomValues() throws IOException {
+  void writXmlWithCustomValues() throws Exception {
     final String expected =
         "<?xml version='1.0' encoding='UTF-8'?><myRoot>"
             + "<myRow><c1>1</c1><c2>one</c2></myRow>"

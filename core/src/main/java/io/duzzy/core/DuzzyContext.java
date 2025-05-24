@@ -9,7 +9,7 @@ import java.util.Random;
 
 public record DuzzyContext(
     DuzzySchema duzzySchema,
-    Sink sink,
+    Sink<?> sink,
     Long rows,
     Long seed,
     Integer threads
@@ -22,7 +22,7 @@ public record DuzzyContext(
     this(duzzySchema, null);
   }
 
-  public DuzzyContext(DuzzySchema duzzySchema, Sink sink) {
+  public DuzzyContext(DuzzySchema duzzySchema, Sink<?> sink) {
     this(duzzySchema, sink, null, null, null);
   }
 
@@ -53,7 +53,7 @@ public record DuzzyContext(
         this.threads);
   }
 
-  public DuzzyContext withSink(Sink sink) {
+  public DuzzyContext withSink(Sink<?> sink) {
     return sink == null ? this : new DuzzyContext(
         this.duzzySchema,
         sink,

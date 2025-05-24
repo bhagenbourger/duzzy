@@ -12,7 +12,7 @@ import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class JdbcSink extends Sink {
+public abstract class JdbcSink extends OutputStreamSink {
 
   private static final Logger logger = LoggerFactory.getLogger(JdbcSink.class);
 
@@ -44,7 +44,7 @@ public abstract class JdbcSink extends Sink {
   }
 
   @Override
-  public OutputStream outputStreamSupplier() {
+  public OutputStream outputSupplier() {
     return new ByteArrayOutputStream();
   }
 
@@ -52,15 +52,14 @@ public abstract class JdbcSink extends Sink {
   public void write(DuzzyRow data) throws Exception {
     super.write(data);
     try {
-      statement.execute(
-          ((ByteArrayOutputStream) getOutputStream()).toString(StandardCharsets.UTF_8));
+      statement.execute(((ByteArrayOutputStream) getOutput()).toString(StandardCharsets.UTF_8));
     } catch (SQLException e) {
       logger.warn("Error while writing data", e);
       if (failOnError) {
         throw e;
       }
     }
-    ((ByteArrayOutputStream) getOutputStream()).reset();
+    ((ByteArrayOutputStream) getOutput()).reset();
   }
 
   @Override

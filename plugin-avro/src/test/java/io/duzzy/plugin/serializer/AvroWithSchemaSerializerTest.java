@@ -29,7 +29,7 @@ public class AvroWithSchemaSerializerTest {
   void parsedFromYaml() throws IOException {
     final File serializerFile =
         getFromResources(getClass(), "serializer/avro-with-schema-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(AvroWithSchemaSerializer.class);
   }
@@ -38,7 +38,7 @@ public class AvroWithSchemaSerializerTest {
   void parsedFromYamlFull() throws IOException {
     final File serializerFile =
         getFromResources(getClass(), "serializer/avro-with-schema-serializer-full.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(AvroWithSchemaSerializer.class);
     final Schema schema = ((AvroWithSchemaSerializer) serializer).getSchema();
@@ -48,7 +48,7 @@ public class AvroWithSchemaSerializerTest {
   }
 
   @Test
-  void serializeWithDefaultValues() throws IOException {
+  void serializeWithDefaultValues() throws Exception {
     final String expectedSchema =
         "{\"type\":\"record\",\"name\":\"name\",\"namespace\":\"namespace\",\"fields\":["
             + "{\"name\":\"c1\",\"type\":\"int\"},"
@@ -69,7 +69,7 @@ public class AvroWithSchemaSerializerTest {
     }
   }
 
-  private static DataFileReader<GenericData.Record> computeRecords() throws IOException {
+  private static DataFileReader<GenericData.Record> computeRecords() throws Exception {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     final List<Field> fields = List.of(
         new Field(

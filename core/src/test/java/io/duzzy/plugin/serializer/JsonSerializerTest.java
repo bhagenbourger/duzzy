@@ -20,13 +20,13 @@ public class JsonSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/json-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(JsonSerializer.class);
   }
 
   @Test
-  void serializeJson() throws IOException {
+  void serializeJson() throws Exception {
     final String expected = "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}";
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -34,6 +34,7 @@ public class JsonSerializerTest {
     jsonSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
     jsonSerializer.serialize(getDataOne());
     jsonSerializer.serialize(getDataTwo());
+    jsonSerializer.close();
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
     assertThat(jsonSerializer.size()).isEqualTo(expected.length());
