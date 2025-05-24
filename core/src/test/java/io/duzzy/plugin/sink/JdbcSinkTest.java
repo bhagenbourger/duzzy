@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.sink.JdbcSink;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.OutputStreamSink;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import io.duzzy.tests.Data;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -99,6 +100,12 @@ public class JdbcSinkTest {
 
       assertThat(secondId).isEqualTo(2);
       assertThat(secondName).isEqualTo("two");
+
+      final String q1 = "INSERT INTO " + TABLE_NAME + " VALUES (1, 'one')";
+      final String q2 = "INSERT INTO " + TABLE_NAME + " VALUES (2, 'two')";
+      final int size =
+          q1.getBytes(StandardCharsets.UTF_8).length + q2.getBytes(StandardCharsets.UTF_8).length;
+      assertThat(sink.getSerializer().size()).isEqualTo(size);
     }
   }
 
@@ -166,7 +173,7 @@ public class JdbcSinkTest {
     }
 
     @Override
-    public Sink fork(Long threadId) {
+    public OutputStreamSink fork(Long threadId) {
       return new HsqldbSink((SqlSerializer) serializer, url, user, password, failOnError);
     }
   }

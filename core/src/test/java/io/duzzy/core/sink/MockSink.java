@@ -5,19 +5,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class MockSink extends Sink {
+public class MockSink extends OutputStreamSink {
 
   public MockSink() {
     super(new JsonSerializer());
   }
 
   @Override
-  public OutputStream outputStreamSupplier() throws IOException {
+  public OutputStream outputSupplier() throws IOException {
     return new ByteArrayOutputStream();
   }
 
   @Override
-  public Sink fork(Long threadId) {
+  public OutputStreamSink fork(Long threadId) {
     return new MockSink();
   }
 

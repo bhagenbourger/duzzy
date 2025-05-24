@@ -6,8 +6,13 @@ public class DuzzyResultTxtFormatter implements DuzzyResultFormatter {
 
   @Override
   public String format(DuzzyResult duzzyResult) {
-    return "Duzzy generated " + duzzyResult.rows()
-        + " rows in " + duzzyResult.duration()
-        + " with seed " + duzzyResult.seed();
+    return "Duzzy generated "
+        + duzzyResult.rows()
+        + " rows in "
+        + duzzyResult.duration()
+        + " which represent "
+        + duzzyResult.size()
+        + " bytes of data with seed "
+        + duzzyResult.seed();
   }
 }

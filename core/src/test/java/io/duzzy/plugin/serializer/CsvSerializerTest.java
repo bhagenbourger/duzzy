@@ -19,7 +19,7 @@ public class CsvSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(CsvSerializer.class);
   }
@@ -35,6 +35,7 @@ public class CsvSerializerTest {
     csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(csvSerializer.size()).isEqualTo(expected.length());
   }
 
   @Test
@@ -49,5 +50,6 @@ public class CsvSerializerTest {
     csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(csvSerializer.size()).isEqualTo(expected.length());
   }
 }

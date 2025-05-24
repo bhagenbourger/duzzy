@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.serializer.OutputStreamSerializer;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.plugin.provider.increment.IntegerIncrementProvider;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
@@ -36,7 +37,7 @@ public class ParquetSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/parquet-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
 
     assertThat(serializer).isInstanceOf(ParquetSerializer.class);

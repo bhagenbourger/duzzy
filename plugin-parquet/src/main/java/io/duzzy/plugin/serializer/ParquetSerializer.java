@@ -8,9 +8,12 @@ import io.duzzy.core.serializer.AvroSerializer;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import org.apache.avro.generic.GenericData;
 import org.apache.parquet.avro.AvroParquetWriter;
 import org.apache.parquet.hadoop.ParquetWriter;
+import org.apache.parquet.io.LocalOutputFile;
+import org.apache.parquet.io.OutputFile;
 
 public class ParquetSerializer extends AvroSerializer<ParquetWriter<GenericData.Record>> {
 

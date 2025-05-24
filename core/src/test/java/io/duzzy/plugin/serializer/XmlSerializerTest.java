@@ -19,7 +19,7 @@ public class XmlSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(XmlSerializer.class);
   }
@@ -39,6 +39,7 @@ public class XmlSerializerTest {
     xmlSerializer.close();
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(xmlSerializer.size()).isEqualTo(expected.length());
   }
 
   @Test
@@ -57,5 +58,6 @@ public class XmlSerializerTest {
     xmlSerializer.close();
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
+    assertThat(xmlSerializer.size()).isEqualTo(expected.length());
   }
 }

@@ -2,7 +2,7 @@ package io.duzzy.core;
 
 import java.util.concurrent.Callable;
 
-public class DuzzyThread implements Callable<Void> {
+public class DuzzyThread implements Callable<Long> {
 
   private final Long start;
   private final Long end;
@@ -15,9 +15,9 @@ public class DuzzyThread implements Callable<Void> {
   }
 
   @Override
-  public Void call() {
+  public Long call() {
     try {
-      new DuzzyProcessing(
+      return new DuzzyProcessing(
           start,
           end,
           duzzyContext.duzzySchema(),
@@ -27,6 +27,5 @@ public class DuzzyThread implements Callable<Void> {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    return null;
   }
 }
