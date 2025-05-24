@@ -5,14 +5,14 @@ import static io.duzzy.core.sink.FileSink.addFilePart;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.OutputStreamSink;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-public class HdfsSink extends Sink {
+public class HdfsSink extends OutputStreamSink {
 
   private final String coreSitePath;
   private final String hdfsSitePath;
@@ -20,7 +20,7 @@ public class HdfsSink extends Sink {
 
   @JsonCreator
   public HdfsSink(
-      @JsonProperty("serializer") Serializer<?> serializer,
+      @JsonProperty("serializer") Serializer<?, OutputStream> serializer,
       @JsonProperty("coreSiteFile") String coreSitePath,
       @JsonProperty("hdfsSitePath") String hdfsSitePath,
       @JsonProperty("filename") String filename
@@ -32,7 +32,7 @@ public class HdfsSink extends Sink {
   }
 
   @Override
-  public OutputStream outputStreamSupplier() throws IOException {
+  public OutputStream outputSupplier() throws IOException {
     final Configuration configuration = new Configuration();
     if (coreSitePath != null) {
       configuration.addResource(new Path(coreSitePath));

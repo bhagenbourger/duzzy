@@ -1,0 +1,10 @@
+---
+identifier: "io.duzzy.plugin.sink.IcebergSink"
+namespace: "user"
+name: "event"
+warehouse_location: "/tmp/iceberg-warehouse"
+catalog_type: "hadoop"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.IcebergParquetSerializer"
+  schema_name: "event"
+  schema_namespace: "user"

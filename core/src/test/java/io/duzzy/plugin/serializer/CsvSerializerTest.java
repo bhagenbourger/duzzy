@@ -19,13 +19,13 @@ public class CsvSerializerTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
-    final Serializer<?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
+    final Serializer<?, ?> serializer = YAML_MAPPER.readValue(serializerFile, Serializer.class);
 
     assertThat(serializer).isInstanceOf(CsvSerializer.class);
   }
 
   @Test
-  void serializeCsvWithDefaultValues() throws IOException {
+  void serializeCsvWithDefaultValues() throws Exception {
     final String expected = "1,one\n2,two\n";
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -33,6 +33,7 @@ public class CsvSerializerTest {
     csvSerializer.init(outputStream, new DuzzySchema(null));
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
+    csvSerializer.close();
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
     assertThat(csvSerializer.size()).isEqualTo(expected.length());
