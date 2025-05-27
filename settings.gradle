@@ -9,4 +9,5 @@ include 'tests'
 include 'plugin-duckdb'
 include 'plugin-postgresql'
 include 'plugin-mysql'
-
+include 'plugin-iceberg'
+include 'plugin-arrow'
