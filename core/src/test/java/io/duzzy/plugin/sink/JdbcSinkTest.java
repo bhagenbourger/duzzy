@@ -7,6 +7,7 @@ import io.duzzy.core.sink.JdbcSink;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import io.duzzy.tests.Data;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -99,6 +100,12 @@ public class JdbcSinkTest {
 
       assertThat(secondId).isEqualTo(2);
       assertThat(secondName).isEqualTo("two");
+
+      final String q1 = "INSERT INTO " + TABLE_NAME + " VALUES (1, 'one')";
+      final String q2 = "INSERT INTO " + TABLE_NAME + " VALUES (2, 'two')";
+      final int size =
+          q1.getBytes(StandardCharsets.UTF_8).length + q2.getBytes(StandardCharsets.UTF_8).length;
+      assertThat(sink.getSerializer().size()).isEqualTo(size);
     }
   }
 

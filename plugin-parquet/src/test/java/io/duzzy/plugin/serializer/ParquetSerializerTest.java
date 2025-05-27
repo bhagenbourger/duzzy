@@ -68,6 +68,8 @@ public class ParquetSerializerTest {
       parquetSerializer.serialize(getDataOne());
       parquetSerializer.serialize(getDataTwo());
       parquetSerializer.close();
+
+      assertThat(parquetSerializer.size()).isEqualTo(file.length());
     }
 
     try (
