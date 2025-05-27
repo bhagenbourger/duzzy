@@ -41,6 +41,13 @@ ext {
     log4j2Version = '2.24.3'
 }
 
+project(':plugin-arrow') {
+    ext {
+        pluginTitle = 'Arrow plugin'
+        pluginDescription = 'Arrow serializer'
+    }
+}
+
 project(':plugin-avro') {
     ext {
         pluginTitle = 'Avro plugin'
