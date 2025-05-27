@@ -1,0 +1,8 @@
+dependencies {
+    compileOnly project(":core")
+
+    implementation 'org.apache.arrow:arrow-vector:18.3.0'
+    implementation 'org.apache.arrow:arrow-avro:18.3.0'
+
+    testImplementation project(":core")
+}
