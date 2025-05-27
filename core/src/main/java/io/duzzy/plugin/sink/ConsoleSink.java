@@ -10,7 +10,6 @@ import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 @Documentation(
@@ -45,15 +44,15 @@ public class ConsoleSink extends Sink {
   }
 
   @Override
-  public void close() throws IOException {
-    serializer.close();
+  public void close() throws Exception {
+    getSerializer().close();
     System.out.println(((ByteArrayOutputStream) getOutputStream()).toString(UTF_8));
     //Don't close System.out
   }
 
   @Override
   public ConsoleSink fork(Long threadId) throws Exception {
-    return new ConsoleSink(serializer.fork(threadId));
+    return new ConsoleSink(getSerializer().fork(threadId));
   }
 
   @Override

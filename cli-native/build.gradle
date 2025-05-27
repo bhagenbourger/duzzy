@@ -7,7 +7,10 @@ graalvmNative {
         main {
             imageName = 'duzzy'
             mainClass = 'io.duzzy.cli.AppNative'
-            buildArgs.add('-march=compatibility')
+            buildArgs.addAll([
+                    '-march=compatibility',
+                    '--add-opens=java.base/java.nio=ALL-UNNAMED'
+            ])
         }
     }
     binaries.configureEach {
@@ -19,16 +22,18 @@ graalvmNative {
 
 dependencies {
     implementation project(":cli")
+    implementation project(':plugin-arrow')
     implementation project(':plugin-avro')
-    implementation project(':plugin-gcp-gcs')
-    implementation project(':plugin-kafka')
-    implementation project(':plugin-mysql')
-    implementation project(':plugin-parquet')
-    implementation project(':plugin-postgresql')
+//    implementation project(':plugin-gcp-gcs')
+//    implementation project(':plugin-kafka')
+//    implementation project(':plugin-mysql')
+//    implementation project(':plugin-parquet')
+//    implementation project(':plugin-postgresql')
 
     implementation 'info.picocli:picocli:4.7.6'
     implementation "ch.qos.logback:logback-classic:1.5.18"
     implementation 'org.xerial.snappy:snappy-java:1.1.10.5'
+    implementation 'org.apache.arrow:arrow-memory-netty:18.3.0'
 
     annotationProcessor 'info.picocli:picocli-codegen:4.7.6'
 }

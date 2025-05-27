@@ -79,7 +79,7 @@ public class KafkaSink extends Sink {
   public void write(DuzzyRow row) throws Exception {
     reset();
     super.write(row);
-    serializer.close();
+    getSerializer().close();
     sendToKafka();
   }
 
@@ -91,13 +91,13 @@ public class KafkaSink extends Sink {
 
   @Override
   public KafkaSink fork(Long threadId) throws Exception {
-    return new KafkaSink(serializer.fork(threadId), topic, bootstrapServers);
+    return new KafkaSink(getSerializer().fork(threadId), topic, bootstrapServers);
   }
 
   private void reset() throws IOException {
     if (((ByteArrayOutputStream) getOutputStream()).size() > 0) {
       ((ByteArrayOutputStream) getOutputStream()).reset();
-      serializer.reset();
+      getSerializer().reset();
     }
   }
 

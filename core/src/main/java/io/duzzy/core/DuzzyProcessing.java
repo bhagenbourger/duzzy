@@ -28,7 +28,7 @@ public class DuzzyProcessing {
   }
 
   public long run() throws Exception {
-    sink.init(duzzySchema, end - start);
+    sink.init(duzzySchema);
     for (Long index = start; index < end; index++) {
       processRow(index, ProviderUtil.RANDOM_PROVIDERS);
     }

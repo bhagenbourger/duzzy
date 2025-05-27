@@ -48,7 +48,7 @@ public class AvroWithSchemaSerializerTest {
   }
 
   @Test
-  void serializeWithDefaultValues() throws IOException {
+  void serializeWithDefaultValues() throws Exception {
     final String expectedSchema =
         "{\"type\":\"record\",\"name\":\"name\",\"namespace\":\"namespace\",\"fields\":["
             + "{\"name\":\"c1\",\"type\":\"int\"},"
@@ -69,7 +69,7 @@ public class AvroWithSchemaSerializerTest {
     }
   }
 
-  private static DataFileReader<GenericData.Record> computeRecords() throws IOException {
+  private static DataFileReader<GenericData.Record> computeRecords() throws Exception {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     final List<Field> fields = List.of(
         new Field(
@@ -90,7 +90,7 @@ public class AvroWithSchemaSerializerTest {
 
     final AvroWithSchemaSerializer avroWithSchemaSerializer =
         new AvroWithSchemaSerializer(null, null, null);
-    avroWithSchemaSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields), 2L);
+    avroWithSchemaSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields));
     avroWithSchemaSerializer.serialize(Data.getDataOne());
     avroWithSchemaSerializer.serialize(Data.getDataTwo());
     avroWithSchemaSerializer.close();

@@ -90,7 +90,7 @@ public class HdfsSink extends Sink {
   @Override
   public HdfsSink fork(Long threadId) throws Exception {
     return new HdfsSink(
-        serializer.fork(threadId),
+        getSerializer().fork(threadId),
         coreSitePath,
         hdfsSitePath,
         addFilePart(filename, threadId)

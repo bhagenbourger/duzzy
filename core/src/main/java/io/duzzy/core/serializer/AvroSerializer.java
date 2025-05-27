@@ -3,7 +3,6 @@ package io.duzzy.core.serializer;
 import io.duzzy.core.DuzzyCell;
 import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.field.Field;
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
@@ -17,7 +16,7 @@ import org.apache.avro.generic.GenericRecordBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> {
+public abstract class AvroSerializer<W extends AutoCloseable> extends Serializer<W> {
 
   private static final Logger logger = LoggerFactory.getLogger(AvroSerializer.class);
 

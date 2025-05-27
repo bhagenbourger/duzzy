@@ -5,6 +5,9 @@ plugins {
 application {
     applicationName = 'duzzy'
     mainClass = 'io.duzzy.cli.AppJvm'
+    applicationDefaultJvmArgs = [
+            '--add-opens=java.base/java.nio=ALL-UNNAMED'
+    ]
 }
 
 startScripts {

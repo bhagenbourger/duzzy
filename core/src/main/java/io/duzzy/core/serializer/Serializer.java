@@ -4,17 +4,16 @@ import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
-import java.io.Closeable;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public abstract class Serializer<W extends Closeable> implements Plugin, Forkable<Serializer<W>> {
+public abstract class Serializer<W extends AutoCloseable>
+    implements Plugin, Forkable<Serializer<W>> {
 
   private W writer;
   private DuzzySchema duzzySchema;
   private DataOutputStream outputStream;
-  private Long rowCount = 0L;
 
   public long size() {
     return size(outputStream, writer);
@@ -38,17 +37,13 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
     serialize(row, writer);
   }
 
-  public void init(OutputStream outputStream,
-                   DuzzySchema duzzySchema,
-                   Long rowCount
-  ) throws IOException {
+  public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
     this.duzzySchema = duzzySchema;
     this.outputStream = new DataOutputStream(outputStream);
-    this.rowCount = rowCount;
     reset();
   }
 
-  public void close() throws IOException {
+  public void close() throws Exception {
     if (writer != null) {
       writer.close();
     }
@@ -60,5 +55,9 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
 
   protected DuzzySchema getDuzzySchema() {
     return duzzySchema;
+  }
+
+  protected W getWriter() {
+    return writer;
   }
 }

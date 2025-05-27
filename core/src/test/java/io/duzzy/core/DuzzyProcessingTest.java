@@ -42,7 +42,7 @@ public class DuzzyProcessingTest {
     final DuzzyProcessing processing = new DuzzyProcessing(0L, 1L, duzzySchema, sink, 1L);
     processing.run();
 
-    verify(sink).init(duzzySchema, 1L);
+    verify(sink).init(duzzySchema);
     verify(sink).write(expected);
     verify(sink).close();
   }
@@ -74,7 +74,7 @@ public class DuzzyProcessingTest {
     final DuzzyProcessing processing = new DuzzyProcessing(0L, 1L, duzzySchema, sink, 1L);
     processing.run();
 
-    verify(sink).init(duzzySchema, 1L);
+    verify(sink).init(duzzySchema);
     verify(sink).write(expected);
     verify(sink).close();
   }

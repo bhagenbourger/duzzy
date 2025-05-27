@@ -453,6 +453,7 @@ The list of all core components is available [here](docs/core_components.md).
 
 ### Core plugins
 Some core plugins are available to extend Duzzy:  
+[plugin-arrow](docs/plugin_arrow.md)  
 [plugin-avro](docs/plugin_avro.md)  
 [plugin-duckdb](docs/plugin_duckdb.md)  
 [plugin-gcp-gcs](docs/plugin_gcp_gcs.md)  

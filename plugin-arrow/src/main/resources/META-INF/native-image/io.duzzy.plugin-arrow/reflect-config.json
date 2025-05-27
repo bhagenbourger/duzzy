@@ -1,0 +1,57 @@
+[
+  {
+    "name": "io.duzzy.plugin.serializer.ArrowSerializer",
+    "allPublicConstructors": true
+  },
+  {
+    "name":"io.netty.buffer.AbstractByteBufAllocator",
+    "queryAllDeclaredMethods":true
+  },
+  {
+    "name":"io.netty.buffer.AbstractReferenceCountedByteBuf",
+    "fields":[{"name":"refCnt"}]
+  },
+  {
+    "name":"io.netty.buffer.PooledByteBufAllocator",
+    "fields":[{"name":"directArenas"}]
+  },
+  {
+    "name":"org.apache.arrow.memory.netty.DefaultAllocationManagerFactory",
+    "fields":[{"name":"FACTORY"}]
+  },
+  {
+    "name":"org.apache.arrow.vector.types.pojo.ArrowType",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  },
+  {
+    "name":"org.apache.arrow.vector.types.pojo.ArrowType$Int",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  },
+  {
+    "name":"org.apache.arrow.vector.types.pojo.ArrowType$PrimitiveType",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true
+  },
+  {
+    "name":"org.apache.arrow.vector.types.pojo.DictionaryEncoding",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  },
+  {
+    "name":"org.apache.arrow.vector.types.pojo.Field",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  },
+  {
+    "name":"org.apache.arrow.vector.types.pojo.Schema",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  }
+]

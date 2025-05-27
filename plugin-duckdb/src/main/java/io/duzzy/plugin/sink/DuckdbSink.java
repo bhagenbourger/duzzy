@@ -69,7 +69,7 @@ public final class DuckdbSink extends JdbcSink {
   @Override
   public Sink fork(Long threadId) throws Exception {
     return new DuckdbSink(
-        (SqlSerializer) serializer.fork(threadId),
+        (SqlSerializer) getSerializer().fork(threadId),
         url,
         user,
         password,
