@@ -3,6 +3,7 @@ package io.duzzy.plugin.parser;
 import static io.duzzy.test.Utility.RANDOM_FIELD_CONTEXT;
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;

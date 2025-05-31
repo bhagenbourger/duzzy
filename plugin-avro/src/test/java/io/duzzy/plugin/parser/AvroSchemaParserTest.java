@@ -8,6 +8,7 @@ import io.duzzy.core.field.Field;
 import io.duzzy.core.schema.DuzzySchema;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import org.apache.avro.AvroTypeException;
 import org.junit.jupiter.api.Test;
 
@@ -88,7 +89,7 @@ public class AvroSchemaParserTest {
     final File avroSchema = getFromResources(getClass(), "avro-schemas/empty-fields.avsc");
     final DuzzySchema duzzySchema = new AvroSchemaParser().parse(avroSchema, null);
 
-    assertThat(duzzySchema.fields()).isEqualTo(new DuzzySchema(null).fields());
+    assertThat(duzzySchema.fields()).isEqualTo(new DuzzySchema(Optional.empty(), null).fields());
   }
 
   @Test

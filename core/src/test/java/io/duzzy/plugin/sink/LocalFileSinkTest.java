@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
@@ -61,7 +62,7 @@ public class LocalFileSinkTest {
         filename,
         true
     );
-    localFileSink.init(new DuzzySchema(null));
+    localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
     localFileSink.write(getDataTwo());
     localFileSink.write(getDataTwo());
@@ -84,7 +85,7 @@ public class LocalFileSinkTest {
         filename,
         true
     );
-    localFileSink.init(new DuzzySchema(null));
+    localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
     localFileSink.write(getDataTwo());
     localFileSink.write(getDataTwo());

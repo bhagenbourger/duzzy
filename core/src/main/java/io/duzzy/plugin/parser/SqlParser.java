@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.jooq.Meta;
 import org.jooq.impl.DSL;
@@ -42,7 +43,7 @@ public class SqlParser implements Parser {
         .map(f -> parse(f, duzzyConfig))
         .toList();
 
-    return new DuzzySchema(fields);
+    return new DuzzySchema(duzzyConfig == null ? Optional.empty() : duzzyConfig.rowKey(), fields);
   }
 
   private Field parse(org.jooq.Field<?> jfield, DuzzyConfig duzzyConfig) {
