@@ -1,11 +1,12 @@
 package io.duzzy.core;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.provider.ProviderUtil;
 import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 import org.apache.commons.codec.digest.MurmurHash3;
@@ -49,6 +50,8 @@ public class DuzzyProcessing {
     );
     sink.write(
         new DataItems(
+            rowId,
+            duzzySchema.rowKey().map(f -> f.value(fieldContext)),
             duzzySchema
                 .fields()
                 .stream()
@@ -63,8 +66,6 @@ public class DuzzyProcessing {
   }
 
   private static Long computeRowId(Long seed, Long index) {
-    return MurmurHash3.hash128x64(
-        Long.toString(seed ^ index).getBytes(StandardCharsets.UTF_8)
-    )[0];
+    return MurmurHash3.hash128x64(Long.toString(seed ^ index).getBytes(UTF_8))[0];
   }
 }

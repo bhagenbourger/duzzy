@@ -14,16 +14,22 @@ public class Data {
   public static final String STRING_TWO = "two";
 
   public static DataItems getDataOne() {
-    return new DataItems(List.of(
-        new DataItem(KEY_C1, Type.INTEGER, INTEGER_ONE),
-        new DataItem(KEY_C2, Type.STRING, STRING_ONE)
-    ));
+    return new DataItems(
+        1L,
+        List.of(
+            new DataItem(KEY_C1, Type.INTEGER, INTEGER_ONE),
+            new DataItem(KEY_C2, Type.STRING, STRING_ONE)
+        )
+    );
   }
 
   public static DataItems getDataTwo() {
-    return new DataItems(List.of(
-        new DataItem(KEY_C1, Type.INTEGER, INTEGER_TWO),
-        new DataItem(KEY_C2, Type.STRING, STRING_TWO)
-    ));
+    return new DataItems(
+        2L,
+        List.of(
+            new DataItem(KEY_C1, Type.INTEGER, INTEGER_TWO),
+            new DataItem(KEY_C2, Type.STRING, STRING_TWO)
+        )
+    );
   }
 }
