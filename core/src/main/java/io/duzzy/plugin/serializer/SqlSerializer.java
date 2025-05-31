@@ -3,7 +3,7 @@ package io.duzzy.plugin.serializer;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.Serializer;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,10 +30,10 @@ public class SqlSerializer extends Serializer<OutputStream> {
   }
 
   @Override
-  protected void serialize(DataItems data, OutputStream writer) throws IOException {
+  protected void serialize(DuzzyRow row, OutputStream writer) throws IOException {
     final String sql = DSL
         .insertInto(DSL.table(tableName))
-        .values(data.toValues())
+        .values(row.toValues())
         .getSQL(ParamType.INLINED);
     writer.write(sql.getBytes(StandardCharsets.UTF_8));
   }

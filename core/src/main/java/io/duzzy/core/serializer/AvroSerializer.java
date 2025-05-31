@@ -1,7 +1,7 @@
 package io.duzzy.core.serializer;
 
-import io.duzzy.core.DataItem;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyCell;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.field.Field;
 import java.io.Closeable;
 import java.io.File;
@@ -94,9 +94,9 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
     return innerSchema == null ? buildSchemaFromFields() : innerSchema;
   }
 
-  protected GenericData.Record serializeToRecord(DataItems data) {
+  protected GenericData.Record serializeToRecord(DuzzyRow row) {
     final GenericRecordBuilder recordBuilder = new GenericRecordBuilder(getSchema());
-    data.items().forEach(d -> recordBuilder.set(d.name(), toPrimitiveType(d)));
+    row.cells().forEach(d -> recordBuilder.set(d.name(), toPrimitiveType(d)));
     return recordBuilder.build();
   }
 
@@ -107,7 +107,7 @@ public abstract class AvroSerializer<W extends Closeable> extends Serializer<W> 
     return schema;
   }
 
-  private static Object toPrimitiveType(DataItem item) {
+  private static Object toPrimitiveType(DuzzyCell item) {
     return switch (item.type()) {
       case UUID -> item.value().toString();
       case LOCAL_DATE -> ((LocalDate) item.value()).toEpochDay();

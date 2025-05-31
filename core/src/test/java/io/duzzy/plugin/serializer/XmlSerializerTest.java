@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class XmlSerializerTest {
@@ -33,7 +34,7 @@ public class XmlSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
-    xmlSerializer.init(outputStream, new DuzzySchema(null));
+    xmlSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
     xmlSerializer.serialize(getDataOne());
     xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();
@@ -52,7 +53,7 @@ public class XmlSerializerTest {
 
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
     final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
-    xmlSerializer.init(outputStream, new DuzzySchema(null));
+    xmlSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
     xmlSerializer.serialize(getDataOne());
     xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();

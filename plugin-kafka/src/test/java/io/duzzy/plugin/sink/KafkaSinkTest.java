@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.serializer.XmlSerializer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Iterator;
@@ -45,7 +44,7 @@ public class KafkaSinkTest {
         topic,
         kafka.getBootstrapServers()
     );
-    kafkaSink.init(null);
+    kafkaSink.init(null, 2L);
     kafkaSink.write(getDataOne());
     kafkaSink.write(getDataTwo());
     kafkaSink.close();
@@ -75,7 +74,7 @@ public class KafkaSinkTest {
         topic,
         kafka.getBootstrapServers()
     );
-    kafkaSink.init(null);
+    kafkaSink.init(null, 2L);
     kafkaSink.write(getDataOne());
     kafkaSink.write(getDataTwo());
     kafkaSink.close();

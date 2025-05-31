@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class ConsoleSinkTest {
@@ -35,7 +36,7 @@ public class ConsoleSinkTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-    consoleSink.init(new DuzzySchema(null));
+    consoleSink.init(new DuzzySchema(Optional.empty(), null), 3L);
     consoleSink.write(getDataOne());
     consoleSink.write(getDataTwo());
     consoleSink.write(getDataOne());

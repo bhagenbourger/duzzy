@@ -3,7 +3,7 @@ package io.duzzy.plugin.serializer;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.AvroSerializer;
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +37,9 @@ public class AvroWithSchemaSerializer extends AvroSerializer<DataFileWriter<Gene
   }
 
   @Override
-  protected void serialize(DataItems data, DataFileWriter<GenericData.Record> writer)
+  protected void serialize(DuzzyRow row, DataFileWriter<GenericData.Record> writer)
       throws IOException {
-    writer.append(serializeToRecord(data));
+    writer.append(serializeToRecord(row));
   }
 
   @Override

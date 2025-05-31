@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.SeekableByteArrayInput;
@@ -89,7 +90,7 @@ public class AvroWithSchemaSerializerTest {
 
     final AvroWithSchemaSerializer avroWithSchemaSerializer =
         new AvroWithSchemaSerializer(null, null, null);
-    avroWithSchemaSerializer.init(outputStream, new DuzzySchema(fields));
+    avroWithSchemaSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields), 2L);
     avroWithSchemaSerializer.serialize(Data.getDataOne());
     avroWithSchemaSerializer.serialize(Data.getDataTwo());
     avroWithSchemaSerializer.close();

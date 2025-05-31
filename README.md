@@ -323,8 +323,17 @@ cat /tmp/mutli/example_30.json
 
 ### Duzzy config
 A `DuzzyConfig` is a yaml file that enables you to specify some configurations for `Duzzy` and composed to:
+ - `rowKey`: the row key is an optional `field` that enables to specify a unique key for each row.  
  - `enricher` : an enricher is a component that enables field improvement by specifying which `provider` to use for generate data.
  - `sink` : a sink is a component that enables to specify where and in which format (via a `serializer`) data are written.
+
+#### Field
+A `Field` is composed of:
+- `name`: the name of the field
+- `type`: the type of the field
+- `nullRate`: the rate of null values (0 means not null)
+- `corruptedRate`: the rate of corrupted values (0 means no corrupted value), a corrupted value is a value that not match field constraint or field type (only if sink hasn't schema)
+- `providers`: a list of providers used to generate data for the `Field`
 
 #### Enricher
 An `enricher` is a component that enables field improvement by specifying which `provider` to use for generate data.  
@@ -347,6 +356,13 @@ A `serializer` is a component that enables to specify how data are formatted.
 Below an example of `DuzzyConfig` to use a local file `sink` that will generate a local file name `/tmp/example.xml`:
 ```yaml 
 ---
+row_key:
+  name: key
+  type: STRING
+  null_rate: 0
+  corrupted_rate: 0
+  providers:
+    - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
 enrichers:
   - query_selector: "name=city"
     provider_identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
@@ -432,7 +448,10 @@ fields:
         max: 100
 ```
 
+### Core components
 The list of all core components is available [here](docs/core_components.md).  
+
+### Core plugins
 Some core plugins are available to extend Duzzy:  
 [plugin-avro](docs/plugin_avro.md)  
 [plugin-duckdb](docs/plugin_duckdb.md)  

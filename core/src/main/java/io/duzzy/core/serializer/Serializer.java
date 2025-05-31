@@ -1,6 +1,6 @@
 package io.duzzy.core.serializer;
 
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
@@ -14,6 +14,7 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
   private W writer;
   private DuzzySchema duzzySchema;
   private DataOutputStream outputStream;
+  private Long rowCount = 0L;
 
   public long size() {
     return size(outputStream, writer);
@@ -27,19 +28,23 @@ public abstract class Serializer<W extends Closeable> implements Plugin, Forkabl
 
   protected abstract W buildWriter(OutputStream outputStream) throws IOException;
 
-  protected abstract void serialize(DataItems data, W writer) throws IOException;
+  protected abstract void serialize(DuzzyRow row, W writer) throws IOException;
 
-  public void serialize(DataItems data) throws IOException {
+  public void serialize(DuzzyRow row) throws IOException {
     if (writer == null) {
       throw new RuntimeException("writer must be initiated "
           + "- call init(OutputStream outputStream, SchemaContext duzzySchema) method");
     }
-    serialize(data, writer);
+    serialize(row, writer);
   }
 
-  public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
+  public void init(OutputStream outputStream,
+                   DuzzySchema duzzySchema,
+                   Long rowCount
+  ) throws IOException {
     this.duzzySchema = duzzySchema;
     this.outputStream = new DataOutputStream(outputStream);
+    this.rowCount = rowCount;
     reset();
   }
 

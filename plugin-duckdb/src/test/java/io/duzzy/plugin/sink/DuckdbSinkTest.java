@@ -65,7 +65,7 @@ public class DuckdbSinkTest {
         null
     );
 
-    duckdbSink.init(null);
+    duckdbSink.init(null, 3L);
 
     duckdbSink.write(Data.getDataOne());
     duckdbSink.write(Data.getDataOne());

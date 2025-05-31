@@ -1,7 +1,7 @@
 package io.duzzy.tests;
 
-import io.duzzy.core.DataItem;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyCell;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.field.Type;
 import java.util.List;
 
@@ -13,17 +13,21 @@ public class Data {
   public static final String STRING_ONE = "one";
   public static final String STRING_TWO = "two";
 
-  public static DataItems getDataOne() {
-    return new DataItems(List.of(
-        new DataItem(KEY_C1, Type.INTEGER, INTEGER_ONE),
-        new DataItem(KEY_C2, Type.STRING, STRING_ONE)
-    ));
+  public static DuzzyRow getDataOne() {
+    return new DuzzyRow(
+        List.of(
+            new DuzzyCell(KEY_C1, Type.INTEGER, INTEGER_ONE),
+            new DuzzyCell(KEY_C2, Type.STRING, STRING_ONE)
+        )
+    );
   }
 
-  public static DataItems getDataTwo() {
-    return new DataItems(List.of(
-        new DataItem(KEY_C1, Type.INTEGER, INTEGER_TWO),
-        new DataItem(KEY_C2, Type.STRING, STRING_TWO)
-    ));
+  public static DuzzyRow getDataTwo() {
+    return new DuzzyRow(
+        List.of(
+            new DuzzyCell(KEY_C1, Type.INTEGER, INTEGER_TWO),
+            new DuzzyCell(KEY_C2, Type.STRING, STRING_TWO)
+        )
+    );
   }
 }

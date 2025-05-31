@@ -4,6 +4,7 @@ import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.sink.ConsoleSink;
+import java.util.Optional;
 import java.util.Random;
 
 public record DuzzyContext(
@@ -26,7 +27,7 @@ public record DuzzyContext(
   }
 
   public DuzzyContext {
-    duzzySchema = duzzySchema == null ? new DuzzySchema(null) : duzzySchema;
+    duzzySchema = duzzySchema == null ? new DuzzySchema(Optional.empty(), null) : duzzySchema;
     sink = sink == null ? new ConsoleSink(new JsonSerializer()) : sink;
     rows = rows == null ? DEFAULT_ROWS : rows;
     seed = seed == null ? Long.valueOf(RANDOM.nextLong()) : seed;

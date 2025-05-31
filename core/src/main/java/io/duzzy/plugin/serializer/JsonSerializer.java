@@ -3,7 +3,7 @@ package io.duzzy.plugin.serializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.Serializer;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,8 +22,8 @@ public class JsonSerializer extends Serializer<SequenceWriter> {
   }
 
   @Override
-  protected void serialize(DataItems data, SequenceWriter writer) throws IOException {
-    writer.write(data.toMap());
+  protected void serialize(DuzzyRow row, SequenceWriter writer) throws IOException {
+    writer.write(row.toMap());
   }
 
   @Override

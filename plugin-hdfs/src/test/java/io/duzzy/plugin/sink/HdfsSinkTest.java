@@ -8,6 +8,7 @@ import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class HdfsSinkTest {
@@ -23,7 +24,7 @@ public class HdfsSinkTest {
         null,
         filename
     );
-    hdfsSink.init(new DuzzySchema(null));
+    hdfsSink.init(new DuzzySchema(Optional.empty(), null), 2L);
     hdfsSink.write(getDataOne());
     hdfsSink.write(getDataTwo());
     hdfsSink.close();
