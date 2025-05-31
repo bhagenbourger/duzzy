@@ -39,6 +39,7 @@ ext {
     avroVersion = '1.12.0'
     jacksonVersion = '2.18.0'
     log4j2Version = '2.24.3'
+    icebergVersion = '1.9.1'
 }
 
 project(':plugin-avro') {
@@ -59,6 +60,13 @@ project(':plugin-hdfs') {
     ext {
         pluginTitle = 'Hdfs plugin'
         pluginDescription = 'Hdfs sink'
+    }
+}
+
+project(':plugin-iceberg') {
+    ext {
+        pluginTitle = 'Iceberg plugin'
+        pluginDescription = 'Iceberg sink and iceberg parquet serializer'
     }
 }
 

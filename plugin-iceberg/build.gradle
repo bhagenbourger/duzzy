@@ -1,0 +1,15 @@
+dependencies {
+    compileOnly project(":core")
+
+    implementation "org.apache.iceberg:iceberg-core:$icebergVersion"
+    implementation "org.apache.iceberg:iceberg-api:$icebergVersion"
+    implementation "org.apache.iceberg:iceberg-parquet:$icebergVersion"
+    implementation "org.apache.iceberg:iceberg-data:$icebergVersion"
+    implementation "org.apache.iceberg:iceberg-hive-metastore:$icebergVersion"
+    implementation "org.apache.iceberg:iceberg-nessie:$icebergVersion"
+    implementation 'org.apache.parquet:parquet-avro:1.14.3'
+    implementation 'org.apache.hadoop:hadoop-client:3.4.1'
+
+    testImplementation project(":core")
+    testImplementation project(":plugin-parquet")
+}

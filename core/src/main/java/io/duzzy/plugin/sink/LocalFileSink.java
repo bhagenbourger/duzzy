@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.OutputStreamSink;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class LocalFileSink extends Sink {
+public class LocalFileSink extends OutputStreamSink {
 
   private final String filename;
   private final Boolean createIfNotExists;
@@ -22,7 +22,7 @@ public class LocalFileSink extends Sink {
   @JsonCreator
   public LocalFileSink(
       @JsonProperty("serializer")
-      Serializer<?> serializer,
+      Serializer<?, OutputStream> serializer,
       @JsonProperty("filename")
       String filename,
       @JsonProperty("create_if_not_exists")
@@ -35,7 +35,7 @@ public class LocalFileSink extends Sink {
   }
 
   @Override
-  public OutputStream outputStreamSupplier() throws IOException {
+  public OutputStream outputSupplier() throws IOException {
     if (createIfNotExists != null && createIfNotExists) {
       final Path folder = Path.of(filename).getParent();
       if (folder != null && !Files.exists(folder)) {

@@ -23,6 +23,7 @@ public interface Parser {
   ObjectMapper YAML_MAPPER = YAMLMapper
       .builder()
       .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+      .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
       .build()

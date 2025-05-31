@@ -5,27 +5,27 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.OutputStreamSink;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class ConsoleSink extends Sink {
+public class ConsoleSink extends OutputStreamSink {
 
   @JsonCreator
-  public ConsoleSink(@JsonProperty("serializer") Serializer<?> serializer) {
+  public ConsoleSink(@JsonProperty("serializer") Serializer<?, OutputStream> serializer) {
     super(serializer);
   }
 
   @Override
-  public OutputStream outputStreamSupplier() {
+  public OutputStream outputSupplier() {
     return new ByteArrayOutputStream();
   }
 
   @Override
-  public void close() throws IOException {
+  public void close() throws Exception {
     serializer.close();
-    System.out.println(((ByteArrayOutputStream) getOutputStream()).toString(UTF_8));
+    System.out.println(((ByteArrayOutputStream) getOutput()).toString(UTF_8));
     //Don't close System.out
   }
 
