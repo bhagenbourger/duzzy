@@ -14,6 +14,7 @@ dependencies {
     implementation project(":documentation")
     implementation project(":plugin-avro")
     implementation project(":plugin-duckdb")
+    implementation project(":plugin-gcp-gcs")
     implementation project(":plugin-hdfs")
     implementation project(":plugin-kafka")
     implementation project(":plugin-mysql")

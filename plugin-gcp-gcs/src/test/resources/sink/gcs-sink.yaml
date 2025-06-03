@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.sink.GcsSink"
+bucket_name: "test-bucket"
+object_name: "test-object.csv"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.CsvSerializer"
