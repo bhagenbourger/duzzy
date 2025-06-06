@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.serializer.Serializer;
+import io.duzzy.core.serializer.OutputStreamSerializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public class SqlSerializer extends Serializer<OutputStream> {
+public class SqlSerializer extends OutputStreamSerializer<OutputStream> {
 
   private final String tableName;
 

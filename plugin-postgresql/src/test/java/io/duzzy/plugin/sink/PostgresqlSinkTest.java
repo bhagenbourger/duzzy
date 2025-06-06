@@ -61,7 +61,7 @@ public class PostgresqlSinkTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File sinkFile = getFromResources(getClass(), "sink/postgresql-sink.yaml");
-    final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
+    final Sink<?> sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(PostgresqlSink.class);
     assertThat(sink.getSerializer()).isInstanceOf(SqlSerializer.class);

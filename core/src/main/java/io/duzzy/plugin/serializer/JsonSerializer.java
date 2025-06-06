@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.serializer.Serializer;
+import io.duzzy.core.serializer.OutputStreamSerializer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class JsonSerializer extends Serializer<SequenceWriter> {
+public class JsonSerializer extends OutputStreamSerializer<SequenceWriter> {
 
   private static final ObjectMapper MAPPER = new ObjectMapper()
       .registerModule(new JavaTimeModule());

@@ -49,7 +49,7 @@ public class DuckdbSinkTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File sinkFile = getFromResources(getClass(), "sink/duckdb-sink.yaml");
-    final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
+    final Sink<?> sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(DuckdbSink.class);
     assertThat(sink.getSerializer()).isInstanceOf(SqlSerializer.class);

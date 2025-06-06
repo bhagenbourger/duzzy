@@ -5,23 +5,21 @@ import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.IOException;
-import java.io.OutputStream;
 
-public abstract class Sink implements Plugin, Forkable<Sink> {
+public abstract class Sink<O> implements Plugin, Forkable<Sink<O>> {
 
-  private OutputStream outputStream;
-  protected final Serializer<?> serializer;
+  private O output;
+  protected final Serializer<?, O> serializer;
 
-  public Sink(Serializer<?> serializer) {
-    this.serializer = serializer == null ? new JsonSerializer() : serializer;
+  public Sink(Serializer<?, O> serializer) {
+    this.serializer = serializer;
   }
 
-  public abstract OutputStream outputStreamSupplier() throws IOException;
+  public abstract O outputSupplier() throws IOException;
 
   public void init(DuzzySchema duzzySchema, Long rowCount) throws Exception {
-    this.serializer.init(getOutputStream(), duzzySchema, rowCount);
+    this.serializer.init(getOutput(), duzzySchema, rowCount);
   }
 
   public void write(DuzzyRow row) throws Exception {
@@ -30,17 +28,16 @@ public abstract class Sink implements Plugin, Forkable<Sink> {
 
   public void close() throws Exception {
     serializer.close();
-    getOutputStream().close();
   }
 
-  protected OutputStream getOutputStream() throws IOException {
-    if (outputStream == null) {
-      outputStream = outputStreamSupplier();
-    }
-    return outputStream;
-  }
-
-  public Serializer<?> getSerializer() {
+  public Serializer<?, O> getSerializer() {
     return serializer;
+  }
+
+  protected O getOutput() throws IOException {
+    if (output == null) {
+      output = outputSupplier();
+    }
+    return output;
   }
 }

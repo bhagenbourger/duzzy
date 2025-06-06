@@ -13,7 +13,7 @@ import java.util.Optional;
 public record DuzzyConfig(
     Optional<Field> rowKey,
     List<Enricher> enrichers,
-    Sink sink
+    Sink<?> sink
 ) {
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

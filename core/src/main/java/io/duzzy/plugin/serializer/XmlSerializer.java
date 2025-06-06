@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.serializer.Serializer;
+import io.duzzy.core.serializer.OutputStreamSerializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
+public class XmlSerializer extends OutputStreamSerializer<XmlCustomStreamWriter> {
 
   private static final String DEFAULT_ROOT_TAG = "rows";
   private static final String DEFAULT_ROW_TAG = "row";

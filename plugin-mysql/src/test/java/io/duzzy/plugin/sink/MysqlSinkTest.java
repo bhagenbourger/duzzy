@@ -60,7 +60,7 @@ public class MysqlSinkTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File sinkFile = getFromResources(getClass(), "sink/mysql-sink.yaml");
-    final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
+    final Sink<?> sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(MysqlSink.class);
     assertThat(sink.getSerializer()).isInstanceOf(SqlSerializer.class);

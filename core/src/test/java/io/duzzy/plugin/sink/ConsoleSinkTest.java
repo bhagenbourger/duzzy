@@ -22,7 +22,7 @@ public class ConsoleSinkTest {
   @Test
   void parsedFromYaml() throws IOException {
     final File sinkFile = getFromResources(getClass(), "sink/console-sink.yaml");
-    final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
+    final Sink<?> sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(ConsoleSink.class);
     assertThat(sink.getSerializer()).isInstanceOf(JsonSerializer.class);
