@@ -1,6 +1,6 @@
 package io.duzzy.core.sink;
 
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -49,7 +49,7 @@ public abstract class JdbcSink extends Sink {
   }
 
   @Override
-  public void write(DataItems data) throws Exception {
+  public void write(DuzzyRow data) throws Exception {
     super.write(data);
     try {
       statement.execute(

@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Optional;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.hadoop.fs.Path;
 import org.apache.parquet.avro.AvroParquetReader;
@@ -64,7 +65,7 @@ public class ParquetSerializerTest {
 
     try (final OutputStream outputStream = new FileOutputStream(file)) {
       final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null, null);
-      parquetSerializer.init(outputStream, new DuzzySchema(fields));
+      parquetSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields), 2L);
       parquetSerializer.serialize(getDataOne());
       parquetSerializer.serialize(getDataTwo());
       parquetSerializer.close();

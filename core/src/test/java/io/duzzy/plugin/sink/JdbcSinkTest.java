@@ -73,7 +73,7 @@ public class JdbcSinkTest {
         true
     );
 
-    sink.init(null);
+    sink.init(null, 2L);
     sink.write(Data.getDataOne());
     sink.write(Data.getDataTwo());
     sink.close();
@@ -119,7 +119,7 @@ public class JdbcSinkTest {
         true
     );
 
-    sink.init(null);
+    sink.init(null, 1L);
     sink.write(Data.getDataOne());
     assertThatThrownBy(() -> sink.write(Data.getDataOne()))
         .isInstanceOf(SQLIntegrityConstraintViolationException.class)
@@ -141,7 +141,7 @@ public class JdbcSinkTest {
         false
     );
 
-    sink.init(null);
+    sink.init(null, 3L);
     sink.write(Data.getDataOne());
     sink.write(Data.getDataOne());
     sink.write(Data.getDataTwo());

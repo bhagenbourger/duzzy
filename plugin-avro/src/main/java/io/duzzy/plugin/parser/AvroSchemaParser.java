@@ -23,6 +23,7 @@ import io.duzzy.plugin.provider.random.UuidRandomProvider;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
 
@@ -40,9 +41,9 @@ public class AvroSchemaParser implements Parser {
           .stream()
           .map(f -> parse(f, duzzyConfig))
           .toList();
-      return new DuzzySchema(fields);
+      return new DuzzySchema(duzzyConfig == null ? Optional.empty() : duzzyConfig.rowKey(), fields);
     }
-    return new DuzzySchema(null);
+    return new DuzzySchema(duzzyConfig == null ? Optional.empty() : duzzyConfig.rowKey(), null);
   }
 
   private Field parse(Schema.Field field, DuzzyConfig duzzyConfig) {

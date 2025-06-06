@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.config.DuzzyConfig;
 import io.duzzy.core.field.Field;
@@ -27,7 +28,8 @@ public interface Parser {
       .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
       .build()
       .registerModule(new PluginModule())
-      .registerModule(new JavaTimeModule());
+      .registerModule(new JavaTimeModule())
+      .registerModule(new Jdk8Module());
 
   private static Provider<?> getProvider(
       String fieldName,

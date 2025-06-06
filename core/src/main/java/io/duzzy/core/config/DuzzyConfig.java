@@ -1,6 +1,7 @@
 package io.duzzy.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.duzzy.core.field.Field;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.sink.Sink;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record DuzzyConfig(
+    Optional<Field> rowKey,
     List<Enricher> enrichers,
     Sink sink
 ) {

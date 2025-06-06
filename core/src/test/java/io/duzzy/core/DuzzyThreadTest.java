@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class DuzzyThreadTest {
@@ -38,7 +39,10 @@ public class DuzzyThreadTest {
         0F,
         List.of(new DoubleConstantProvider(1.0))
     );
-    final DuzzySchema duzzySchema = new DuzzySchema(List.of(booleanField, doubleField));
+    final DuzzySchema duzzySchema = new DuzzySchema(
+        Optional.empty(),
+        List.of(booleanField, doubleField)
+    );
     final DuzzyThread duzzyThread = new DuzzyThread(3L, 6L, new DuzzyContext(duzzySchema));
     duzzyThread.call();
 

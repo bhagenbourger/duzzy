@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.Serializer;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,9 +52,9 @@ public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
   }
 
   @Override
-  protected void serialize(DataItems data, XmlCustomStreamWriter xmlStreamWriter)
+  protected void serialize(DuzzyRow row, XmlCustomStreamWriter xmlStreamWriter)
       throws IOException {
-    mapper.writeValue(xmlStreamWriter.xmlStreamWriter(), data.toMap());
+    mapper.writeValue(xmlStreamWriter.xmlStreamWriter(), row.toMap());
   }
 
   @Override

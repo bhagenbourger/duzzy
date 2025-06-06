@@ -24,6 +24,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.io.BinaryDecoder;
@@ -65,7 +66,7 @@ public class AvroSchemalessSerializerTest {
 
     final AvroSchemalessSerializer avroSchemalessSerializer =
         new AvroSchemalessSerializer(null, null, null);
-    avroSchemalessSerializer.init(outputStream, new DuzzySchema(fields));
+    avroSchemalessSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields), 2L);
     avroSchemalessSerializer.serialize(getDataOne());
     avroSchemalessSerializer.serialize(getDataTwo());
 

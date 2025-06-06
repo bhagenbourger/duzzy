@@ -3,13 +3,12 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -43,9 +42,9 @@ public class KafkaSink extends Sink {
   }
 
   @Override
-  public void write(DataItems data) throws Exception {
+  public void write(DuzzyRow row) throws Exception {
     reset();
-    super.write(data);
+    super.write(row);
     serializer.close();
     sendToKafka();
   }

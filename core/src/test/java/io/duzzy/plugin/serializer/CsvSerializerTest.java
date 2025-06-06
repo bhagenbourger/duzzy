@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class CsvSerializerTest {
@@ -30,7 +31,7 @@ public class CsvSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final CsvSerializer csvSerializer = new CsvSerializer(null, null, null);
-    csvSerializer.init(outputStream, new DuzzySchema(null));
+    csvSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
 
@@ -45,7 +46,7 @@ public class CsvSerializerTest {
 
     final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
     final CsvSerializer csvSerializer = YAML_MAPPER.readValue(serializerFile, CsvSerializer.class);
-    csvSerializer.init(outputStream, new DuzzySchema(null));
+    csvSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
 

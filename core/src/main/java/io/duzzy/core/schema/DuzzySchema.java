@@ -6,8 +6,10 @@ import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.provider.random.BooleanRandomProvider;
 import io.duzzy.plugin.provider.random.DoubleRandomProvider;
 import java.util.List;
+import java.util.Optional;
 
 public record DuzzySchema(
+    Optional<Field> rowKey,
     List<Field> fields
 ) {
 

@@ -9,4 +9,3 @@ include 'tests'
 include 'plugin-duckdb'
 include 'plugin-postgresql'
 include 'plugin-mysql'
-

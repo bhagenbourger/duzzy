@@ -77,7 +77,7 @@ public class PostgresqlSinkTest {
         null
     );
 
-    postgresqlSink.init(null);
+    postgresqlSink.init(null, 3L);
 
     postgresqlSink.write(Data.getDataOne());
     postgresqlSink.write(Data.getDataOne());

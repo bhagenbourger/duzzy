@@ -1,4 +1,11 @@
 ---
+row_key:
+  name: key
+  type: STRING
+  null_rate: 0
+  corrupted_rate: 0
+  providers:
+    - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
 enrichers:
   - query_selector: "name=city"
     provider_identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"

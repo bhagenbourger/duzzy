@@ -3,7 +3,7 @@ package io.duzzy.plugin.serializer;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.DataItems;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.AvroSerializer;
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +31,9 @@ public class AvroSchemalessSerializer extends AvroSerializer<BinaryEncoderClosea
   }
 
   @Override
-  protected void serialize(DataItems data, BinaryEncoderCloseable writer) throws IOException {
+  protected void serialize(DuzzyRow row, BinaryEncoderCloseable writer) throws IOException {
     new GenericDatumWriter<Record>(getSchema()).write(
-        serializeToRecord(data),
+        serializeToRecord(row),
         writer.binaryEncoder()
     );
   }

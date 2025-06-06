@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class JsonSerializerTest {
@@ -30,7 +31,7 @@ public class JsonSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final JsonSerializer jsonSerializer = new JsonSerializer();
-    jsonSerializer.init(outputStream, new DuzzySchema(null));
+    jsonSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
     jsonSerializer.serialize(getDataOne());
     jsonSerializer.serialize(getDataTwo());
 
