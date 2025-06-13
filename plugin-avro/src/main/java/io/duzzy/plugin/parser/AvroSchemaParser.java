@@ -7,6 +7,8 @@ import static io.duzzy.core.field.Type.LONG;
 import static io.duzzy.core.field.Type.STRING;
 
 import io.duzzy.core.config.DuzzyConfig;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.parser.Parser;
@@ -27,6 +29,12 @@ import java.util.Optional;
 import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.parser.AvroSchemaParser",
+    description = "Parse an Avro schema and produce a Duzzy schema",
+    module = "io.duzzy.plugin-avro",
+    duzzyType = DuzzyType.PARSER
+)
 public class AvroSchemaParser implements Parser {
 
   @Override

@@ -2,8 +2,12 @@ package io.duzzy.plugin.sink;
 
 import static io.duzzy.core.sink.FileSink.addFilePart;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
 import java.io.IOException;
@@ -12,6 +16,41 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.sink.HdfsSink",
+    description = "Sink data to HDFS",
+    module = "io.duzzy.plugin-hdfs",
+    duzzyType = DuzzyType.SINK,
+    parameters = {
+        @Parameter(
+            name = "serializer",
+            description = "The serializer to use"
+        ),
+        @Parameter(
+            name = "core_site_file",
+            aliases = {"coreSitePath", "core-site-file"},
+            description = "The core-site.xml file"
+        ),
+        @Parameter(
+            name = "hdfs_site_path",
+            aliases = {"hdfsSiteFile", "hdfs-site-file"},
+            description = "The hdfs-site.xml file"
+        ),
+        @Parameter(
+            name = "filename",
+            description = "The filename to write to"
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.sink.HdfsSink"
+        serializer:
+          identifier: "io.duzzy.plugin.serializer.CSVSerializer"
+        coreSiteFile: "/path/to/core-site.xml"
+        hdfsSitePath: "/path/to/hdfs-site.xml"
+        filename: "/path/to/file"
+        """
+)
 public class HdfsSink extends Sink {
 
   private final String coreSitePath;
@@ -21,8 +60,12 @@ public class HdfsSink extends Sink {
   @JsonCreator
   public HdfsSink(
       @JsonProperty("serializer") Serializer<?> serializer,
-      @JsonProperty("coreSiteFile") String coreSitePath,
-      @JsonProperty("hdfsSitePath") String hdfsSitePath,
+      @JsonProperty("core_site_file")
+      @JsonAlias({"coreSitePath", "core-site-file"})
+      String coreSitePath,
+      @JsonProperty("hdfs_site_path")
+      @JsonAlias({"hdfsSiteFile", "hdfs-site-file"})
+      String hdfsSitePath,
       @JsonProperty("filename") String filename
   ) {
     super(serializer);

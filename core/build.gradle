@@ -1,4 +1,7 @@
 dependencies {
+    annotationProcessor project(':documentation-processor')
+    implementation project(':documentation-processor')
+    
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
@@ -10,6 +13,7 @@ dependencies {
     implementation 'org.jooq:jooq:3.19.16'
     implementation "org.apache.avro:avro:$avroVersion"
 
+    testImplementation project(":tests")
     testImplementation 'org.hsqldb:hsqldb:2.7.4'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
 }

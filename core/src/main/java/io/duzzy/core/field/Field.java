@@ -2,11 +2,62 @@ package io.duzzy.core.field;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.provider.Provider;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+@Documentation(
+    identifier = "io.duzzy.core.field.Field",
+    description =
+        "A field representation with a name and a type which manages how the data is generated. "
+            + "Field delegates data generation to the provider.",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.FIELD,
+    parameters = {
+        @Parameter(
+            name = "name",
+            description = "The field name, must be a string"
+        ),
+        @Parameter(
+            name = "type",
+            description = """
+                The field value type, the list of supported types:
+                BOOLEAN, INTEGER, LONG, FLOAT, DOUBLE, STRING, UUID,
+                LOCAL_DATE, INSTANT, TIME_MILLIS, TIME_MICROS, TIMESTAMP_MILLIS, TIMESTAMP_MICROS
+                """
+        ),
+        @Parameter(
+            name = "null_rate",
+            aliases = {"nullRate", "null-rate"},
+            description = "Rate of null values, between 0.0 and 1.0",
+            defaultValue = "0.0"
+        ),
+        @Parameter(
+            name = "corrupted_rate",
+            aliases = {"corruptedRate", "corrupted-rate"},
+            description = "Rate of corrupted values, between 0.0 and 1.0",
+            defaultValue = "0.0"
+        ),
+        @Parameter(
+            name = "providers",
+            description = "The providers list used to generate the column value"
+        )
+    },
+    example = """
+        ---
+        - name: stringConstant
+          type: STRING
+          null_rate: 0.5
+          corrupted_rate: 0.5
+          providers:
+            - identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
+              value: myConstant
+        """
+)
 public record Field(
     @JsonProperty("name")
     String name,

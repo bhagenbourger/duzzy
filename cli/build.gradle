@@ -1,5 +1,6 @@
 dependencies {
     implementation project(":core")
+    implementation project(':documentation-processor')
 
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
@@ -8,6 +9,7 @@ dependencies {
     implementation 'info.picocli:picocli:4.7.6'
     annotationProcessor 'info.picocli:picocli-codegen:4.7.6'
 
+    testImplementation project(":tests")
     testImplementation project(":plugin-avro")
     testImplementation "org.apache.avro:avro:$avroVersion"
 }

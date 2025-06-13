@@ -1,6 +1,8 @@
 package io.duzzy.plugin.parser;
 
 import io.duzzy.core.config.DuzzyConfig;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.parser.Parser;
@@ -29,6 +31,12 @@ import org.jooq.Meta;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.parser.SqlParser",
+    description = "SQL parser: parse SQL schema to DuzzySchema",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.PARSER
+)
 public class SqlParser implements Parser {
 
   @Override

@@ -1,15 +1,15 @@
-# Duzzy core components
+# Duzzy components
 
 ## DuzzyConfig
 A `DuzzyConfig` is a yaml file that enables you to specify some configurations for `Duzzy` and composed to:
- - `enricher` : an enricher is a component  that enables field improvement by specifying which `provider` to use for generate data.
- - `sink` : a sink is a component  that enables to specify where and in which format  (via a `serializer`) data are written.
+- `enricher` : an enricher is a component  that enables field improvement by specifying which `provider` to use for generate data.
+- `sink` : a sink is a component  that enables to specify where and in which format  (via a `serializer`) data are written.
 
-### io.duzzy.core.config.DuzzyConfig  
+### io.duzzy.core.config.DuzzyConfig
 Identifier: io.duzzy.core.config.DuzzyConfig  
-Description: Duzzy Config enables schema enrichment by specifying column provider, sink or serializer  
+Description: Duzzy Config enables schema enrichment by specifying column provider, sink or serializer
 
-Example: 
+Example:
 ```
 ---
 enrichers:
@@ -38,17 +38,17 @@ A `DuzzySchema` is a yaml file that enables you to specify the schema for genera
 A `DuzzySchema` is a list of `Field`.
 
 A `Field` is composed of:
- - `name`: the name of the field
- - `type`: the type of the field
- - `nullRate`: the rate of null values (0 means not null)
- - `corruptedRate`: the rate of corrupted values (0 means no corrupted value),  a corrupted value is a value that not match field constraint or field type  (only if sink hasn't schema)
- - `providers`: a list of providers used to generate data for the `Field`
+- `name`: the name of the field
+- `type`: the type of the field
+- `nullRate`: the rate of null values (0 means not null)
+- `corruptedRate`: the rate of corrupted values (0 means no corrupted value),  a corrupted value is a value that not match field constraint or field type  (only if sink hasn't schema)
+- `providers`: a list of providers used to generate data for the `Field`
 
-### io.duzzy.core.schema.DuzzySchema  
+### io.duzzy.core.schema.DuzzySchema
 Identifier: io.duzzy.core.schema.DuzzySchema  
-Description: Duzzy schema is the default input schema in which you can specify whatever you want into the output  
+Description: Duzzy schema is the default input schema in which you can specify whatever you want into the output
 
-Example: 
+Example:
 ```
 ---
 fields:
@@ -100,13 +100,17 @@ fields:
 ## Parser
 A `parser`is a component that parses the input schema and produces a `DuzzySchema` by combining the input schema and duzzy config.
 
-### io.duzzy.plugin.parser.SqlParser  
+### io.duzzy.plugin.parser.SqlParser
 Identifier: io.duzzy.plugin.parser.SqlParser  
 Description: SQL parser: parse SQL schema to DuzzySchema
 
-### io.duzzy.plugin.parser.DuzzySchemaParser  
+### io.duzzy.plugin.parser.DuzzySchemaParser
 Identifier: io.duzzy.plugin.parser.DuzzySchemaParser  
 Description: DuzzySchema parser, it is the default parser, if no parser is specified this parser is used.
+
+### io.duzzy.plugin.parser.AvroSchemaParser
+Identifier: io.duzzy.plugin.parser.AvroSchemaParser  
+Description: Parse an Avro schema and produce a Duzzy schema
 
 ## Field
 A Field is composed of:
@@ -116,39 +120,30 @@ A Field is composed of:
 - corruptedRate: the rate of corrupted values (0 means no corrupted value), a corrupted value is a value that not match field constraint or field type (only if sink hasn't schema)
 - providers: a list of providers used to generate data for the Field
 
-### io.duzzy.core.field.Field  
+### io.duzzy.core.field.Field
 Identifier: io.duzzy.core.field.Field  
-Description: A field representation with a name and a type which manages how the data is generated. Field delegates data generation to the provider.  
+Description: A field representation with a name and a type which manages how the data is generated. Field delegates data generation to the provider.
 
-Parameters: 
-  - Name: name
+Parameters:
+- Name: name
+  Description: The field name, must be a string
+- Name: type
+  Description: The field value type, the list of supported types:
+  BOOLEAN, INTEGER, LONG, FLOAT, DOUBLE, STRING, UUID,
+  LOCAL_DATE, INSTANT, TIME_MILLIS, TIME_MICROS, TIMESTAMP_MILLIS, TIMESTAMP_MICROS
 
-    Description: The field name, must be a string
-  - Name: type
+- Name: null_rate
+  Aliases: nullRate, null-rate
+  Description: Rate of null values, between 0.0 and 1.0
+  Default value: 0.0
+- Name: corrupted_rate
+  Aliases: corruptedRate, corrupted-rate
+  Description: Rate of corrupted values, between 0.0 and 1.0
+  Default value: 0.0
+- Name: providers
+  Description: The providers list used to generate the column value
 
-    Description: The field value type, the list of supported types:
-BOOLEAN, INTEGER, LONG, FLOAT, DOUBLE, STRING, UUID,
-LOCAL_DATE, INSTANT, TIME_MILLIS, TIME_MICROS, TIMESTAMP_MILLIS, TIMESTAMP_MICROS
-
-  - Name: null_rate
-
-    Aliases: nullRate, null-rate
-
-    Description: Rate of null values, between 0.0 and 1.0
-
-    Default value: 0.0
-  - Name: corrupted_rate
-
-    Aliases: corruptedRate, corrupted-rate
-
-    Description: Rate of corrupted values, between 0.0 and 1.0
-
-    Default value: 0.0
-  - Name: providers
-
-    Description: The providers list used to generate the column value  
-
-Example: 
+Example:
 ```
 ---
 - name: stringConstant
@@ -161,99 +156,93 @@ Example:
 ```
 
 ## Provider
-A provider is a component responsible for generating value. 
+A provider is a component responsible for generating value.
 Data generated by a provider has always the same type but can be valid or corrupted.
 
-### io.duzzy.plugin.provider.constant.LongConstantProvider  
+### io.duzzy.plugin.provider.constant.LongConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.LongConstantProvider  
-Description: Provide a long constant value  
+Description: Provide a long constant value
 
-Parameters: 
-  - Name: value
+Parameters:
+- Name: value
+  Description: The constant value, must be a long
 
-    Description: The constant value, must be a long  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.constant.LongConstantProvider"
 value: 42
 ```
 
-### io.duzzy.plugin.provider.constant.DoubleConstantProvider  
+### io.duzzy.plugin.provider.constant.DoubleConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.DoubleConstantProvider  
-Description: Provide a double constant value  
+Description: Provide a double constant value
 
-Parameters: 
-  - Name: value
+Parameters:
+- Name: value
+  Description: The constant value, must be a double
 
-    Description: The constant value, must be a double  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.column.constant.DoubleConstantProvider"
 value: 42.4
 ```
 
-### io.duzzy.plugin.provider.constant.FloatConstantProvider  
+### io.duzzy.plugin.provider.constant.FloatConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.FloatConstantProvider  
-Description: Provide a float constant value  
+Description: Provide a float constant value
 
-Parameters: 
-  - Name: value
+Parameters:
+- Name: value
+  Description: The constant value, must be a float
 
-    Description: The constant value, must be a float  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.constant.FloatConstantProvider"
 value: 42.4
 ```
 
-### io.duzzy.plugin.provider.constant.IntegerConstantProvider  
+### io.duzzy.plugin.provider.constant.IntegerConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.IntegerConstantProvider  
-Description: Provide an integer constant value  
+Description: Provide an integer constant value
 
-Parameters: 
-  - Name: value
+Parameters:
+- Name: value
+  Description: The constant value, must be an integer
 
-    Description: The constant value, must be an integer  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.constant.IntegerConstantProvider"
 value: 42
 ```
 
-### io.duzzy.plugin.provider.constant.StringConstantProvider  
+### io.duzzy.plugin.provider.constant.StringConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.StringConstantProvider  
-Description: Provide a string constant value  
+Description: Provide a string constant value
 
-Parameters: 
-  - Name: value
+Parameters:
+- Name: value
+  Description: The constant value, must be a string
 
-    Description: The constant value, must be a string  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
 value: "constant"
 ```
 
-### io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider  
+### io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider  
-Description: Provide a weighted list of string constant values  
+Description: Provide a weighted list of string constant values
 
-Parameters: 
-  - Name: values
+Parameters:
+- Name: values
+  Description: The constant values, must be a list of weighted strings
 
-    Description: The constant values, must be a list of weighted strings  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.constant.StringWeightedListConstantProvider"
@@ -266,16 +255,15 @@ values:
     weight: 2
 ```
 
-### io.duzzy.plugin.provider.constant.StringListConstantProvider  
+### io.duzzy.plugin.provider.constant.StringListConstantProvider
 Identifier: io.duzzy.plugin.provider.constant.StringListConstantProvider  
-Description: Provide a list of string constant values  
+Description: Provide a list of string constant values
 
-Parameters: 
-  - Name: values
+Parameters:
+- Name: values
+  Description: The constant values, must be a list of strings
 
-    Description: The constant values, must be a list of strings  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
@@ -284,35 +272,32 @@ values:
   - "constant2"
 ```
 
-### io.duzzy.plugin.column.constant.BooleanConstantColumn  
+### io.duzzy.plugin.column.constant.BooleanConstantColumn
 Identifier: io.duzzy.plugin.column.constant.BooleanConstantColumn  
-Description: Provide a boolean constant value  
+Description: Provide a boolean constant value
 
-Parameters: 
-  - Name: value
+Parameters:
+- Name: value
+  Description: The constant value, must be a boolean
 
-    Description: The constant value, must be a boolean  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.column.constant.BooleanConstantColumn"
 value: false
 ```
 
-### io.duzzy.plugin.provider.increment.DoubleIncrementProvider  
+### io.duzzy.plugin.provider.increment.DoubleIncrementProvider
 Identifier: io.duzzy.plugin.provider.increment.DoubleIncrementProvider  
-Description: Provide a double value that increments by a step  
+Description: Provide a double value that increments by a step
 
-Parameters: 
-  - Name: start
+Parameters:
+- Name: start
+  Description: The starting value, must be a double
+- Name: step
+  Description: The step value, must be a double
 
-    Description: The starting value, must be a double
-  - Name: step
-
-    Description: The step value, must be a double  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.increment.DoubleIncrementProvider"
@@ -320,19 +305,17 @@ start: 0.0
 step: 0.1
 ```
 
-### io.duzzy.plugin.provider.increment.FloatIncrementProvider  
+### io.duzzy.plugin.provider.increment.FloatIncrementProvider
 Identifier: io.duzzy.plugin.provider.increment.FloatIncrementProvider  
-Description: Provide a float value that increments by a step  
+Description: Provide a float value that increments by a step
 
-Parameters: 
-  - Name: start
+Parameters:
+- Name: start
+  Description: The starting value, defaults to 0
+- Name: step
+  Description: The step value, defaults to 0.1
 
-    Description: The starting value, defaults to 0
-  - Name: step
-
-    Description: The step value, defaults to 0.1  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.increment.FloatIncrementProvider"
@@ -340,19 +323,17 @@ start: 0.0
 step: 0.1
 ```
 
-### io.duzzy.plugin.provider.increment.LongIncrementProvider  
+### io.duzzy.plugin.provider.increment.LongIncrementProvider
 Identifier: io.duzzy.plugin.provider.increment.LongIncrementProvider  
-Description: Provide a long value that increments by a step  
+Description: Provide a long value that increments by a step
 
-Parameters: 
-  - Name: start
+Parameters:
+- Name: start
+  Description: The starting value, defaults to 0
+- Name: step
+  Description: The step value, defaults to 1
 
-    Description: The starting value, defaults to 0
-  - Name: step
-
-    Description: The step value, defaults to 1  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.increment.LongIncrementProvider"
@@ -360,19 +341,17 @@ start: 0
 step: 2
 ```
 
-### io.duzzy.plugin.provider.increment.IntegerIncrementProvider  
+### io.duzzy.plugin.provider.increment.IntegerIncrementProvider
 Identifier: io.duzzy.plugin.provider.increment.IntegerIncrementProvider  
-Description: Provide an integer value that increments by a step  
+Description: Provide an integer value that increments by a step
 
-Parameters: 
-  - Name: start
+Parameters:
+- Name: start
+  Description: The starting value, defaults to 0
+- Name: step
+  Description: The step value, defaults to 1
 
-    Description: The starting value, defaults to 0
-  - Name: step
-
-    Description: The step value, defaults to 1  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.increment.IntegerIncrementProvider"
@@ -380,19 +359,17 @@ start: 0
 step: 2
 ```
 
-### io.duzzy.plugin.provider.random.LocalDateRandomProvider  
+### io.duzzy.plugin.provider.random.LocalDateRandomProvider
 Identifier: io.duzzy.plugin.provider.random.LocalDateRandomProvider  
-Description: Provide a random local date value  
+Description: Provide a random local date value
 
-Parameters: 
-  - Name: min
+Parameters:
+- Name: min
+  Description: The minimum local date, inclusive
+- Name: max
+  Description: The maximum local date, exclusive
 
-    Description: The minimum local date, inclusive
-  - Name: max
-
-    Description: The maximum local date, exclusive  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.LocalDateRandomProvider"
@@ -400,19 +377,17 @@ min: "2020-01-01"
 max: "2021-01-01"
 ```
 
-### io.duzzy.plugin.provider.random.FloatRandomProvider  
+### io.duzzy.plugin.provider.random.FloatRandomProvider
 Identifier: io.duzzy.plugin.provider.random.FloatRandomProvider  
-Description: Provide a random float value  
+Description: Provide a random float value
 
-Parameters: 
-  - Name: min
+Parameters:
+- Name: min
+  Description: The minimum value, must be a float, inclusive
+- Name: max
+  Description: The maximum value, must be a float, exclusive
 
-    Description: The minimum value, must be a float, inclusive
-  - Name: max
-
-    Description: The maximum value, must be a float, exclusive  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.FloatRandomProvider"
@@ -420,19 +395,17 @@ min: 0.0
 max: 1.0
 ```
 
-### io.duzzy.plugin.provider.random.LongRandomProvider  
+### io.duzzy.plugin.provider.random.LongRandomProvider
 Identifier: io.duzzy.plugin.provider.random.LongRandomProvider  
-Description: Provide a random long value  
+Description: Provide a random long value
 
-Parameters: 
-  - Name: min
+Parameters:
+- Name: min
+  Description: The minimum value, must be a long, inclusive
+- Name: max
+  Description: The maximum value, must be a long, exclusive
 
-    Description: The minimum value, must be a long, inclusive
-  - Name: max
-
-    Description: The maximum value, must be a long, exclusive  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.LongRandomProvider"
@@ -440,19 +413,17 @@ min: 0
 max: 100
 ```
 
-### io.duzzy.plugin.provider.random.IntegerRandomProvider  
+### io.duzzy.plugin.provider.random.IntegerRandomProvider
 Identifier: io.duzzy.plugin.provider.random.IntegerRandomProvider  
-Description: Provide a random integer value  
+Description: Provide a random integer value
 
-Parameters: 
-  - Name: min
+Parameters:
+- Name: min
+  Description: The minimum value, must be an integer, inclusive
+- Name: max
+  Description: The maximum value, must be an integer, exclusive
 
-    Description: The minimum value, must be an integer, inclusive
-  - Name: max
-
-    Description: The maximum value, must be an integer, exclusive  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
@@ -460,33 +431,29 @@ min: 0
 max: 100
 ```
 
-### io.duzzy.plugin.provider.random.BooleanRandomProvider  
+### io.duzzy.plugin.provider.random.BooleanRandomProvider
 Identifier: io.duzzy.plugin.provider.random.BooleanRandomProvider  
-Description: Provide a random boolean value  
+Description: Provide a random boolean value
 
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.BooleanRandomProvider"
 ```
 
-### io.duzzy.plugin.provider.random.AlphanumericRandomProvider  
+### io.duzzy.plugin.provider.random.AlphanumericRandomProvider
 Identifier: io.duzzy.plugin.provider.random.AlphanumericRandomProvider  
-Description: Provide a random alphanumeric value  
+Description: Provide a random alphanumeric value
 
-Parameters: 
-  - Name: min_length
+Parameters:
+- Name: min_length
+  Aliases: minLength, min-length
+  Description: The minimum length of the generated value
+- Name: max_length
+  Aliases: maxLength, max-length
+  Description: The maximum length of the generated value
 
-    Aliases: minLength, min-length
-
-    Description: The minimum length of the generated value
-  - Name: max_length
-
-    Aliases: maxLength, max-length
-
-    Description: The maximum length of the generated value  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
@@ -494,19 +461,17 @@ min_length: 10
 max_length: 15
 ```
 
-### io.duzzy.plugin.provider.random.InstantRandomProvider  
+### io.duzzy.plugin.provider.random.InstantRandomProvider
 Identifier: io.duzzy.plugin.provider.random.InstantRandomProvider  
-Description: Provide a random instant value  
+Description: Provide a random instant value
 
-Parameters: 
-  - Name: min
+Parameters:
+- Name: min
+  Description: The minimum instant value, must be a string that represents a valid instant, inclusive
+- Name: max
+  Description: The maximum instant value, must be a string that represents a valid instant, exclusive
 
-    Description: The minimum instant value, must be a string that represents a valid instant, inclusive
-  - Name: max
-
-    Description: The maximum instant value, must be a string that represents a valid instant, exclusive  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.InstantRandomProvider"
@@ -514,29 +479,27 @@ min: "2020-01-01T00:00:00Z"
 max: "2021-01-01T00:00:00Z"
 ```
 
-### io.duzzy.plugin.provider.random.UuidRandomProvider  
+### io.duzzy.plugin.provider.random.UuidRandomProvider
 Identifier: io.duzzy.plugin.provider.random.UuidRandomProvider  
-Description: Provide a random UUID value  
+Description: Provide a random UUID value
 
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.UuidRandomProvider"
 ```
 
-### io.duzzy.plugin.provider.random.DoubleRandomProvider  
+### io.duzzy.plugin.provider.random.DoubleRandomProvider
 Identifier: io.duzzy.plugin.provider.random.DoubleRandomProvider  
-Description: Provide a random double value  
+Description: Provide a random double value
 
-Parameters: 
-  - Name: min
+Parameters:
+- Name: min
+  Description: The minimum value, must be a double, inclusive
+- Name: max
+  Description: The maximum value, must be a double, exclusive
 
-    Description: The minimum value, must be a double, inclusive
-  - Name: max
-
-    Description: The maximum value, must be a double, exclusive  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.provider.random.DoubleRandomProvider"
@@ -549,16 +512,15 @@ A sink is a component that enables to specify where and in which format (via a s
 
 Before writing data, a sink delegates data formatting to a serializer.
 
-### io.duzzy.plugin.sink.ConsoleSink  
+### io.duzzy.plugin.sink.ConsoleSink
 Identifier: io.duzzy.plugin.sink.ConsoleSink  
-Description: Print output into the console  
+Description: Print output into the console
 
-Parameters: 
-  - Name: serializer
+Parameters:
+- Name: serializer
+  Description: The serializer to use
 
-    Description: The serializer to use  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.sink.ConsoleSink"
@@ -566,26 +528,21 @@ serializer:
   identifier: "io.duzzy.plugin.serializer.JsonSerializer"
 ```
 
-### io.duzzy.plugin.sink.LocalFileSink  
+### io.duzzy.plugin.sink.LocalFileSink
 Identifier: io.duzzy.plugin.sink.LocalFileSink  
-Description: Write output into a local file  
+Description: Write output into a local file
 
-Parameters: 
-  - Name: serializer
+Parameters:
+- Name: serializer
+  Description: The serializer to use
+- Name: filename
+  Description: The name of the file to write
+- Name: create_if_not_exists
+  Aliases: createIfNotExists, create-if-not-exists
+  Description: Create the file if it does not exist
+  Default value: false
 
-    Description: The serializer to use
-  - Name: filename
-
-    Description: The name of the file to write
-  - Name: create_if_not_exists
-
-    Aliases: createIfNotExists, create-if-not-exists
-
-    Description: Create the file if it does not exist
-
-    Default value: false  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.sink.LocalFileSink"
@@ -598,44 +555,35 @@ serializer:
 ## Serializer
 A serializer is a component that enables to specify how data are formatted.
 
-### io.duzzy.plugin.serializer.JsonSerializer  
+### io.duzzy.plugin.serializer.JsonSerializer
 Identifier: io.duzzy.plugin.serializer.JsonSerializer  
-Description: Serialize data in JSON  
+Description: Serialize data in JSON
 
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.serializer.JsonSerializer"
 ```
 
-### io.duzzy.plugin.serializer.CsvSerializer  
+### io.duzzy.plugin.serializer.CsvSerializer
 Identifier: io.duzzy.plugin.serializer.CsvSerializer  
-Description: Serialize data in CSV  
+Description: Serialize data in CSV
 
-Parameters: 
-  - Name: quote_char
+Parameters:
+- Name: quote_char
+  Aliases: quoteChar, quote-char
+  Description: The character used to quote values
+  Default value: '
+- Name: column_separator
+  Aliases: columnSeparator, column-separator
+  Description: The character used to separate columns
+  Default value: ;
+- Name: line_separator
+  Aliases: lineSeparator, line-separator
+  Description: The character used to separate lines
+  Default value: |
 
-    Aliases: quoteChar, quote-char
-
-    Description: The character used to quote values
-
-    Default value: '
-  - Name: column_separator
-
-    Aliases: columnSeparator, column-separator
-
-    Description: The character used to separate columns
-
-    Default value: ;
-  - Name: line_separator
-
-    Aliases: lineSeparator, line-separator
-
-    Description: The character used to separate lines
-
-    Default value: |  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.serializer.CsvSerializer"
@@ -644,45 +592,37 @@ lineSeparator: "|"
 quoteChar: "'"
 ```
 
-### io.duzzy.plugin.serializer.SqlSerializer  
+### io.duzzy.plugin.serializer.SqlSerializer
 Identifier: io.duzzy.plugin.serializer.SqlSerializer  
-Description: Serialize data in SQL  
+Description: Serialize data in SQL
 
-Parameters: 
-  - Name: table_name
+Parameters:
+- Name: table_name
+  Aliases: tableName, table-name
+  Description: The name of the table to insert data
 
-    Aliases: tableName, table-name
-
-    Description: The name of the table to insert data  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.serializer.SqlSerializer"
 table_name: "my_table"
 ```
 
-### io.duzzy.plugin.serializer.XmlSerializer  
+### io.duzzy.plugin.serializer.XmlSerializer
 Identifier: io.duzzy.plugin.serializer.XmlSerializer  
-Description: Serialize data in XML  
+Description: Serialize data in XML
 
-Parameters: 
-  - Name: root_tag
+Parameters:
+- Name: root_tag
+  Aliases: rootTag, root-tag
+  Description: The root tag of the XML document
+  Default value: rows
+- Name: row_tag
+  Aliases: rowTag, row-tag
+  Description: The tag of each row
+  Default value: row
 
-    Aliases: rootTag, root-tag
-
-    Description: The root tag of the XML document
-
-    Default value: rows
-  - Name: row_tag
-
-    Aliases: rowTag, row-tag
-
-    Description: The tag of each row
-
-    Default value: row  
-
-Example: 
+Example:
 ```
 ---
 identifier: "io.duzzy.plugin.serializer.XmlSerializer"
@@ -690,4 +630,46 @@ root_tag: "rows"
 row_tag: "row"
 ```
 
-Qualified name of component must contains "duzzy" to appear into this documentation.
+### io.duzzy.plugin.serializer.AvroWithSchemaSerializer
+Identifier: io.duzzy.plugin.serializer.AvroWithSchemaSerializer  
+Description: Serialize data to Avro, schema is written with data
+
+Parameters:
+- Name: name
+  Description: The name of the record
+- Name: namespace
+  Description: The namespace that qualifies the name
+- Name: schema_file
+  Aliases: schemaFile, schema-file
+  Description: The Avro schema file
+
+Example:
+```
+---
+identifier: "io.duzzy.plugin.serializer.AvroWithSchemaSerializer"
+name: "avro-with-schema"
+namespace: "io.duzzy.plugin.serializer"
+schema_file: "schema.avsc"
+```
+
+### io.duzzy.plugin.serializer.AvroSchemalessSerializer
+Identifier: io.duzzy.plugin.serializer.AvroSchemalessSerializer  
+Description: Serialize data to Avro, schema is not written with data
+
+Parameters:
+- Name: name
+  Description: The name of the record
+- Name: namespace
+  Description: The namespace that qualifies the name
+- Name: schema_file
+  Aliases: schemaFile, schema-file
+  Description: The Avro schema file
+
+Example:
+```
+---
+identifier: "io.duzzy.plugin.serializer.AvroSchemalessSerializer"
+name: "avro-schemaless"
+namespace: "io.duzzy.plugin.serializer"
+schema_file: "schema.avsc"
+```

@@ -4,10 +4,35 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
 import java.time.LocalDate;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.provider.random.LocalDateRandomProvider",
+    description = "Provide a random local date value",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.PROVIDER,
+    parameters = {
+        @Parameter(
+            name = "min",
+            description = "The minimum local date, inclusive"
+        ),
+        @Parameter(
+            name = "max",
+            description = "The maximum local date, exclusive"
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.provider.random.LocalDateRandomProvider"
+        min: "2020-01-01"
+        max: "2021-01-01"
+        """
+)
 public final class LocalDateRandomProvider implements Provider<LocalDate> {
 
   private static final Long DEFAULT_MAX = 2932891L; //9999-12-31 + 1 day

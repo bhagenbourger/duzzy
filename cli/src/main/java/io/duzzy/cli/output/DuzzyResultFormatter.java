@@ -1,4 +1,4 @@
-package io.duzzy.cli;
+package io.duzzy.cli.output;
 
 import io.duzzy.core.DuzzyResult;
 

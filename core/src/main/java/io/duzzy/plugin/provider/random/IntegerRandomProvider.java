@@ -1,9 +1,34 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.corrupted.IntegerCorruptedProvider;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.provider.random.IntegerRandomProvider",
+    description = "Provide a random integer value",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.PROVIDER,
+    parameters = {
+        @Parameter(
+            name = "min",
+            description = "The minimum value, must be an integer, inclusive"
+        ),
+        @Parameter(
+            name = "max",
+            description = "The maximum value, must be an integer, exclusive"
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
+        min: 0
+        max: 100
+        """
+)
 public class IntegerRandomProvider implements IntegerCorruptedProvider {
 
   private final Integer min;

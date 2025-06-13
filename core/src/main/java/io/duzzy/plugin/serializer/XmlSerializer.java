@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.documentation.Documentation;
+import io.duzzy.core.documentation.DuzzyType;
+import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,6 +16,32 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+@Documentation(
+    identifier = "io.duzzy.plugin.serializer.XmlSerializer",
+    description = "Serialize data in XML",
+    module = "io.duzzy.core",
+    duzzyType = DuzzyType.SERIALIZER,
+    parameters = {
+        @Parameter(
+            name = "root_tag",
+            aliases = {"rootTag", "root-tag"},
+            description = "The root tag of the XML document",
+            defaultValue = "rows"
+        ),
+        @Parameter(
+            name = "row_tag",
+            aliases = {"rowTag", "row-tag"},
+            description = "The tag of each row",
+            defaultValue = "row"
+        )
+    },
+    example = """
+        ---
+        identifier: "io.duzzy.plugin.serializer.XmlSerializer"
+        root_tag: "rows"
+        row_tag: "row"
+        """
+)
 public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
 
   private static final String DEFAULT_ROOT_TAG = "rows";
