@@ -26,7 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import picocli.CommandLine;
 
-public class AppTest {
+public class AppJvmTest {
   private static final String HELP = """
       Usage: duzzy [-hV] [COMMAND]
       Give me your schema, I'll give you your test data.
@@ -39,7 +39,7 @@ public class AppTest {
       """;
   private static final String RUN_ACTION = "run";
   private static final String SCHEMA_FILE_OPTION =
-      "-f=../cli/src/test/resources/avro-schema/all-supported-fields.avsc";
+      "-f=../cli-jvm/src/test/resources/avro-schema/all-supported-fields.avsc";
   private static final String PARSER_OPTION = "-p=io.duzzy.plugin.parser.AvroSchemaParser";
   private static final String ROWS_OPTION = "-r=3";
   private static final String SEAD_OPTION = "-s=1234";
@@ -49,7 +49,7 @@ public class AppTest {
 
   @Test
   void shouldPrintHelp() {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -64,7 +64,7 @@ public class AppTest {
   void shouldPrintVersion() {
     final String version = "0.0.0\n";
 
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -77,7 +77,7 @@ public class AppTest {
 
   @Test
   void shouldPrintUsageWhenArgsIsEmpty() {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
@@ -93,7 +93,7 @@ public class AppTest {
     final File expectedFile = getFromResources(getClass(), "result/avro-with-config-result.xml");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));
 
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -106,7 +106,7 @@ public class AppTest {
         RUN_ACTION,
         SCHEMA_FILE_OPTION,
         PARSER_OPTION,
-        "-c=../cli/src/test/resources/config/duzzy-config-full-xml.yaml",
+        "-c=../cli-jvm/src/test/resources/config/duzzy-config-full-xml.yaml",
         ROWS_OPTION,
         SEAD_OPTION,
         OUTPUT_OPTION
@@ -128,7 +128,7 @@ public class AppTest {
     final File expectedFile = getFromResources(getClass(), "result/avro-with-config-result.json");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));
 
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -141,7 +141,7 @@ public class AppTest {
         RUN_ACTION,
         SCHEMA_FILE_OPTION,
         PARSER_OPTION,
-        "-c=../cli/src/test/resources/config/duzzy-config-full-json.yaml",
+        "-c=../cli-jvm/src/test/resources/config/duzzy-config-full-json.yaml",
         ROWS_OPTION,
         SEAD_OPTION,
         OUTPUT_OPTION
@@ -163,7 +163,7 @@ public class AppTest {
     final File expectedFile = getFromResources(getClass(), "result/avro-with-config-result.csv");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));
 
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -176,7 +176,7 @@ public class AppTest {
         RUN_ACTION,
         SCHEMA_FILE_OPTION,
         PARSER_OPTION,
-        "-c=../cli/src/test/resources/config/duzzy-config-full-csv.yaml",
+        "-c=../cli-jvm/src/test/resources/config/duzzy-config-full-csv.yaml",
         ROWS_OPTION,
         SEAD_OPTION,
         OUTPUT_OPTION
@@ -195,7 +195,7 @@ public class AppTest {
 
   @Test
   void shouldGenerateFromAvroToAvroWithSchemaWithConfig() throws IOException {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -208,7 +208,7 @@ public class AppTest {
         RUN_ACTION,
         SCHEMA_FILE_OPTION,
         PARSER_OPTION,
-        "-c=../cli/src/test/resources/config/duzzy-config-full-avro-with-schema.yaml",
+        "-c=../cli-jvm/src/test/resources/config/duzzy-config-full-avro-with-schema.yaml",
         ROWS_OPTION,
         SEAD_OPTION,
         OUTPUT_OPTION
@@ -238,7 +238,7 @@ public class AppTest {
 
   @Test
   void shouldGenerateFromAvroToAvroSchemalessWithConfig() throws IOException {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -251,7 +251,7 @@ public class AppTest {
         RUN_ACTION,
         SCHEMA_FILE_OPTION,
         PARSER_OPTION,
-        "-c=../cli/src/test/resources/config/duzzy-config-full-avro-schemaless.yaml",
+        "-c=../cli-jvm/src/test/resources/config/duzzy-config-full-avro-schemaless.yaml",
         ROWS_OPTION,
         SEAD_OPTION,
         OUTPUT_OPTION
@@ -281,7 +281,7 @@ public class AppTest {
 
   @Test
   void shouldPrintPluginUsage() {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -307,7 +307,7 @@ public class AppTest {
 
   @Test
   void installPluginRequiredSourceOption() {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();
@@ -324,7 +324,7 @@ public class AppTest {
           -V, --version         Print version information and exit.
         """);
   }
-  
+
   @ParameterizedTest
   @CsvSource({
       "doc, doc/doc.txt",
@@ -334,7 +334,7 @@ public class AppTest {
       "doc -t=PARSER -i=sql -m=core, doc/doc-parser-sql.txt"
   })
   void generateDoc(String command, String result) throws IOException {
-    final App app = new App();
+    final AppJvm app = new AppJvm();
     final CommandLine cmd = new CommandLine(app);
 
     final StringWriter sw = new StringWriter();

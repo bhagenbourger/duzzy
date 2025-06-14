@@ -15,6 +15,16 @@
     "allPublicConstructors": true
   },
   {
+    "name": "io.duzzy.core.documentation.DocumentationRecord",
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.duzzy.core.documentation.ParameterRecord",
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "io.duzzy.plugin.sink.ConsoleSink",
     "allPublicConstructors": true
   },
