@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class DuzzyResultJsonFormatter implements DuzzyResultFormatter {
 
-  private static final Logger logger = LoggerFactory.getLogger(DuzzyResultJsonFormatter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DuzzyResultJsonFormatter.class);
 
   private static final ObjectMapper MAPPER = new ObjectMapper()
       .registerModule(new JavaTimeModule());
@@ -19,7 +19,7 @@ public class DuzzyResultJsonFormatter implements DuzzyResultFormatter {
     try {
       return MAPPER.writer().writeValueAsString(duzzyResult);
     } catch (JsonProcessingException e) {
-      logger.warn(
+      LOGGER.warn(
           "An error occurred while formatting result in JSON, fallback on raw strategy",
           e
       );

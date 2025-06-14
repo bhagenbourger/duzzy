@@ -1,12 +1,12 @@
 package io.duzzy.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.sink.Sink;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Optional;
         + "sink or serializer",
     module = "io.duzzy.core",
     duzzyType = DuzzyType.DUZZY_CONFIG,
-    parameters = {},
+    nativeSupport = true,
     example = """
         ---
         enrichers:

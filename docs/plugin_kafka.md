@@ -13,32 +13,31 @@ duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/d
 ```
 
 ## Sink
-A sink is a component that enables to specify where and in which format (via a serializer) data are written.  
+A sink is a component that enables to specify where and in which format (via a serializer) data are written.
+
 Before writing data, a sink delegates data formatting to a serializer.
 
-### io.duzzy.plugin.sink.KafkaSink
-Identifier: io.duzzy.plugin.sink.KafkaSink  
-Description: Sink data to a Kafka topic
+### io.duzzy.plugin.sink.KafkaSink ♨️ 🧬
+🔑 Identifier: io.duzzy.plugin.sink.KafkaSink  
+📋 Description: Sink data to a Kafka topic  
+📦 Module: io.duzzy.plugin-kafka  
+🧬 Native support: true
 
-Parameters:
-- Name: serializer
+⚙️ Parameters:
 
-  Description: The serializer to use
-- Name: topic
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| serializer |  | The serializer to use |  |
+| topic |  | The Kafka topic |  |
+| bootstrap_servers | bootstrapServers, bootstrap-servers | The Kafka bootstrap servers |  |  
 
-  Description: The Kafka topic
-- Name: bootstrap_servers
-
-  Aliases: bootstrapServers, bootstrap-servers
-
-  Description: The Kafka bootstrap servers
-
-Example:
+💡 Example:
 ```
 ---
-identifier: "io.duzzy.plugin.sink.KafkaSink"
-serializer:
-  identifier: "io.duzzy.plugin.serializer.JSONSerializer"
-topic: "my-topic"
-bootstrapServers: "localhost:9092"
+sink:
+  identifier: "io.duzzy.plugin.sink.KafkaSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+  topic: "my-topic"
+  bootstrapServers: "localhost:9092"
 ```

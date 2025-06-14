@@ -3,10 +3,10 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.sink.JdbcSink;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.Parameter;
 import io.duzzy.plugin.serializer.SqlSerializer;
 
 @Documentation(
@@ -14,6 +14,7 @@ import io.duzzy.plugin.serializer.SqlSerializer;
     description = "Sink data to a PostgreSQL database",
     module = "io.duzzy.plugin-postgresql",
     duzzyType = DuzzyType.SINK,
+    nativeSupport = true,
     parameters = {
         @Parameter(
             name = "serializer",
@@ -39,14 +40,15 @@ import io.duzzy.plugin.serializer.SqlSerializer;
     },
     example = """
         ---
-        identifier: "io.duzzy.plugin.sink.PostgresqlSink"
-        serializer:
-          identifier: "io.duzzy.plugin.serializer.SqlSerializer"
-          table_name: "my_table"
-        url: "jdbc:postgresql://localhost:5432/my_database"
-        user: "user"
-        password: "password"
-        fail_on_error: true
+        sink:
+          identifier: "io.duzzy.plugin.sink.PostgresqlSink"
+          serializer:
+            identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+            table_name: "my_table"
+          url: "jdbc:postgresql://localhost:5432/my_database"
+          user: "user"
+          password: "password"
+          fail_on_error: true
         """
 )
 public class PostgresqlSink extends JdbcSink {

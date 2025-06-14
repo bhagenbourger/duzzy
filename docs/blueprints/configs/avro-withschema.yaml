@@ -1,0 +1,8 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.ConsoleSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.AvroWithSchemaSerializer"
+    name: "avro_name"
+    namespace: "avro_namespace"
+    schema_file: "docs/blueprints/avro-schemas/example.avsc"

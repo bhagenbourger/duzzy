@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class DuzzyResultYamlFormatter implements DuzzyResultFormatter {
 
-  private static final Logger logger = LoggerFactory.getLogger(DuzzyResultYamlFormatter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DuzzyResultYamlFormatter.class);
 
   private static final ObjectMapper MAPPER = new YAMLMapper()
       .registerModule(new JavaTimeModule());
@@ -20,7 +20,7 @@ public class DuzzyResultYamlFormatter implements DuzzyResultFormatter {
     try {
       return MAPPER.writer().writeValueAsString(duzzyResult);
     } catch (JsonProcessingException e) {
-      logger.warn(
+      LOGGER.warn(
           "An error occurred while formatting result in YAML, fallback on raw strategy",
           e
       );

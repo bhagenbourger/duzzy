@@ -5,11 +5,11 @@ import static io.duzzy.core.sink.FileSink.addFilePart;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.Parameter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,6 +21,7 @@ import java.nio.file.Path;
     description = "Write output into a local file",
     module = "io.duzzy.core",
     duzzyType = DuzzyType.SINK,
+    nativeSupport = true,
     parameters = {
         @Parameter(
             name = "serializer",

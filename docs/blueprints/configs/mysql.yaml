@@ -1,0 +1,10 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.MysqlSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+    table_name: "my_table"
+  url: "jdbc:mysql://localhost:3306/my_database"
+  user: "root"
+  password: "mysql"
+  fail_on_error: true

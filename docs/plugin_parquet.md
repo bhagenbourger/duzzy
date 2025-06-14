@@ -15,28 +15,28 @@ duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/d
 ## Serializer
 A serializer is a component that enables to specify how data are formatted.
 
-### io.duzzy.plugin.serializer.ParquetSerializer
-Identifier: io.duzzy.plugin.serializer.ParquetSerializer  
-Description: Serialize data to Parquet
+### io.duzzy.plugin.serializer.ParquetSerializer ♨️ 🧬
+🔑 Identifier: io.duzzy.plugin.serializer.ParquetSerializer  
+📋 Description: Serialize data to Parquet  
+📦 Module: io.duzzy.plugin-parquet  
+🧬 Native support: true
 
-Parameters:
-- Name: name
+⚙️ Parameters:
 
-  Description: The name of the record
-- Name: namespace
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| name |  | The name of the record |  |
+| namespace |  | The namespace that qualifies the name |  |
+| schema_file | schemaFile, schema-file | The Avro schema file |  |  
 
-  Description: The namespace that qualifies the name
-- Name: schema_file
-
-  Aliases: schemaFile, schema-file
-
-  Description: The Avro schema file
-
-Example:
+💡 Example:
 ```
 ---
-identifier: "io.duzzy.plugin.serializer.ParquetSerializer"
-name: "parquet"
-namespace: "io.duzzy.plugin.serializer"
-schema_file: "schema.avsc"
+sink:
+  identifier: "io.duzzy.plugin.sink.ConsoleSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.ParquetSerializer"
+    name: "parquet"
+    namespace: "io.duzzy.plugin.serializer"
+    schema_file: "schema.avsc"
 ```

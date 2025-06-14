@@ -1,0 +1,10 @@
+# Duzzy components
+
+## Parser
+A `parser`is a component that parses the input schema and produces a `DuzzySchema` by combining the input schema and duzzy config.
+
+### io.duzzy.plugin.parser.SqlParser ♨️ 🧬  
+🔑 Identifier: io.duzzy.plugin.parser.SqlParser  
+📋 Description: SQL parser: parse SQL schema to DuzzySchema  
+📦 Module: io.duzzy.core  
+🧬 Native support: true
