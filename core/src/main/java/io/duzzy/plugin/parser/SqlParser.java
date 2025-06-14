@@ -1,13 +1,13 @@
 package io.duzzy.plugin.parser;
 
 import io.duzzy.core.config.DuzzyConfig;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.provider.Provider;
 import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.provider.random.BooleanRandomProvider;
 import io.duzzy.plugin.provider.random.DoubleRandomProvider;

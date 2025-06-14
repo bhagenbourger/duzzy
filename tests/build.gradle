@@ -1,3 +1,22 @@
+plugins {
+    id 'jacoco-report-aggregation'
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+}
+
 dependencies {
+    implementation project(":cli")
+    implementation project(":cli-jvm")
+    implementation project(":cli-native")
     implementation project(":core")
+    implementation project(":documentation")
+    implementation project(":plugin-avro")
+    implementation project(":plugin-duckdb")
+    implementation project(":plugin-hdfs")
+    implementation project(":plugin-kafka")
+    implementation project(":plugin-mysql")
+    implementation project(":plugin-parquet")
+    implementation project(":plugin-postgresql")
 }

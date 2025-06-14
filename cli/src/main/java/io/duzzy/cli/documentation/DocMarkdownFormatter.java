@@ -1,8 +1,8 @@
 package io.duzzy.cli.documentation;
 
-import io.duzzy.core.documentation.DocumentationRecord;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.ParameterRecord;
+import io.duzzy.documentation.DocumentationRecord;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.ParameterRecord;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;

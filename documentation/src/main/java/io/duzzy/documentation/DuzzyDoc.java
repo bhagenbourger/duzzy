@@ -1,4 +1,4 @@
-package io.duzzy.core.documentation;
+package io.duzzy.documentation;
 
 import static java.lang.ClassLoader.getSystemClassLoader;
 import static java.util.Locale.ROOT;

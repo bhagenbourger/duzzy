@@ -12,10 +12,10 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.Parameter;
 import java.io.IOException;
 import java.io.OutputStream;
 
