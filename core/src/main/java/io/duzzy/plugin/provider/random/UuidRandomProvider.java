@@ -1,10 +1,10 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -13,6 +13,7 @@ import java.util.UUID;
     description = "Provide a random UUID value",
     module = "io.duzzy.core",
     duzzyType = DuzzyType.PROVIDER,
+    nativeSupport = true,
     example = """
         ---
         identifier: "io.duzzy.plugin.provider.random.UuidRandomProvider"

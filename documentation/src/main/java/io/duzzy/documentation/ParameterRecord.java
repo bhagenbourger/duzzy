@@ -1,4 +1,4 @@
-package io.duzzy.core.documentation;
+package io.duzzy.documentation;
 
 /**
  * Represents a parameter for a Duzzy element, including its name, possible aliases,

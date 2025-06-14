@@ -1,6 +1,6 @@
 package io.duzzy.cli.command;
 
-import io.duzzy.cli.App;
+import io.duzzy.cli.AppInfos;
 import io.duzzy.cli.plugin.PluginIdentifier;
 import io.duzzy.cli.plugin.PluginManager;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import picocli.CommandLine.Parameters;
     name = "plugin",
     description = "Manage your plugins",
     mixinStandardHelpOptions = true,
-    version = App.VERSION
+    version = AppInfos.VERSION
 )
 public class PluginCommand implements Callable<Integer> {
 
@@ -44,7 +44,7 @@ public class PluginCommand implements Callable<Integer> {
       name = "install",
       description = "Install a plugin",
       mixinStandardHelpOptions = true,
-      version = App.VERSION
+      version = AppInfos.VERSION
   )
   int install(
       @Option(
@@ -67,7 +67,7 @@ public class PluginCommand implements Callable<Integer> {
       name = "uninstall",
       description = "Uninstall a plugin",
       mixinStandardHelpOptions = true,
-      version = App.VERSION
+      version = AppInfos.VERSION
   )
   int uninstall(
       @Parameters(
@@ -95,7 +95,7 @@ public class PluginCommand implements Callable<Integer> {
       name = "list",
       description = "List all installed plugins",
       mixinStandardHelpOptions = true,
-      version = App.VERSION
+      version = AppInfos.VERSION
   )
   int list() {
     try {

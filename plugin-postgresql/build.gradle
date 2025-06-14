@@ -1,7 +1,7 @@
 dependencies {
     annotationProcessor project(":documentation-processor")
     compileOnly project(":core")
-    compileOnly project(":documentation-processor")
+    compileOnly project(":documentation")
     compileOnly "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
     implementation 'org.postgresql:postgresql:42.7.4'
@@ -10,5 +10,5 @@ dependencies {
     testImplementation project(":tests")
     testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     testImplementation 'org.testcontainers:postgresql:1.20.0'
-    testCompileOnly project(':documentation-processor')
+    testCompileOnly project(':documentation')
 }

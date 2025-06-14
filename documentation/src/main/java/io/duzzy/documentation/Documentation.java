@@ -1,4 +1,4 @@
-package io.duzzy.core.documentation;
+package io.duzzy.documentation;
 
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
@@ -21,6 +21,9 @@ public @interface Documentation {
 
   @JsonProperty("duzzyType")
   DuzzyType duzzyType();
+  
+  @JsonProperty("nativeSupport")
+  boolean nativeSupport() default false;
 
   @JsonProperty("parameters")
   Parameter[] parameters() default {};

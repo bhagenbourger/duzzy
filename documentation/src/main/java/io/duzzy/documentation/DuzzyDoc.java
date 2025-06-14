@@ -1,4 +1,4 @@
-package io.duzzy.core.documentation;
+package io.duzzy.documentation;
 
 import static java.lang.ClassLoader.getSystemClassLoader;
 import static java.util.Locale.ROOT;
@@ -28,7 +28,8 @@ public class DuzzyDoc {
   public static Map<DuzzyType, List<DocumentationRecord>> generate(
       DuzzyType duzzyType,
       String duzzyIdentifier,
-      String module
+      String module,
+      boolean nativeSupport
   ) throws IOException {
     final Enumeration<URL> resources = getSystemClassLoader().getResources(FILENAME);
     final List<DocumentationRecord> documentations = new ArrayList<>();
@@ -44,14 +45,15 @@ public class DuzzyDoc {
     }
 
     return documentations.stream()
-        .filter(predicate(duzzyType, duzzyIdentifier, module))
+        .filter(predicate(duzzyType, duzzyIdentifier, module, nativeSupport))
         .collect(Collectors.groupingBy(DocumentationRecord::duzzyType));
   }
 
   private static Predicate<DocumentationRecord> predicate(
       DuzzyType duzzyType,
       String duzzyIdentifier,
-      String module
+      String module,
+      boolean nativeSupport
   ) {
     Predicate<DocumentationRecord> predicate = d -> true;
     if (duzzyType != null) {
@@ -66,6 +68,9 @@ public class DuzzyDoc {
       predicate = predicate.and(
           d -> d.module().toLowerCase(ROOT).contains(module.toLowerCase(ROOT))
       );
+    }
+    if (nativeSupport) {
+      predicate = predicate.and(DocumentationRecord::nativeSupport);
     }
     return predicate;
   }
