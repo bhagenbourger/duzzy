@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 public class PluginManager {
 
-  private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(PluginManager.class);
 
   private static final String DUZZY = "DUZZY";
   private static final String IMPLEMENTATION_VENDOR = "Implementation-Vendor";
@@ -155,7 +155,7 @@ public class PluginManager {
           jarPath
       );
     } catch (IOException e) {
-      logger.warn("Plugin at path {} is invalid", jarPath, e);
+      LOGGER.warn("Plugin at path {} is invalid", jarPath, e);
       return new PluginIdentifier(jarPath);
     }
   }

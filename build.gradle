@@ -1,36 +1,17 @@
 plugins {
-    id 'application'
     id 'com.gradleup.shadow' version '8.3.5'
     id 'ru.vyarus.pom' version '3.0.0' apply false
-    id 'org.graalvm.buildtools.native' version '0.10.3'
     id 'com.github.spotbugs' version '6.0.27'
     id 'jacoco'
     id 'jacoco-report-aggregation'
 }
 
-application {
-    mainClass = "io.duzzy.cli.App"
-}
+//build.enabled = true
+//jar.enabled = false
 
-jar.enabled = false
-build.enabled = false
-
-graalvmNative {
-    binaries.configureEach {
-        resources.autodetect()
-    }
-    toolchainDetection = false
-    testSupport = true
-}
-
-startScripts {
-    unixStartScriptGenerator.template = resources.text.fromFile('config/start-scripts/duzzyUnixStartScript.txt')
-    windowsStartScriptGenerator.template = resources.text.fromFile('config/start-scripts/duzzyWindowsStartScript.txt')
-}
-
-tasks.named('check') {
-    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
-}
+//tasks.named('check') {
+//    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+//}
 
 ext {
     pluginTitle = ''
@@ -38,7 +19,6 @@ ext {
     pluginVendor = 'Duzzy'
     avroVersion = '1.12.0'
     jacksonVersion = '2.18.0'
-    log4j2Version = '2.24.3'
 }
 
 project(':plugin-avro') {
@@ -90,11 +70,7 @@ project(':plugin-postgresql') {
     }
 }
 
-dependencies {
-    implementation project(":cli")
-}
-
-allprojects {
+subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
     apply plugin: 'com.github.spotbugs'
@@ -164,10 +140,7 @@ subprojects {
  */
 subprojects {
     dependencies {
-        implementation 'org.slf4j:slf4j-api:2.0.16'
-        implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
-        implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
-        implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4j2Version"
+        implementation 'org.slf4j:slf4j-api:2.0.17'
 
         testImplementation platform('org.junit:junit-bom:5.10.0')
         testImplementation 'org.junit.jupiter:junit-jupiter'

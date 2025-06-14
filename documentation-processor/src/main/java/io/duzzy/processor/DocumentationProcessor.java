@@ -21,7 +21,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import org.apache.logging.log4j.util.Strings;
 
 @SupportedAnnotationTypes("io.duzzy.core.documentation.Documentation")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
@@ -45,7 +44,7 @@ public class DocumentationProcessor extends AbstractProcessor {
           .toList();
       final FileObject fileObject = processingEnv.getFiler().createResource(
           StandardLocation.CLASS_OUTPUT,
-          Strings.EMPTY,
+          "",
           FILENAME
       );
       try (final OutputStream outputStream = fileObject.openOutputStream()) {
