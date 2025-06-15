@@ -109,8 +109,11 @@ jobs:
             cli-jvm/build/distributions/duzzy-${{ env.VERSION }}.tar
             plugin-*/build/libs/plugin-*-${{ env.VERSION }}-all.jar
             
-  build-native-ubuntu:
-    runs-on: ubuntu-latest
+  build-native:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -122,12 +125,10 @@ jobs:
           distribution: 'graalvm'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Example step
+      - name: Set environment variables
         run: |
-          echo "GRAALVM_HOME: $GRAALVM_HOME"
-          echo "JAVA_HOME: $JAVA_HOME"
-          java --version
-          native-image --version
+          echo "LOWER_OS=$(echo ${{ runner.os }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "LOWER_ARCH=$(echo ${{ runner.arch }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
       
       - name: Build native image
         run: ./gradlew nativeCompile
@@ -135,6 +136,6 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: duzzy-ubuntu-x86_64
+          name: "duzzy-${{ env.LOWER_OS }}-${{ env.LOWER_ARCH }}"
           path: "cli-native/build/native/nativeCompile/duzzy"
           retention-days: 7
