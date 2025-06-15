@@ -18,7 +18,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  tests-and-build-jvm:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -108,3 +108,33 @@ jobs:
             cli-jvm/build/distributions/duzzy-${{ env.VERSION }}.zip
             cli-jvm/build/distributions/duzzy-${{ env.VERSION }}.tar
             plugin-*/build/libs/plugin-*-${{ env.VERSION }}-all.jar
+            
+  build-native-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      
+      - name: Set up GRAALVM 21
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'     
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Example step
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          native-image --version
+      
+      - name: Build native image
+        run: ./gradlew nativeCompile
+        
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: duzzy-ubuntu-x86_64
+          path: "cli-native/build/native/nativeCompile/duzzy"
+          retention-days: 7

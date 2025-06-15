@@ -7,6 +7,7 @@ graalvmNative {
         main {
             imageName = 'duzzy'
             mainClass = 'io.duzzy.cli.AppNative'
+            buildArgs.add('-march=compatibility')
         }
     }
     binaries.configureEach {
