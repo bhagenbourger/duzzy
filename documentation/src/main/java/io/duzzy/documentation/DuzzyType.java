@@ -1,4 +1,4 @@
-package io.duzzy.core.documentation;
+package io.duzzy.documentation;
 
 public enum DuzzyType {
   DUZZY_CONFIG(

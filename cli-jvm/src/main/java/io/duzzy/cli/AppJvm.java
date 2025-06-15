@@ -7,24 +7,20 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 @Command(
-    name = App.NAME,
-    description = App.DESCRIPTION,
+    name = AppInfos.NAME,
+    description = AppInfos.DESCRIPTION,
     mixinStandardHelpOptions = true,
-    version = App.VERSION,
+    version = AppInfos.VERSION,
     subcommands = {RunCommand.class, PluginCommand.class, DocCommand.class}
 )
-public class App implements Runnable {
-
-  public static final String NAME = "duzzy";
-  public static final String DESCRIPTION = "Give me your schema, I'll give you your test data.";
-  public static final String VERSION = "0.0.0";
+public class AppJvm implements Runnable {
 
   @Override
   public void run() {
-    new CommandLine(new App()).usage(System.out);
+    new CommandLine(new AppJvm()).usage(System.out);
   }
 
   public static void main(String[] args) {
-    System.exit(new CommandLine(new App()).execute(args));
+    System.exit(new CommandLine(new AppJvm()).execute(args));
   }
 }

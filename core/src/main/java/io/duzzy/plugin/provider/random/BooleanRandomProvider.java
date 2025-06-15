@@ -1,10 +1,10 @@
 package io.duzzy.plugin.provider.random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.Provider;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
 
 @Documentation(
     identifier = "io.duzzy.plugin.provider.random.BooleanRandomProvider",

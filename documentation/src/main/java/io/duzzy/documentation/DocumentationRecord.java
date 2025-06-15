@@ -1,4 +1,4 @@
-package io.duzzy.core.documentation;
+package io.duzzy.documentation;
 
 /**
  * Represents documentation metadata for a Duzzy element.

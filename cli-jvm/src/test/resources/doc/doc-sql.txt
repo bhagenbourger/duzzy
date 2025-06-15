@@ -1,0 +1,96 @@
+# Duzzy components
+
+## Parser
+A `parser`is a component that parses the input schema and produces a `DuzzySchema` by combining the input schema and duzzy config.
+
+### io.duzzy.plugin.parser.SqlParser  
+Identifier: io.duzzy.plugin.parser.SqlParser  
+Description: SQL parser: parse SQL schema to DuzzySchema  
+Module: io.duzzy.core
+
+## Sink
+A sink is a component that enables to specify where and in which format (via a serializer) data are written.
+
+Before writing data, a sink delegates data formatting to a serializer.
+
+### io.duzzy.plugin.sink.MysqlSink  
+Identifier: io.duzzy.plugin.sink.MysqlSink  
+Description: Sink data to a MySQL database  
+Module: io.duzzy.plugin-mysql  
+
+Parameters: 
+  - Name: serializer
+    Description: The serializer to use
+  - Name: url
+    Description: The JDBC URL
+  - Name: user
+    Description: The user
+  - Name: password
+    Description: The password
+  - Name: fail_on_error
+    Aliases: failOnError, fail-on-error
+    Description: Whether to fail on error  
+
+Example: 
+```
+---
+identifier: "io.duzzy.plugin.sink.MysqlSink"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+  table_name: "my_table"
+url: "jdbc:mysql://localhost:3306/my_database"
+user: "user"
+password: "password"
+fail_on_error: true
+```
+
+### io.duzzy.plugin.sink.PostgresqlSink  
+Identifier: io.duzzy.plugin.sink.PostgresqlSink  
+Description: Sink data to a PostgreSQL database  
+Module: io.duzzy.plugin-postgresql  
+
+Parameters: 
+  - Name: serializer
+    Description: The serializer to use
+  - Name: url
+    Description: The JDBC URL
+  - Name: user
+    Description: The user
+  - Name: password
+    Description: The password
+  - Name: fail_on_error
+    Aliases: failOnError, fail-on-error
+    Description: Whether to fail on error  
+
+Example: 
+```
+---
+identifier: "io.duzzy.plugin.sink.PostgresqlSink"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+  table_name: "my_table"
+url: "jdbc:postgresql://localhost:5432/my_database"
+user: "user"
+password: "password"
+fail_on_error: true
+```
+
+## Serializer
+A serializer is a component that enables to specify how data are formatted.
+
+### io.duzzy.plugin.serializer.SqlSerializer  
+Identifier: io.duzzy.plugin.serializer.SqlSerializer  
+Description: Serialize data in SQL  
+Module: io.duzzy.core  
+
+Parameters: 
+  - Name: table_name
+    Aliases: tableName, table-name
+    Description: The name of the table to insert data  
+
+Example: 
+```
+---
+identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+table_name: "my_table"
+```
