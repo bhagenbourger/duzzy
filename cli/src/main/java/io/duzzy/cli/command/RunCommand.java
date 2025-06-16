@@ -1,6 +1,6 @@
 package io.duzzy.cli.command;
 
-import io.duzzy.cli.App;
+import io.duzzy.cli.AppInfos;
 import io.duzzy.cli.output.OutputFormat;
 import io.duzzy.core.Duzzy;
 import io.duzzy.core.DuzzyResult;
@@ -15,11 +15,11 @@ import picocli.CommandLine.Option;
     name = "run",
     description = "Generate your test data",
     mixinStandardHelpOptions = true,
-    version = App.VERSION
+    version = AppInfos.VERSION
 )
 public class RunCommand implements Callable<Integer> {
 
-  private static final Logger logger = LoggerFactory.getLogger(RunCommand.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RunCommand.class);
 
   @Option(
       names = {"-f", "--schema-file"},
@@ -83,7 +83,7 @@ public class RunCommand implements Callable<Integer> {
       ).generate();
       System.out.println(outputFormat.getDuzzyResultVisitor().format(duzzyResult));
     } catch (Exception e) {
-      logger.error("An error occurred while running Duzzy:", e);
+      LOGGER.error("An error occurred while running Duzzy:", e);
       return 1;
     }
     return 0;

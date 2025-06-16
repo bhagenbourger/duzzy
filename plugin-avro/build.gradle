@@ -1,11 +1,11 @@
 dependencies {
     annotationProcessor project(":documentation-processor")
     compileOnly project(":core")
-    compileOnly project(':documentation-processor')
+    compileOnly project(':documentation')
 
     implementation "org.apache.avro:avro:$avroVersion"
 
     testImplementation project(":core")
     testImplementation project(":tests")
-    testCompileOnly project(':documentation-processor')
+    testCompileOnly project(':documentation')
 }

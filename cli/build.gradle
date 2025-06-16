@@ -1,6 +1,6 @@
 dependencies {
     implementation project(":core")
-    implementation project(':documentation-processor')
+    implementation project(':documentation')
 
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"

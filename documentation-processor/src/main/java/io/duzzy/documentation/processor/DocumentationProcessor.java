@@ -1,11 +1,11 @@
-package io.duzzy.processor;
+package io.duzzy.documentation.processor;
 
-import static io.duzzy.core.documentation.DuzzyDoc.FILENAME;
-import static io.duzzy.core.documentation.DuzzyDoc.MAPPER;
+import static io.duzzy.documentation.DuzzyDoc.FILENAME;
+import static io.duzzy.documentation.DuzzyDoc.MAPPER;
 import static javax.tools.Diagnostic.Kind.ERROR;
 import static javax.tools.Diagnostic.Kind.NOTE;
 
-import io.duzzy.core.documentation.Documentation;
+import io.duzzy.documentation.Documentation;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -21,9 +21,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import org.apache.logging.log4j.util.Strings;
 
-@SupportedAnnotationTypes("io.duzzy.core.documentation.Documentation")
+@SupportedAnnotationTypes("io.duzzy.documentation.Documentation")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class DocumentationProcessor extends AbstractProcessor {
 
@@ -45,7 +44,7 @@ public class DocumentationProcessor extends AbstractProcessor {
           .toList();
       final FileObject fileObject = processingEnv.getFiler().createResource(
           StandardLocation.CLASS_OUTPUT,
-          Strings.EMPTY,
+          "",
           FILENAME
       );
       try (final OutputStream outputStream = fileObject.openOutputStream()) {
