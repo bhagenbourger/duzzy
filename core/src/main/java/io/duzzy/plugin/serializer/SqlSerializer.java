@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.Parameter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +19,7 @@ import org.jooq.impl.DSL;
     description = "Serialize data in SQL",
     module = "io.duzzy.core",
     duzzyType = DuzzyType.SERIALIZER,
+    nativeSupport = true,
     parameters = {
         @Parameter(
             name = "table_name",
@@ -28,8 +29,11 @@ import org.jooq.impl.DSL;
     },
     example = """
         ---
-        identifier: "io.duzzy.plugin.serializer.SqlSerializer"
-        table_name: "my_table"
+        sink:
+          identifier: "io.duzzy.plugin.sink.ConsoleSink"
+          serializer:
+            identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+            table_name: "my_table"
         """
 )
 public class SqlSerializer extends Serializer<OutputStream> {

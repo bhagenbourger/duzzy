@@ -1,0 +1,12 @@
+[
+  {
+    "name": "io.duzzy.documentation.DocumentationRecord",
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.duzzy.documentation.ParameterRecord",
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  }
+]

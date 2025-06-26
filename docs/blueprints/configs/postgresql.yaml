@@ -1,0 +1,10 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.PostgresqlSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.SqlSerializer"
+    table_name: "my_table"
+  url: "jdbc:postgresql://localhost:5432/my_database"
+  user: "postgres"
+  password: "postgres"
+  fail_on_error: true

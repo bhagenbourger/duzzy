@@ -1,0 +1,64 @@
+[
+  {
+    "module": "io.duzzy.core",
+    "parameters": [
+      {
+        "name": "quote_char",
+        "defaultValue": "'",
+        "aliases": [
+          "quoteChar",
+          "quote-char"
+        ],
+        "description": "The character used to quote values"
+      },
+      {
+        "name": "column_separator",
+        "defaultValue": ";",
+        "aliases": [
+          "columnSeparator",
+          "column-separator"
+        ],
+        "description": "The character used to separate columns"
+      },
+      {
+        "name": "line_separator",
+        "defaultValue": "|",
+        "aliases": [
+          "lineSeparator",
+          "line-separator"
+        ],
+        "description": "The character used to separate lines"
+      }
+    ],
+    "description": "Serialize data in CSV",
+    "example": "---\nidentifier: \"io.duzzy.plugin.serializer.CsvSerializer\"\ncolumnSeparator: \";\"\nlineSeparator: \"|\"\nquoteChar: \"'\"\n",
+    "identifier": "io.duzzy.plugin.serializer.CsvSerializer",
+    "duzzyType": "SERIALIZER",
+    "nativeSupport": true
+  },
+  {
+    "module": "io.duzzy.core",
+    "parameters": [
+      {
+        "name": "table_name",
+        "defaultValue": "",
+        "aliases": [
+          "tableName",
+          "table-name"
+        ],
+        "description": "The name of the table to insert data"
+      }
+    ],
+    "description": "Serialize data in SQL",
+    "example": "---\nidentifier: \"io.duzzy.plugin.serializer.SqlSerializer\"\ntable_name: \"my_table\"\n",
+    "identifier": "io.duzzy.plugin.serializer.SqlSerializer",
+    "duzzyType": "SERIALIZER",
+    "nativeSupport": true
+  },
+  {
+    "duzzyType": "SERIALIZER"
+  },
+  {
+    "description": "Serialize data in JSON"
+  }
+]

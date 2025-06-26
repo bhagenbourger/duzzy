@@ -1,0 +1,13 @@
+---
+fields:
+  - name: stringListConstant
+    type: STRING
+    providers:
+      - identifier: "io.duzzy.plugin.provider.constant.StringListConstantProvider"
+        values: [ "one", "two", "three" ]
+  - name: integerRandom
+    type: INTEGER
+    providers:
+      - identifier: "io.duzzy.plugin.provider.random.IntegerRandomProvider"
+        min: 50
+        max: 100

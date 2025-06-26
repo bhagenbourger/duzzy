@@ -1,9 +1,9 @@
 package io.duzzy.core.schema;
 
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
 import io.duzzy.plugin.provider.random.AlphanumericRandomProvider;
 import io.duzzy.plugin.provider.random.BooleanRandomProvider;
 import io.duzzy.plugin.provider.random.DoubleRandomProvider;
@@ -16,6 +16,7 @@ import java.util.Optional;
         + "in which you can specify whatever you want into the output",
     module = "io.duzzy.core",
     duzzyType = DuzzyType.DUZZY_SCHEMA,
+    nativeSupport = true,
     example = """
         ---
         fields:

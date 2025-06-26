@@ -1,0 +1,22 @@
+# Duzzy components
+
+## Parser
+A `parser`is a component that parses the input schema and produces a `DuzzySchema` by combining the input schema and duzzy config.
+
+### io.duzzy.plugin.parser.AvroSchemaParser ♨️ 🧬  
+🔑 Identifier: io.duzzy.plugin.parser.AvroSchemaParser  
+📋 Description: Parse an Avro schema and produce a Duzzy schema  
+📦 Module: io.duzzy.plugin-avro  
+🧬 Native support: true
+
+### io.duzzy.plugin.parser.DuzzySchemaParser ♨️ 🧬  
+🔑 Identifier: io.duzzy.plugin.parser.DuzzySchemaParser  
+📋 Description: DuzzySchema parser, it is the default parser, if no parser is specified this parser is used.  
+📦 Module: io.duzzy.core  
+🧬 Native support: true
+
+### io.duzzy.plugin.parser.SqlParser ♨️ 🧬  
+🔑 Identifier: io.duzzy.plugin.parser.SqlParser  
+📋 Description: SQL parser: parse SQL schema to DuzzySchema  
+📦 Module: io.duzzy.core  
+🧬 Native support: true

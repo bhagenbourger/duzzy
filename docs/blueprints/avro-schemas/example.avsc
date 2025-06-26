@@ -1,0 +1,1 @@
+{"type":"record","name":"avro_name","namespace":"example.avro","fields":[{"name":"IsOK","type":"boolean"},{"name":"FirstName","type":"string"},{"name":"Random","type":"double"}]}

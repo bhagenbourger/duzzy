@@ -1,0 +1,6 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.HdfsSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.CsvSerializer"
+  filename: "/tmp/test.csv"

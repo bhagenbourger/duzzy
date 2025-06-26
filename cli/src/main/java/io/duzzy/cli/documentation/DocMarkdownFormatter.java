@@ -1,8 +1,8 @@
 package io.duzzy.cli.documentation;
 
-import io.duzzy.core.documentation.DocumentationRecord;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.ParameterRecord;
+import io.duzzy.documentation.DocumentationRecord;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.ParameterRecord;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -32,29 +32,34 @@ public class DocMarkdownFormatter {
   }
 
   private static String format(DocumentationRecord documentation) {
-    return "\n### " + documentation.identifier()
-        + "  \nIdentifier: " + documentation.identifier()
-        + "  \nDescription: " + documentation.description()
-        + "  \nModule: " + documentation.module()
+    final String lineSeparator = "  \n";
+    return "\n### " + documentation.identifier() + icons(documentation.nativeSupport())
+        + lineSeparator + "🔑" + " Identifier: " + documentation.identifier()
+        + lineSeparator + "📋" + " Description: " + documentation.description()
+        + lineSeparator + "📦" + " Module: " + documentation.module()
+        + lineSeparator + "🧬" + " Native support: " + documentation.nativeSupport()
         + print(
-        "  \n\nParameters: \n",
+        "  \n\n" + "⚙️" + " Parameters: \n\n"
+            + "| Name | Aliases | Description | Default value |\n"
+            + "| --- | --- | --- | --- |\n",
         Arrays
             .stream(documentation.parameters())
             .map(DocMarkdownFormatter::format)
             .collect(Collectors.joining("\n"))
     )
         + print(
-        "  \n\nExample: \n```\n",
+        "  \n\n" + "💡" + " Example: \n```\n",
         documentation.example(),
         "```"
     );
   }
 
   private static String format(ParameterRecord parameter) {
-    return "  - Name: " + parameter.name()
-        + print("\n    Aliases: ", String.join(", ", parameter.aliases()))
-        + "\n    Description: " + parameter.description()
-        + print("\n    Default value: ", parameter.defaultValue());
+    return "| " + parameter.name()
+        + " | " + String.join(", ", parameter.aliases())
+        + " | " + parameter.description()
+        + " | " + parameter.defaultValue()
+        + " |";
   }
 
   private static String print(String header, String value) {
@@ -63,5 +68,9 @@ public class DocMarkdownFormatter {
 
   private static String print(String header, String value, String footer) {
     return value.isEmpty() ? "" : header + value + footer;
+  }
+
+  private static String icons(Boolean nativeSupport) {
+    return " ♨️" + (nativeSupport ? " 🧬" : "");
   }
 }

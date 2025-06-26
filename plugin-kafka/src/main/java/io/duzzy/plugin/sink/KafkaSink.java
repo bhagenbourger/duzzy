@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.documentation.Documentation;
-import io.duzzy.core.documentation.DuzzyType;
-import io.duzzy.core.documentation.Parameter;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
+import io.duzzy.documentation.Documentation;
+import io.duzzy.documentation.DuzzyType;
+import io.duzzy.documentation.Parameter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,6 +22,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
     description = "Sink data to a Kafka topic",
     module = "io.duzzy.plugin-kafka",
     duzzyType = DuzzyType.SINK,
+    nativeSupport = true,
     parameters = {
         @Parameter(
             name = "serializer",
@@ -39,11 +40,12 @@ import org.apache.kafka.clients.producer.ProducerRecord;
     },
     example = """
         ---
-        identifier: "io.duzzy.plugin.sink.KafkaSink"
-        serializer:
-          identifier: "io.duzzy.plugin.serializer.JSONSerializer"
-        topic: "my-topic"
-        bootstrapServers: "localhost:9092"
+        sink:
+          identifier: "io.duzzy.plugin.sink.KafkaSink"
+          serializer:
+            identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+          topic: "my-topic"
+          bootstrapServers: "localhost:9092"
         """
 )
 public class KafkaSink extends Sink {

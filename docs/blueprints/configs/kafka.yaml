@@ -1,0 +1,7 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.KafkaSink"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+  topic: "my-topic"
+  bootstrapServers: "localhost:9092"
