@@ -27,6 +27,13 @@ project(':plugin-avro') {
     }
 }
 
+project(':plugin-azure') {
+    ext {
+        pluginTitle = 'Azure plugin'
+        pluginDescription = 'Azure Blob Storage sink and Azure Datalake Storage sink'
+    }
+}
+
 project(':plugin-duckdb') {
     ext {
         pluginTitle = 'Duckdb plugin'
