@@ -1,0 +1,8 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.AzureAdlsSink"
+  endpoint: "https://your-adls-account.dfs.core.windows.net"
+  container: "duzzy-test"
+  blob_name: "example.json"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
