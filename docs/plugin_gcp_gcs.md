@@ -12,6 +12,9 @@ artifactId: plugin-gcp-gcs
 duzzy plugin install --source "https://github.com/bhagenbourger/duzzy/releases/download/v${DUZZY_VERSION}/plugin-gcp-gcs-${DUZZY_VERSION}-all.jar"
 ```
 
+### Authentication
+One possible way to authenticate is to use a service account with a JSON key file. You can create a service account in the Google Cloud Console and download the key file. Then, you can specify the path to this key file in the `credentials_file` parameter of the sink configuration or use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the key file.
+
 ## Sink
 A sink is a component that enables to specify where and in which format (via a serializer) data are written.
 

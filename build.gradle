@@ -27,6 +27,13 @@ project(':plugin-avro') {
     }
 }
 
+project(':plugin-azure') {
+    ext {
+        pluginTitle = 'Azure plugin'
+        pluginDescription = 'Azure Blob Storage sink and Azure Datalake Storage sink'
+    }
+}
+
 project(':plugin-duckdb') {
     ext {
         pluginTitle = 'Duckdb plugin'
@@ -124,6 +131,7 @@ subprojects {
 
         testImplementation platform('org.junit:junit-bom:5.10.0')
         testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
         testImplementation 'org.assertj:assertj-core:3.26.3'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
