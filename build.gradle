@@ -27,6 +27,13 @@ project(':plugin-duckdb') {
     }
 }
 
+project(':plugin-gcp-gcs') {
+    ext {
+        pluginTitle = 'Google Cloud Platform (GCP) - Google Cloud Storage (GCS) plugin'
+        pluginDescription = 'Google Cloud Platform (GCP) - Google Cloud Storage (GCS) sink'
+    }
+}
+
 project(':plugin-hdfs') {
     ext {
         pluginTitle = 'Hdfs plugin'

@@ -1,0 +1,8 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.GcsSink"
+  project_id: "duzzy-462206"
+  bucket_name: "duzzy-test"
+  object_name: "example.json"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
