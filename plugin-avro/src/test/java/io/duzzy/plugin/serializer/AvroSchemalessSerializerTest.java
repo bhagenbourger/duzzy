@@ -66,7 +66,7 @@ public class AvroSchemalessSerializerTest {
 
     final AvroSchemalessSerializer avroSchemalessSerializer =
         new AvroSchemalessSerializer(null, null, null);
-    avroSchemalessSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields), 2L);
+    avroSchemalessSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields));
     avroSchemalessSerializer.serialize(getDataOne());
     avroSchemalessSerializer.serialize(getDataTwo());
 

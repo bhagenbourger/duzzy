@@ -82,7 +82,7 @@ public class LocalFileSink extends Sink {
   @Override
   public LocalFileSink fork(Long threadId) throws Exception {
     return new LocalFileSink(
-        serializer.fork(threadId),
+        getSerializer().fork(threadId),
         addFilePart(filename, threadId),
         createIfNotExists
     );

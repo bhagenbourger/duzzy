@@ -31,7 +31,7 @@ public class CsvSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final CsvSerializer csvSerializer = new CsvSerializer(null, null, null);
-    csvSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
+    csvSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null));
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
 
@@ -46,7 +46,7 @@ public class CsvSerializerTest {
 
     final File serializerFile = getFromResources(getClass(), "serializer/csv-serializer.yaml");
     final CsvSerializer csvSerializer = YAML_MAPPER.readValue(serializerFile, CsvSerializer.class);
-    csvSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
+    csvSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null));
     csvSerializer.serialize(getDataOne());
     csvSerializer.serialize(getDataTwo());
 

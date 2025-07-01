@@ -44,7 +44,7 @@ public class KafkaSinkTest {
         topic,
         kafka.getBootstrapServers()
     );
-    kafkaSink.init(null, 2L);
+    kafkaSink.init(null);
     kafkaSink.write(getDataOne());
     kafkaSink.write(getDataTwo());
     kafkaSink.close();
@@ -74,7 +74,7 @@ public class KafkaSinkTest {
         topic,
         kafka.getBootstrapServers()
     );
-    kafkaSink.init(null, 2L);
+    kafkaSink.init(null);
     kafkaSink.write(getDataOne());
     kafkaSink.write(getDataTwo());
     kafkaSink.close();

@@ -64,7 +64,7 @@ public class GcsSinkTest {
           storage
       );
 
-      gcsSink.init(null, 3L);
+      gcsSink.init(null);
 
       gcsSink.write(Data.getDataOne());
       gcsSink.write(Data.getDataOne());
@@ -97,7 +97,7 @@ public class GcsSinkTest {
           storage
       );
 
-      gcsSinkOne.init(null, 3L);
+      gcsSinkOne.init(null);
       gcsSinkOne.write(Data.getDataOne());
       gcsSinkOne.close();
 
@@ -110,7 +110,7 @@ public class GcsSinkTest {
           storage
       );
 
-      assertThatThrownBy(() -> gcsSinkTwo.init(null, 3L))
+      assertThatThrownBy(() -> gcsSinkTwo.init(null))
           .isInstanceOf(StorageException.class);
     }
   }
@@ -129,14 +129,14 @@ public class GcsSinkTest {
           storage
       );
 
-      gcsSink.init(null, 2L);
+      gcsSink.init(null);
       gcsSink.write(Data.getDataOne());
       gcsSink.write(Data.getDataTwo());
       gcsSink.close();
 
       final Sink forkedSink = gcsSink.fork(1L);
 
-      forkedSink.init(null, 2L);
+      forkedSink.init(null);
       forkedSink.write(Data.getDataOne());
       forkedSink.write(Data.getDataTwo());
       forkedSink.close();
@@ -184,7 +184,7 @@ public class GcsSinkTest {
           null,
           storage
       );
-      gcsSink.init(new DuzzySchema(Optional.empty(), fields), 3L);
+      gcsSink.init(new DuzzySchema(Optional.empty(), fields));
       gcsSink.write(Data.getDataOne());
       gcsSink.write(Data.getDataTwo());
       gcsSink.close();

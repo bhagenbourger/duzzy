@@ -12,6 +12,7 @@ dependencies {
     implementation project(":cli-native")
     implementation project(":core")
     implementation project(":documentation")
+    implementation project(":plugin-arrow")
     implementation project(":plugin-avro")
     implementation project(":plugin-duckdb")
     implementation project(":plugin-gcp-gcs")

@@ -126,7 +126,7 @@ public class GcsSink extends Sink {
   @Override
   public Sink fork(Long threadId) throws Exception {
     return new GcsSink(
-        serializer.fork(threadId),
+        getSerializer().fork(threadId),
         bucketName,
         addFilePart(objectName, threadId),
         projectId,
@@ -141,12 +141,12 @@ public class GcsSink extends Sink {
   }
 
   @Override
-  public void init(DuzzySchema duzzySchema, Long rowCount) throws Exception {
+  public void init(DuzzySchema duzzySchema) throws Exception {
     if (storage == null) {
       storage = buildStorage(projectId, credentialsFile);
     }
     writer = buildWriteChannel(bucketName, objectName);
-    super.init(duzzySchema, rowCount);
+    super.init(duzzySchema);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class GcsSink extends Sink {
 
   @Override
   public void close() throws Exception {
-    serializer.close();
+    getSerializer().close();
     if (getOutputStream().size() > 0) {
       writer.write(ByteBuffer.wrap(getOutputStream().toByteArray()));
     }

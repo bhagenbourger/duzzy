@@ -26,7 +26,7 @@ public class XmlSerializerTest {
   }
 
   @Test
-  void serializeXmlWithDefaultValues() throws IOException {
+  void serializeXmlWithDefaultValues() throws Exception {
     final String expected =
         "<?xml version='1.0' encoding='UTF-8'?><rows>"
             + "<row><c1>1</c1><c2>one</c2></row><row><c1>2</c1><c2>two</c2></row>"
@@ -34,7 +34,7 @@ public class XmlSerializerTest {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     final XmlSerializer xmlSerializer = new XmlSerializer(null, null);
-    xmlSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
+    xmlSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null));
     xmlSerializer.serialize(getDataOne());
     xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();
@@ -44,7 +44,7 @@ public class XmlSerializerTest {
   }
 
   @Test
-  void writXmlWithCustomValues() throws IOException {
+  void writXmlWithCustomValues() throws Exception {
     final String expected =
         "<?xml version='1.0' encoding='UTF-8'?><myRoot>"
             + "<myRow><c1>1</c1><c2>one</c2></myRow>"
@@ -53,7 +53,7 @@ public class XmlSerializerTest {
 
     final File serializerFile = getFromResources(getClass(), "serializer/xml-serializer.yaml");
     final XmlSerializer xmlSerializer = YAML_MAPPER.readValue(serializerFile, XmlSerializer.class);
-    xmlSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null), 2L);
+    xmlSerializer.init(outputStream, new DuzzySchema(Optional.empty(), null));
     xmlSerializer.serialize(getDataOne());
     xmlSerializer.serialize(getDataTwo());
     xmlSerializer.close();

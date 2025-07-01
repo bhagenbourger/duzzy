@@ -44,7 +44,7 @@ public class ParquetSerializerTest {
   }
 
   @Test
-  void serializeWithDefaultValues() throws IOException {
+  void serializeWithDefaultValues() throws Exception {
     final File file = createTempFile(getClass().getSimpleName());
     final List<Field> fields = List.of(
         new Field(
@@ -65,7 +65,7 @@ public class ParquetSerializerTest {
 
     try (final OutputStream outputStream = new FileOutputStream(file)) {
       final ParquetSerializer parquetSerializer = new ParquetSerializer(null, null, null);
-      parquetSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields), 2L);
+      parquetSerializer.init(outputStream, new DuzzySchema(Optional.empty(), fields));
       parquetSerializer.serialize(getDataOne());
       parquetSerializer.serialize(getDataTwo());
       parquetSerializer.close();

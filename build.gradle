@@ -13,6 +13,13 @@ ext {
     jacksonVersion = '2.18.0'
 }
 
+project(':plugin-arrow') {
+    ext {
+        pluginTitle = 'Arrow plugin'
+        pluginDescription = 'Arrow serializer'
+    }
+}
+
 project(':plugin-avro') {
     ext {
         pluginTitle = 'Avro plugin'

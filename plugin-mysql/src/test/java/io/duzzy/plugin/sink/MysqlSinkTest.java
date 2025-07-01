@@ -76,7 +76,7 @@ public class MysqlSinkTest {
         null
     );
 
-    mysqlSink.init(null, 3L);
+    mysqlSink.init(null);
 
     mysqlSink.write(Data.getDataOne());
     mysqlSink.write(Data.getDataOne());

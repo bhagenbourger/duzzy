@@ -36,7 +36,7 @@ public class ConsoleSinkTest {
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
     final ConsoleSink consoleSink = new ConsoleSink(new JsonSerializer());
-    consoleSink.init(new DuzzySchema(Optional.empty(), null), 3L);
+    consoleSink.init(new DuzzySchema(Optional.empty(), null));
     consoleSink.write(getDataOne());
     consoleSink.write(getDataTwo());
     consoleSink.write(getDataOne());

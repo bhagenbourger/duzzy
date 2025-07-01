@@ -46,7 +46,7 @@ public class LocalFileSinkTest {
     final File sinkFile = getFromResources(getClass(), "sink/local-file-sink-error.yaml");
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
-    assertThatThrownBy(() -> sink.init(null, 0L))
+    assertThatThrownBy(() -> sink.init(null))
         .isInstanceOf(FileNotFoundException.class)
         .hasMessage("build/failed/test.json (No such file or directory)");
   }
@@ -62,7 +62,7 @@ public class LocalFileSinkTest {
         filename,
         true
     );
-    localFileSink.init(new DuzzySchema(Optional.empty(), null), 3L);
+    localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
     localFileSink.write(getDataTwo());
     localFileSink.write(getDataTwo());
@@ -85,7 +85,7 @@ public class LocalFileSinkTest {
         filename,
         true
     );
-    localFileSink.init(new DuzzySchema(Optional.empty(), null), 3L);
+    localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
     localFileSink.write(getDataTwo());
     localFileSink.write(getDataTwo());

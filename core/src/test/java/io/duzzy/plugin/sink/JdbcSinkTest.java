@@ -73,7 +73,7 @@ public class JdbcSinkTest {
         true
     );
 
-    sink.init(null, 2L);
+    sink.init(null);
     sink.write(Data.getDataOne());
     sink.write(Data.getDataTwo());
     sink.close();
@@ -119,7 +119,7 @@ public class JdbcSinkTest {
         true
     );
 
-    sink.init(null, 1L);
+    sink.init(null);
     sink.write(Data.getDataOne());
     assertThatThrownBy(() -> sink.write(Data.getDataOne()))
         .isInstanceOf(SQLIntegrityConstraintViolationException.class)
@@ -141,7 +141,7 @@ public class JdbcSinkTest {
         false
     );
 
-    sink.init(null, 3L);
+    sink.init(null);
     sink.write(Data.getDataOne());
     sink.write(Data.getDataOne());
     sink.write(Data.getDataTwo());
@@ -174,7 +174,7 @@ public class JdbcSinkTest {
 
     @Override
     public Sink fork(Long threadId) {
-      return new HsqldbSink((SqlSerializer) serializer, url, user, password, failOnError);
+      return new HsqldbSink((SqlSerializer) getSerializer(), url, user, password, failOnError);
     }
   }
 }
