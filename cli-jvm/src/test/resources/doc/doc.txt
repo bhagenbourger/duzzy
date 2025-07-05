@@ -585,6 +585,27 @@ A sink is a component that enables to specify where and in which format (via a s
 
 Before writing data, a sink delegates data formatting to a serializer.
 
+### io.duzzy.plugin.sink.AzureAdlsSink ♨️  
+🔑 Identifier: io.duzzy.plugin.sink.AzureAdlsSink  
+📋 Description: Sink data to a Azure ADLS container  
+📦 Module: io.duzzy.plugin-azure-adls  
+🧬 Native support: false  
+
+⚙️ Parameters: 
+
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| serializer |  | The serializer to use |  |
+| service_version | serviceVersion, service-version | The Azure Blob Storage service version to use, leave null to use the latest version. Example: V2025_01_05 |  |
+| endpoint |  | The endpoint URL for the Azure Blob Storage service, used if connectionString is not provided. Example: https://<account_name>.blob.core.windows.net/ |  |
+| connection_string | connectionString, connection-string | The connection string for the Azure Blob Storage service, if not set, endpoint is used. Example: DefaultEndpointsProtocol=https;AccountName=<account_name>;AccountKey=<account_key>;EndpointSuffix=core.windows.net |  |
+| tenant_id | tenantId, tenant-id | The Azure AD tenant ID, leave null if using DefaultAzureCredentialBuilder (e.g., running in Azure environment or with Azure CLI logged in) |  |
+| client_id | clientId, client-id | The Azure AD client ID, leave null if using DefaultAzureCredentialBuilder (e.g., running in Azure environment or with Azure CLI logged in) |  |
+| client_secret | clientSecret, client-secret | The Azure AD client secret, leave null if using DefaultAzureCredentialBuilder (e.g., running in Azure environment or with Azure CLI logged in) |  |
+| create_container_if_not_exists | createContainerIfNotExists, create-container-if-not-exists | Whether to create the container if it does not exist | true |
+| container |  | The name of the Azure Blob Storage container |  |
+| blobName |  | The name of the blob to write data to |  |
+
 ### io.duzzy.plugin.sink.ConsoleSink ♨️ 🧬  
 🔑 Identifier: io.duzzy.plugin.sink.ConsoleSink  
 📋 Description: Print output into the console  
