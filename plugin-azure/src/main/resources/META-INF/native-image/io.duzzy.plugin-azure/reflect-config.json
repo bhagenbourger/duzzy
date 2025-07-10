@@ -1,0 +1,10 @@
+[
+  {
+    "name": "io.duzzy.plugin.sink.AzureBlobStorageSink",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.sink.AzureDatalakeStorageSink",
+    "allPublicConstructors": true
+  }
+]
