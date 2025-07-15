@@ -585,6 +585,38 @@ A sink is a component that enables to specify where and in which format (via a s
 
 Before writing data, a sink delegates data formatting to a serializer.
 
+### io.duzzy.plugin.sink.AzureBlobStorageSink ♨️  
+🔑 Identifier: io.duzzy.plugin.sink.AzureBlobStorageSink  
+📋 Description: Sink data to a Azure Blob Storage container  
+📦 Module: io.duzzy.plugin-azure  
+🧬 Native support: false  
+
+⚙️ Parameters: 
+
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| serializer |  | The serializer to use |  |
+| account_name | accountName, account-name | The Azure Storage account name |  |
+| create_container_if_not_exists | createContainerIfNotExists, create-container-if-not-exists | Whether to create the container if it does not exist | true |
+| container |  | The name of the Azure Blob Storage container |  |
+| blob_name | blobName, blob-name | The name of the blob to write data to |  |
+
+### io.duzzy.plugin.sink.AzureDatalakeStorageSink ♨️  
+🔑 Identifier: io.duzzy.plugin.sink.AzureDatalakeStorageSink  
+📋 Description: Sink data to a Azure Datalake Storage (ADLS) container  
+📦 Module: io.duzzy.plugin-azure  
+🧬 Native support: false  
+
+⚙️ Parameters: 
+
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| serializer |  | The serializer to use |  |
+| account_name | accountName, account-name | The Azure Storage account name |  |
+| create_container_if_not_exists | createContainerIfNotExists, create-container-if-not-exists | Whether to create the container if it does not exist | true |
+| container |  | The name of the Azure Blob Storage container |  |
+| blob_name | blobName, blob-name | The name of the blob to write data to |  |
+
 ### io.duzzy.plugin.sink.ConsoleSink ♨️ 🧬  
 🔑 Identifier: io.duzzy.plugin.sink.ConsoleSink  
 📋 Description: Print output into the console  

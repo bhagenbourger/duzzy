@@ -13,4 +13,5 @@ dependencies {
     testImplementation 'com.google.cloud:google-cloud-nio:0.127.36'
     testImplementation 'org.apache.parquet:parquet-avro:1.14.3'
     testImplementation 'org.apache.hadoop:hadoop-client:3.4.1'
+    testCompileOnly project(':documentation')
 }

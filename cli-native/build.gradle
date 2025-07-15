@@ -24,11 +24,11 @@ dependencies {
     implementation project(":cli")
     implementation project(':plugin-arrow')
     implementation project(':plugin-avro')
-//    implementation project(':plugin-gcp-gcs')
-//    implementation project(':plugin-kafka')
-//    implementation project(':plugin-mysql')
-//    implementation project(':plugin-parquet')
-//    implementation project(':plugin-postgresql')
+    implementation project(':plugin-gcp-gcs')
+    implementation project(':plugin-kafka')
+    implementation project(':plugin-mysql')
+    implementation project(':plugin-parquet')
+    implementation project(':plugin-postgresql')
 
     implementation 'info.picocli:picocli:4.7.6'
     implementation "ch.qos.logback:logback-classic:1.5.18"
