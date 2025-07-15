@@ -1,0 +1,9 @@
+---
+identifier: "io.duzzy.plugin.sink.AzureBlobStorageSink"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+azureAuthType: "DEFAULT_AZURE_CREDENTIALS"
+accountName: "myaccount"
+createContainerIfNotExists: true
+container: "mycontainer"
+blobName: "myblob.txt"

@@ -3,8 +3,9 @@ package io.duzzy.plugin.sink;
 import static io.duzzy.core.sink.FileSink.addFilePart;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,9 +27,26 @@ import java.io.OutputStream;
             description = "The serializer to use"
         ),
         @Parameter(
+            name = "azure_auth_type",
+            aliases = {"azureAuthType", "azure-auth-type"},
+            description = "The type of authentication to use for Azure Blob Storage. "
+                + "Options are 'DEFAULT_AZURE_CREDENTIALS' (default) or 'CONNECTION_STRING'. "
+                + "If 'CONNECTION_STRING' is used, "
+                + "the connection string must be set "
+                + "in the environment variable AZURE_STORAGE_CONNECTION_STRING.",
+            defaultValue = "DEFAULT_AZURE_CREDENTIALS"
+        ),
+        @Parameter(
             name = "account_name",
             aliases = {"accountName", "account-name"},
             description = "The Azure Storage account name"
+        ),
+        @Parameter(
+            name = "service_version",
+            aliases = {"serviceVersion", "service-version"},
+            description = "The Azure Blob Storage service version to use. "
+                + "If not specified, the latest version will be used.",
+            defaultValue = "LATEST"
         ),
         @Parameter(
             name = "create_container_if_not_exists",
@@ -45,7 +63,19 @@ import java.io.OutputStream;
             aliases = {"blobName", "blob-name"},
             description = "The name of the blob to write data to"
         )
-    }
+    },
+    example = """
+        ---
+        sink:
+          identifier: "io.duzzy.plugin.sink.AzureBlobStorageSink"
+          serializer:
+            identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+          azureAuthType: "DEFAULT_AZURE_CREDENTIALS"
+          accountName: "myaccount"
+          createContainerIfNotExists: true
+          container: "mycontainer"
+          blobName: "myblob.txt"
+        """
 )
 public class AzureBlobStorageSink extends AzureStorageSink {
 
@@ -53,9 +83,15 @@ public class AzureBlobStorageSink extends AzureStorageSink {
   public AzureBlobStorageSink(
       @JsonProperty("serializer")
       Serializer<?> serializer,
+      @JsonProperty("azure_auth_type")
+      @JsonAlias({"azureAuthType", "azure-auth-type"})
+      AzureAuthType azureAuthType,
       @JsonProperty("account_name")
       @JsonAlias({"account-name", "accountName"})
       String accountName,
+      @JsonProperty("service_version")
+      @JsonAlias({"serviceVersion", "service-version"})
+      String serviceVersion,
       @JsonProperty("create_container_if_not_exists")
       @JsonAlias({"create-container-if-not-exists", "createContainerIfNotExists"})
       Boolean createContainerIfNotExists,
@@ -66,8 +102,10 @@ public class AzureBlobStorageSink extends AzureStorageSink {
       String blobName
   ) {
     super(serializer,
+        azureAuthType,
         accountName,
         "https://" + accountName + ".blob.core.windows.net",
+        serviceVersion,
         createContainerIfNotExists,
         container,
         blobName);
@@ -75,13 +113,25 @@ public class AzureBlobStorageSink extends AzureStorageSink {
 
   @Override
   public OutputStream outputStreamSupplier() {
-    final BlobContainerClient blobContainerClient = buildBlobContainerClient();
+    final BlobServiceClientBuilder serviceClientBuilder = new BlobServiceClientBuilder();
+    if (getAzureAuthType() == AzureAuthType.DEFAULT_AZURE_CREDENTIALS) {
+      serviceClientBuilder
+          .credential(new DefaultAzureCredentialBuilder().build())
+          .endpoint(getEndpoint());
+    } else if (getAzureAuthType() == AzureAuthType.CONNECTION_STRING) {
+      serviceClientBuilder.connectionString(getConnectionString());
+    }
+    if (getServiceVersion() != null && !getServiceVersion().isEmpty()) {
+      serviceClientBuilder.serviceVersion(BlobServiceVersion.valueOf(getServiceVersion()));
+    }
+    final BlobServiceClient blobServiceClient = serviceClientBuilder.buildClient();
 
     if (getCreateContainerIfNotExists()) {
-      blobContainerClient.createIfNotExists();
+      blobServiceClient.createBlobContainerIfNotExists(getContainer());
     }
 
-    return blobContainerClient
+    return blobServiceClient
+        .getBlobContainerClient(getContainer())
         .getBlobClient(getBlobName())
         .getBlockBlobClient()
         .getBlobOutputStream();
@@ -91,18 +141,12 @@ public class AzureBlobStorageSink extends AzureStorageSink {
   public Sink fork(Long threadId) throws Exception {
     return new AzureBlobStorageSink(
         getSerializer().fork(threadId),
+        getAzureAuthType(),
         getAccountName(),
+        getServiceVersion(),
         getCreateContainerIfNotExists(),
         getContainer(),
         addFilePart(getBlobName(), threadId)
     );
-  }
-
-  BlobContainerClient buildBlobContainerClient() {
-    return new BlobContainerClientBuilder()
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .endpoint(getEndpoint())
-        .containerName(getContainer())
-        .buildClient();
   }
 }

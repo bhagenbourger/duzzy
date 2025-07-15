@@ -30,4 +30,12 @@ public class Data {
         )
     );
   }
+
+  public static String getDataOneAsJsonString() {
+    return "{\"c1\":1,\"c2\":\"one\"}";
+  }
+
+  public static String getDataTwoAsJsonString() {
+    return "{\"c1\":2,\"c2\":\"two\"}";
+  }
 }

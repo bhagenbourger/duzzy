@@ -15,7 +15,7 @@ public class PluginDeserializer<T extends Plugin> extends JsonDeserializer<T> {
     JsonNode node = parser.readValueAsTree();
     JsonNode identifier = node.get(IDENTIFIER);
     try {
-      Class<?> clazz = Class.forName(identifier.textValue());
+      final Class<?> clazz = Class.forName(identifier.textValue());
       return (T) parser.getCodec().treeToValue(node, clazz);
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);

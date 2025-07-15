@@ -3,15 +3,12 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.EventSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -48,11 +45,10 @@ import org.apache.kafka.clients.producer.ProducerRecord;
           bootstrapServers: "localhost:9092"
         """
 )
-public class KafkaSink extends Sink {
+public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
 
   private final String topic;
   private final String bootstrapServers;
-  private final KafkaProducer<String, byte[]> producer;
 
   @JsonCreator
   public KafkaSink(
@@ -67,47 +63,26 @@ public class KafkaSink extends Sink {
     super(serializer);
     this.topic = topic;
     this.bootstrapServers = bootstrapServers;
-    this.producer = new KafkaProducer<>(buildProperties(bootstrapServers));
   }
 
   @Override
-  public OutputStream outputStreamSupplier() {
-    return new ByteArrayOutputStream();
+  protected KafkaProducer<String, byte[]> buildProducer() {
+    return new KafkaProducer<>(buildProperties(bootstrapServers));
   }
 
   @Override
-  public void write(DuzzyRow row) throws Exception {
-    reset();
-    super.write(row);
-    getSerializer().close();
-    sendToKafka();
-  }
-
-  @Override
-  public void close() throws Exception {
-    super.close();
-    producer.close();
+  protected void sendEvent() throws IOException {
+    final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
+        topic,
+        null,
+        getOutputStream().toByteArray()
+    );
+    getProducer().send(record);
   }
 
   @Override
   public KafkaSink fork(Long threadId) throws Exception {
     return new KafkaSink(getSerializer().fork(threadId), topic, bootstrapServers);
-  }
-
-  private void reset() throws IOException {
-    if (((ByteArrayOutputStream) getOutputStream()).size() > 0) {
-      ((ByteArrayOutputStream) getOutputStream()).reset();
-      getSerializer().reset();
-    }
-  }
-
-  private void sendToKafka() throws IOException {
-    final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
-        topic,
-        null,
-        ((ByteArrayOutputStream) getOutputStream()).toByteArray()
-    );
-    producer.send(record);
   }
 
   private static Properties buildProperties(String bootstrapServers) {

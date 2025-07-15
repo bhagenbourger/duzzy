@@ -1,0 +1,7 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.AzureEventHubSink"
+  event_hub_name: "test-hub"
+  fully_qualified_namespace: "test-bha.servicebus.windows.net"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
