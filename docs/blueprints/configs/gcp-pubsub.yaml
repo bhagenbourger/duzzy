@@ -1,0 +1,7 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.GooglePubsubSink"
+  project_id: "duzzy-project"
+  topic_name: "duzzy-test"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"

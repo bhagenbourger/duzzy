@@ -457,7 +457,7 @@ Some core plugins are available to extend Duzzy:
 [plugin-avro](docs/plugin_avro.md)  
 [plugin-azure](docs/plugin_azure.md)  
 [plugin-duckdb](docs/plugin_duckdb.md)  
-[plugin-gcp-gcs](docs/plugin_gcp_gcs.md)  
+[plugin-gcp](docs/plugin_gcp.md)  
 [plugin-hdfs](docs/plugin_hdfs.md)  
 [plugin-kafka](docs/plugin_kafka.md)  
 [plugin-mysql](docs/plugin_mysql.md)  
