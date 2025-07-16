@@ -41,10 +41,10 @@ project(':plugin-duckdb') {
     }
 }
 
-project(':plugin-gcp-gcs') {
+project(':plugin-gcp') {
     ext {
-        pluginTitle = 'Google Cloud Platform (GCP) - Google Cloud Storage (GCS) plugin'
-        pluginDescription = 'Google Cloud Platform (GCP) - Google Cloud Storage (GCS) sink'
+        pluginTitle = 'Google Cloud Platform (GCP)'
+        pluginDescription = 'Google Cloud Storage (GCS) sink'
     }
 }
 

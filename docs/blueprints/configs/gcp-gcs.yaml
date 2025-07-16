@@ -1,6 +1,6 @@
 ---
 sink:
-  identifier: "io.duzzy.plugin.sink.GcsSink"
+  identifier: "io.duzzy.plugin.sink.GoogleCloudStorageSink"
   project_id: "duzzy-462206"
   bucket_name: "duzzy-test"
   object_name: "example.json"

@@ -605,10 +605,10 @@ serializer:
   identifier: "io.duzzy.plugin.serializer.JsonSerializer"
 ```
 
-### io.duzzy.plugin.sink.GcsSink ♨️ 🧬  
-🔑 Identifier: io.duzzy.plugin.sink.GcsSink  
+### io.duzzy.plugin.sink.GoogleCloudStorageSink ♨️ 🧬  
+🔑 Identifier: io.duzzy.plugin.sink.GoogleCloudStorageSink  
 📋 Description: Sink data to Google Cloud Storage (GCS)  
-📦 Module: io.duzzy.plugin-gcp-gcs  
+📦 Module: io.duzzy.plugin-gcp  
 🧬 Native support: true  
 
 ⚙️ Parameters: 
@@ -625,7 +625,7 @@ serializer:
 ```
 ---
 sink:
-  identifier: "io.duzzy.plugin.sink.GcsSink"
+  identifier: "io.duzzy.plugin.sink.GoogleCloudStorageSink"
   project_id: "my-project-id"
   credentials_file: "/path/to/credentials.json"
   bucket_name: "my-bucket"

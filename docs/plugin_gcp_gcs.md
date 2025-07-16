@@ -20,10 +20,10 @@ A sink is a component that enables to specify where and in which format (via a s
 
 Before writing data, a sink delegates data formatting to a serializer.
 
-### io.duzzy.plugin.sink.GcsSink ♨️ 🧬
-🔑 Identifier: io.duzzy.plugin.sink.GcsSink  
+### io.duzzy.plugin.sink.GoogleCloudStorageSink ♨️ 🧬
+🔑 Identifier: io.duzzy.plugin.sink.GoogleCloudStorageSink  
 📋 Description: Sink data to Google Cloud Storage (GCS)  
-📦 Module: io.duzzy.plugin-gcp-gcs  
+📦 Module: io.duzzy.plugin-gcp  
 🧬 Native support: true
 
 ⚙️ Parameters:
@@ -40,11 +40,36 @@ Before writing data, a sink delegates data formatting to a serializer.
 ```
 ---
 sink:
-  identifier: "io.duzzy.plugin.sink.GcsSink"
+  identifier: "io.duzzy.plugin.sink.GoogleCloudStorageSink"
   project_id: "my-project-id"
   credentials_file: "/path/to/credentials.json"
   bucket_name: "my-bucket"
   object_name: "data/output.json"
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+```
+
+### io.duzzy.plugin.sink.GooglePubsubSink ♨️
+🔑 Identifier: io.duzzy.plugin.sink.GooglePubsubSink  
+📋 Description: Sink data to Google Cloud Pub/Sub  
+📦 Module: io.duzzy.plugin-gcp-pubsub  
+🧬 Native support: false
+
+⚙️ Parameters:
+
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| serializer |  | The serializer to use |  |
+| project_id | projectId, project-id | The GCP project ID |  |
+| topic_name | topicName, topic-name | The Pub/Sub topic name |  |  
+
+💡 Example:
+```
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.GooglePubsubSink"
+  project_id: "my-project-id"
+  topic_name: "my-topic"
   serializer:
     identifier: "io.duzzy.plugin.serializer.JsonSerializer"
 ```

@@ -1,5 +1,5 @@
 ---
-identifier: "io.duzzy.plugin.sink.GcsSink"
+identifier: "io.duzzy.plugin.sink.GoogleCloudStorageSink"
 bucket_name: "test-bucket"
 object_name: "test-object.csv"
 serializer:

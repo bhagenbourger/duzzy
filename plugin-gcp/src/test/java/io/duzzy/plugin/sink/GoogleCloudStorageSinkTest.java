@@ -38,7 +38,7 @@ import org.apache.parquet.hadoop.ParquetReader;
 import org.apache.parquet.io.LocalInputFile;
 import org.junit.jupiter.api.Test;
 
-public class GcsSinkTest {
+public class GoogleCloudStorageSinkTest {
 
   private static final String BUCKET_NAME = "duzzy-test";
 
@@ -47,7 +47,7 @@ public class GcsSinkTest {
     final File sinkFile = getFromResources(getClass(), "sink/gcs-sink.yaml");
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
-    assertThat(sink).isInstanceOf(GcsSink.class);
+    assertThat(sink).isInstanceOf(GoogleCloudStorageSink.class);
     assertThat(sink.getSerializer()).isInstanceOf(CsvSerializer.class);
   }
 
@@ -55,7 +55,7 @@ public class GcsSinkTest {
   void writeData() throws Exception {
     try (final Storage storage = LocalStorageHelper.getOptions().getService()) {
       final String objectName = "test-object.csv";
-      final GcsSink gcsSink = new GcsSink(
+      final GoogleCloudStorageSink sink = new GoogleCloudStorageSink(
           new CsvSerializer(null, null, null),
           BUCKET_NAME,
           objectName,
@@ -64,13 +64,13 @@ public class GcsSinkTest {
           storage
       );
 
-      gcsSink.init(null);
+      sink.init(null);
 
-      gcsSink.write(Data.getDataOne());
-      gcsSink.write(Data.getDataOne());
-      gcsSink.write(Data.getDataTwo());
+      sink.write(Data.getDataOne());
+      sink.write(Data.getDataOne());
+      sink.write(Data.getDataTwo());
 
-      gcsSink.close();
+      sink.close();
 
       final byte[] expected = """
           1,one
@@ -88,7 +88,7 @@ public class GcsSinkTest {
   void writeSeveralTimesThrowAnException() throws Exception {
     try (final Storage storage = LocalStorageHelper.getOptions().getService()) {
       final String objectName = "test-object-twice.csv";
-      final GcsSink gcsSinkOne = new GcsSink(
+      final GoogleCloudStorageSink sink = new GoogleCloudStorageSink(
           new CsvSerializer(null, null, null),
           BUCKET_NAME,
           objectName,
@@ -97,11 +97,11 @@ public class GcsSinkTest {
           storage
       );
 
-      gcsSinkOne.init(null);
-      gcsSinkOne.write(Data.getDataOne());
-      gcsSinkOne.close();
+      sink.init(null);
+      sink.write(Data.getDataOne());
+      sink.close();
 
-      final GcsSink gcsSinkTwo = new GcsSink(
+      final GoogleCloudStorageSink googleCloudStorageSinkTwo = new GoogleCloudStorageSink(
           new CsvSerializer(null, null, null),
           BUCKET_NAME,
           objectName,
@@ -110,7 +110,7 @@ public class GcsSinkTest {
           storage
       );
 
-      assertThatThrownBy(() -> gcsSinkTwo.init(null))
+      assertThatThrownBy(() -> googleCloudStorageSinkTwo.init(null))
           .isInstanceOf(StorageException.class);
     }
   }
@@ -120,7 +120,7 @@ public class GcsSinkTest {
     try (final Storage storage = LocalStorageHelper.getOptions().getService()) {
       final String objectName = "test-object-fork.csv";
       final String objectNameForked = "test-object-fork_1.csv";
-      final GcsSink gcsSink = new GcsSink(
+      final GoogleCloudStorageSink sink = new GoogleCloudStorageSink(
           new CsvSerializer(null, null, null),
           BUCKET_NAME,
           objectName,
@@ -129,12 +129,12 @@ public class GcsSinkTest {
           storage
       );
 
-      gcsSink.init(null);
-      gcsSink.write(Data.getDataOne());
-      gcsSink.write(Data.getDataTwo());
-      gcsSink.close();
+      sink.init(null);
+      sink.write(Data.getDataOne());
+      sink.write(Data.getDataTwo());
+      sink.close();
 
-      final Sink forkedSink = gcsSink.fork(1L);
+      final Sink forkedSink = sink.fork(1L);
 
       forkedSink.init(null);
       forkedSink.write(Data.getDataOne());
@@ -176,7 +176,7 @@ public class GcsSinkTest {
     );
     final String objectName = "test-parquet.parquet";
     try (final Storage storage = LocalStorageHelper.getOptions().getService()) {
-      final GcsSink gcsSink = new GcsSink(
+      final GoogleCloudStorageSink sink = new GoogleCloudStorageSink(
           new ParquetSerializer(null, null, null),
           BUCKET_NAME,
           objectName,
@@ -184,10 +184,10 @@ public class GcsSinkTest {
           null,
           storage
       );
-      gcsSink.init(new DuzzySchema(Optional.empty(), fields));
-      gcsSink.write(Data.getDataOne());
-      gcsSink.write(Data.getDataTwo());
-      gcsSink.close();
+      sink.init(new DuzzySchema(Optional.empty(), fields));
+      sink.write(Data.getDataOne());
+      sink.write(Data.getDataTwo());
+      sink.close();
 
       final Path tempFile = Files.createTempFile("parquet-test", ".parquet");
       storage.downloadTo(BlobId.of(BUCKET_NAME, objectName), tempFile);

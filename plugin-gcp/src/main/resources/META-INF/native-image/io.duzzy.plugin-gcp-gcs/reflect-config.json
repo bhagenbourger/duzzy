@@ -1,0 +1,10 @@
+[
+  {
+    "name": "io.duzzy.plugin.sink.GoogleCloudStorageSink",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.sink.GooglePubsubSink",
+    "allPublicConstructors": true
+  }
+]
