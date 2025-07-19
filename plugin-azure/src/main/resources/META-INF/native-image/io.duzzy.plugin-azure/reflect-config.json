@@ -6,5 +6,9 @@
   {
     "name": "io.duzzy.plugin.sink.AzureDatalakeStorageSink",
     "allPublicConstructors": true
+  },
+  {
+    "name": "io.duzzy.plugin.sink.AzureEventHubSink",
+    "allPublicConstructors": true
   }
 ]

@@ -1,8 +1,10 @@
 ---
 sink:
   identifier: "io.duzzy.plugin.sink.AzureBlobStorageSink"
-  account_name: "your-storage-account-name"
-  container: "duzzy-test"
-  blob_name: "example.json"
   serializer:
     identifier: "io.duzzy.plugin.serializer.JsonSerializer"
+  azureAuthType: "DEFAULT_AZURE_CREDENTIALS"
+  accountName: "myaccount"
+  createContainerIfNotExists: true
+  container: "mycontainer"
+  blobName: "myblob.txt"
