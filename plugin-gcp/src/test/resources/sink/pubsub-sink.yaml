@@ -1,0 +1,6 @@
+---
+identifier: "io.duzzy.plugin.sink.GooglePubsubSink"
+project_id: "test-project"
+topic_name: "duzzy-test"
+serializer:
+  identifier: "io.duzzy.plugin.serializer.CsvSerializer"
