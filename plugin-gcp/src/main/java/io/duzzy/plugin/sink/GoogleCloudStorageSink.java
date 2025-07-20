@@ -26,9 +26,9 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 @Documentation(
-    identifier = "io.duzzy.plugin.sink.GcsSink",
+    identifier = "io.duzzy.plugin.sink.GoogleCloudStorageSink",
     description = "Sink data to Google Cloud Storage (GCS)",
-    module = "io.duzzy.plugin-gcp-gcs",
+    module = "io.duzzy.plugin-gcp",
     duzzyType = DuzzyType.SINK,
     nativeSupport = true,
     parameters = {
@@ -60,7 +60,7 @@ import java.nio.ByteBuffer;
     example = """
         ---
         sink:
-          identifier: "io.duzzy.plugin.sink.GcsSink"
+          identifier: "io.duzzy.plugin.sink.GoogleCloudStorageSink"
           project_id: "my-project-id"
           credentials_file: "/path/to/credentials.json"
           bucket_name: "my-bucket"
@@ -69,7 +69,7 @@ import java.nio.ByteBuffer;
             identifier: "io.duzzy.plugin.serializer.JsonSerializer"
         """
 )
-public class GcsSink extends Sink {
+public class GoogleCloudStorageSink extends Sink {
 
   private WriteChannel writer;
   private Storage storage;
@@ -79,7 +79,7 @@ public class GcsSink extends Sink {
   private final String credentialsFile;
 
   @JsonCreator
-  public GcsSink(
+  public GoogleCloudStorageSink(
       @JsonProperty("serializer")
       Serializer<?> serializer,
       @JsonProperty("project_id")
@@ -102,7 +102,7 @@ public class GcsSink extends Sink {
     this.credentialsFile = credentialsFile;
   }
 
-  GcsSink(
+  GoogleCloudStorageSink(
       Serializer<?> serializer,
       String bucketName,
       String objectName,
@@ -125,7 +125,7 @@ public class GcsSink extends Sink {
 
   @Override
   public Sink fork(Long threadId) throws Exception {
-    return new GcsSink(
+    return new GoogleCloudStorageSink(
         getSerializer().fork(threadId),
         bucketName,
         addFilePart(objectName, threadId),

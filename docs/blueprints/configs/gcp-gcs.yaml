@@ -1,7 +1,7 @@
 ---
 sink:
-  identifier: "io.duzzy.plugin.sink.GcsSink"
-  project_id: "duzzy-462206"
+  identifier: "io.duzzy.plugin.sink.GoogleCloudStorageSink"
+  project_id: "duzzy-project"
   bucket_name: "duzzy-test"
   object_name: "example.json"
   serializer:

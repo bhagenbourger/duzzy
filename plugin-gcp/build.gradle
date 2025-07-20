@@ -4,12 +4,15 @@ dependencies {
     compileOnly project(":documentation")
     compileOnly "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
-    implementation 'com.google.cloud:google-cloud-storage:2.52.3'
+    implementation platform('com.google.cloud:libraries-bom:26.63.0')
+    implementation 'com.google.cloud:google-cloud-pubsub'
+    implementation 'com.google.cloud:google-cloud-storage'
 
     testImplementation project(":core")
     testImplementation project(":tests")
     testImplementation project(":plugin-parquet")
     testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    testImplementation 'org.testcontainers:gcloud:1.20.5'
     testImplementation 'com.google.cloud:google-cloud-nio:0.127.36'
     testImplementation 'org.apache.parquet:parquet-avro:1.14.3'
     testImplementation 'org.apache.hadoop:hadoop-client:3.4.1'
