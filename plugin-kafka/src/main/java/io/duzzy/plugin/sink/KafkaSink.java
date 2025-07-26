@@ -1,18 +1,26 @@
 package io.duzzy.plugin.sink;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.DuzzyRowKey;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.EventSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 @Documentation(
     identifier = "io.duzzy.plugin.sink.KafkaSink",
@@ -33,6 +41,23 @@ import org.apache.kafka.clients.producer.ProducerRecord;
             name = "bootstrap_servers",
             aliases = {"bootstrapServers", "bootstrap-servers"},
             description = "The Kafka bootstrap servers"
+        ),
+        @Parameter(
+            name = "key_serializer",
+            aliases = {"keySerializer", "key-serializer"},
+            description = "The serializer for the key "
+                + "(default: org.apache.kafka.common.serialization.StringSerializer)"
+        ),
+        @Parameter(
+            name = "value_serializer",
+            aliases = {"valueSerializer", "value-serializer"},
+            description = "The serializer for the value "
+                + "(default: org.apache.kafka.common.serialization.ByteArraySerializer)"
+        ),
+        @Parameter(
+            name = "custom_properties",
+            aliases = {"customProperties", "custom-properties"},
+            description = "Custom properties for the Kafka producer"
         )
     },
     example = """
@@ -43,12 +68,18 @@ import org.apache.kafka.clients.producer.ProducerRecord;
             identifier: "io.duzzy.plugin.serializer.JsonSerializer"
           topic: "my-topic"
           bootstrapServers: "localhost:9092"
+          keySerializer: "org.apache.kafka.common.serialization.StringSerializer"
+          valueSerializer: "org.apache.kafka.common.serialization.ByteArraySerializer"
         """
 )
-public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
+public class KafkaSink extends EventSink {
 
   private final String topic;
   private final String bootstrapServers;
+  private final String keySerializer;
+  private final String valueSerializer;
+  private final Map<String, String> customProperties;
+  private KafkaProducer<Object, Object> producer;
 
   @JsonCreator
   public KafkaSink(
@@ -58,44 +89,86 @@ public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
       String topic,
       @JsonProperty("bootstrap_servers")
       @JsonAlias({"bootstrapServers", "bootstrap-servers"})
-      String bootstrapServers
+      String bootstrapServers,
+      @JsonProperty("key_serializer")
+      @JsonAlias({"keySerializer", "key-serializer"})
+      String keySerializer,
+      @JsonProperty("value_serializer")
+      @JsonAlias({"valueSerializer", "value-serializer"})
+      String valueSerializer,
+      @JsonProperty("custom_properties")
+      @JsonAlias({"customProperties", "custom-properties"})
+      Map<String, String> customProperties
   ) {
     super(serializer);
     this.topic = topic;
     this.bootstrapServers = bootstrapServers;
+    this.keySerializer = keySerializer != null ? keySerializer : StringSerializer.class.getName();
+    this.valueSerializer =
+        valueSerializer != null ? valueSerializer : ByteArraySerializer.class.getName();
+    this.customProperties = customProperties != null ? customProperties : Map.of();
   }
 
   @Override
-  protected KafkaProducer<String, byte[]> buildProducer() {
-    return new KafkaProducer<>(buildProperties(bootstrapServers));
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    super.init(duzzySchema);
+    this.producer = new KafkaProducer<>(buildProperties());
   }
 
   @Override
-  protected void sendEvent() throws IOException {
-    final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
+  protected void sendEvent(DuzzyRowKey eventKey) throws IOException {
+    final ProducerRecord<Object, Object> record = new ProducerRecord<>(
         topic,
-        null,
-        getOutputStream().toByteArray()
+        writeEventKey(eventKey),
+        writeEventValue()
     );
-    getProducer().send(record);
+    this.producer.send(record);
+  }
+
+  private Object writeEventValue() throws IOException {
+    if (Objects.equals(valueSerializer, StringSerializer.class.getName())) {
+      return getOutputStream().toString(UTF_8);
+    } else if (Objects.equals(valueSerializer, ByteArraySerializer.class.getName())) {
+      return getOutputStream().toByteArray();
+    } else {
+      throw new IllegalArgumentException("Unsupported value serializer: " + valueSerializer);
+    }
+  }
+
+  private Object writeEventKey(DuzzyRowKey eventKey) {
+    if (Objects.equals(keySerializer, StringSerializer.class.getName())) {
+      return eventKey.asString();
+    } else if (Objects.equals(keySerializer, ByteArraySerializer.class.getName())) {
+      return eventKey.asBytes();
+    } else {
+      throw new IllegalArgumentException("Unsupported value serializer: " + valueSerializer);
+    }
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    producer.close();
   }
 
   @Override
   public KafkaSink fork(Long threadId) throws Exception {
-    return new KafkaSink(getSerializer().fork(threadId), topic, bootstrapServers);
+    return new KafkaSink(
+        getSerializer().fork(threadId),
+        topic,
+        bootstrapServers,
+        keySerializer,
+        valueSerializer,
+        customProperties
+    );
   }
 
-  private static Properties buildProperties(String bootstrapServers) {
+  private Properties buildProperties() {
     final Properties props = new Properties();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-    props.put(
-        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-        "org.apache.kafka.common.serialization.StringSerializer"
-    );
-    props.put(
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-        "org.apache.kafka.common.serialization.ByteArraySerializer"
-    );
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
+    props.putAll(customProperties);
     return props;
   }
 }

@@ -58,7 +58,7 @@ public class SqlSerializer extends Serializer<OutputStream> {
   protected void serialize(DuzzyRow row, OutputStream writer) throws IOException {
     final String sql = DSL
         .insertInto(DSL.table(tableName))
-        .values(row.toValues())
+        .values(row.valuesAsList())
         .getSQL(ParamType.INLINED);
     writer.write(sql.getBytes(StandardCharsets.UTF_8));
   }
