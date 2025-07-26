@@ -71,9 +71,14 @@ public class GooglePubsubSink extends EventSink<ClosablePublisher> {
   }
 
   @Override
-  protected void sendEvent() throws IOException, ExecutionException, InterruptedException {
+  protected void sendEvent(String eventKey)
+      throws IOException, ExecutionException, InterruptedException {
     final ByteString data = ByteString.copyFrom(getOutputStream().toByteArray());
-    final PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data).build();
+    final PubsubMessage pubsubMessage = PubsubMessage
+        .newBuilder()
+        .setMessageId(eventKey)
+        .setData(data)
+        .build();
 
     final ApiFuture<String> future = getProducer().getPublisher().publish(pubsubMessage);
     future.get();
