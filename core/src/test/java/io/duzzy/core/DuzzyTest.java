@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.TimeZone;
 import org.junit.jupiter.api.Test;
 
 public class DuzzyTest {
@@ -47,6 +48,7 @@ public class DuzzyTest {
 
   @Test
   void generateJsonInConsoleFromDuzzySchemaWithAllFields() throws Exception {
+    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
     final File expectedFile =
         getFromResources(getClass(), "result/expected-duzzy-schema-all-fields.jsonl");
     final String expected = Files.readString(Paths.get(expectedFile.toURI()));

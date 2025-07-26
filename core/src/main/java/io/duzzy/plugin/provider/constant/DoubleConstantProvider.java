@@ -22,7 +22,7 @@ import io.duzzy.documentation.Parameter;
     },
     example = """
         ---
-        identifier: "io.duzzy.plugin.column.constant.DoubleConstantProvider"
+        identifier: "io.duzzy.plugin.provider.constant.DoubleConstantProvider"
         value: 42.4
         """
 )
