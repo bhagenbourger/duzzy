@@ -1,0 +1,10 @@
+---
+enrichers:
+  - query_selector: "name=os"
+    provider_identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
+    provider_parameters:
+      value: ${OS_NAME}
+  - query_selector: "name=user"
+    provider_identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
+    provider_parameters:
+      value: ${USER}

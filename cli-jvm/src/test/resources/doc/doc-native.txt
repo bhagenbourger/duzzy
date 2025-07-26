@@ -7,13 +7,20 @@ A `DuzzyConfig` is a yaml file that enables you to specify some configurations f
 
 ### io.duzzy.core.config.DuzzyConfig ♨️ 🧬  
 🔑 Identifier: io.duzzy.core.config.DuzzyConfig  
-📋 Description: Duzzy Config enables schema enrichment by specifying column provider, sink or serializer  
+📋 Description: Duzzy Config enables schema enrichment by specifying custom row key, column provider, sink or serializer. You can use environment variables or system properties in the config.  
 📦 Module: io.duzzy.core  
 🧬 Native support: true  
 
 💡 Example: 
 ```
 ---
+row_key:
+  name: key
+  type: STRING
+  null_rate: 0
+  corrupted_rate: 0
+  providers:
+    - identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
 enrichers:
   - query_selector: "name=city"
     provider_identifier: "io.duzzy.plugin.provider.random.AlphanumericRandomProvider"
@@ -25,6 +32,10 @@ enrichers:
     provider_parameters:
       min: 1
       max: 9999
+  - query_selector: "name=user"
+    provider_identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
+    provider_parameters:
+      value: ${USER}
 sink:
   identifier: "io.duzzy.plugin.sink.LocalFileSink"
   filename: "/tmp/example.xml"
