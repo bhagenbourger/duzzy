@@ -1,0 +1,4 @@
+identifier: io.duzzy.plugin.provider.increment.LocalDateTimeIncrementProvider
+start: "2023-01-01T00:00:00"
+step: 1
+unit: DAYS
