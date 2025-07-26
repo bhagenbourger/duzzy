@@ -98,7 +98,7 @@ public class CsvSerializer extends Serializer<SequenceWriter> {
 
   @Override
   protected void serialize(DuzzyRow row, SequenceWriter writer) throws IOException {
-    writer.write(row.toValues());
+    writer.write(row.valuesAsList());
   }
 
   @Override

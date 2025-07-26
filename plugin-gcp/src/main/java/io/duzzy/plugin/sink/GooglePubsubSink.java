@@ -8,6 +8,8 @@ import com.google.cloud.pubsub.v1.Publisher;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
+import io.duzzy.core.DuzzyRowKey;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.EventSink;
 import io.duzzy.core.sink.Sink;
@@ -49,10 +51,11 @@ import java.util.concurrent.ExecutionException;
             identifier: "io.duzzy.plugin.serializer.JsonSerializer"
         """
 )
-public class GooglePubsubSink extends EventSink<ClosablePublisher> {
+public class GooglePubsubSink extends EventSink {
 
   private final String topicName;
   private final String projectId;
+  private Publisher publisher;
 
   @JsonCreator
   public GooglePubsubSink(
@@ -71,21 +74,31 @@ public class GooglePubsubSink extends EventSink<ClosablePublisher> {
   }
 
   @Override
-  protected void sendEvent() throws IOException, ExecutionException, InterruptedException {
-    final ByteString data = ByteString.copyFrom(getOutputStream().toByteArray());
-    final PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data).build();
-
-    final ApiFuture<String> future = getProducer().getPublisher().publish(pubsubMessage);
-    future.get();
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    super.init(duzzySchema);
+    this.publisher = buildPublisher();
   }
 
   @Override
-  protected ClosablePublisher buildProducer() throws IOException {
-    return new ClosablePublisher(Publisher.newBuilder(TopicName.of(projectId, topicName)).build());
+  protected void sendEvent(DuzzyRowKey eventKey)
+      throws IOException, ExecutionException, InterruptedException {
+    final ByteString data = ByteString.copyFrom(getOutputStream().toByteArray());
+    final PubsubMessage.Builder builder = PubsubMessage.newBuilder().setData(data);
+    if (eventKey.isPresent()) {
+      builder.setMessageId(eventKey.asString());
+    }
+    final PubsubMessage pubsubMessage = builder.build();
+
+    final ApiFuture<String> future = publisher.publish(pubsubMessage);
+    future.get();
   }
 
   @Override
   public Sink fork(Long threadId) throws Exception {
     return new GooglePubsubSink(getSerializer().fork(threadId), projectId, topicName);
+  }
+
+  Publisher buildPublisher() throws IOException {
+    return Publisher.newBuilder(TopicName.of(projectId, topicName)).build();
   }
 }

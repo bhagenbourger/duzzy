@@ -77,14 +77,12 @@ public class GooglePubsubSinkTest {
         topicName
     ));
     doReturn(
-        new ClosablePublisher(
-            Publisher
-                .newBuilder(TopicName.of(projectId, topicName))
-                .setChannelProvider(channelProvider)
-                .setCredentialsProvider(NoCredentialsProvider.create())
-                .build()
-        )
-    ).when(sink).buildProducer();
+        Publisher
+            .newBuilder(TopicName.of(projectId, topicName))
+            .setChannelProvider(channelProvider)
+            .setCredentialsProvider(NoCredentialsProvider.create())
+            .build()
+    ).when(sink).buildPublisher();
     sink.init(null);
     sink.write(Data.getDataOne());
     sink.write(Data.getDataTwo());
