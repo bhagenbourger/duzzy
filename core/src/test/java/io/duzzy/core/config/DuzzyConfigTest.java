@@ -47,4 +47,18 @@ public class DuzzyConfigTest {
     assertThat(provider.isPresent()).isTrue();
     assertThat(provider.get()).isInstanceOf(AlphanumericRandomProvider.class);
   }
+
+  @Test
+  void shouldHandleSystemVariables() throws IOException {
+    final String value = "DUZZY_TEST_ENV_VAR";
+    System.setProperty("OS_NAME", value);
+    final File duzzyConfigFile = getFromResources(getClass(), "config/duzzy-config-env.yaml");
+    final DuzzyConfig duzzyConfig = DuzzyConfig.fromFile(duzzyConfigFile);
+
+    final Enricher enricherOs = duzzyConfig.enrichers().getFirst();
+    assertThat(enricherOs.providerParameters().get("value")).isEqualTo(value);
+    Enricher enricherUser = duzzyConfig.enrichers().getLast();
+    assertThat(enricherUser.providerParameters().get("value"))
+        .isEqualTo(System.getProperty("user.name"));
+  }
 }
