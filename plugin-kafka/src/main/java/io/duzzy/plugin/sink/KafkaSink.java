@@ -13,6 +13,8 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 @Documentation(
     identifier = "io.duzzy.plugin.sink.KafkaSink",
@@ -71,10 +73,10 @@ public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
   }
 
   @Override
-  protected void sendEvent() throws IOException {
+  protected void sendEvent(String eventKey) throws IOException {
     final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
         topic,
-        null,
+        eventKey,
         getOutputStream().toByteArray()
     );
     getProducer().send(record);
@@ -88,14 +90,8 @@ public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
   private static Properties buildProperties(String bootstrapServers) {
     final Properties props = new Properties();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-    props.put(
-        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-        "org.apache.kafka.common.serialization.StringSerializer"
-    );
-    props.put(
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-        "org.apache.kafka.common.serialization.ByteArraySerializer"
-    );
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
     return props;
   }
 }

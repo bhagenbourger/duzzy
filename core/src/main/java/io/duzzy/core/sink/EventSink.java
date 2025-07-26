@@ -17,7 +17,8 @@ public abstract class EventSink<P extends Closeable> extends Sink {
     super(serializer);
   }
 
-  protected abstract void sendEvent() throws IOException, ExecutionException, InterruptedException;
+  protected abstract void sendEvent(String eventKey)
+      throws IOException, ExecutionException, InterruptedException;
 
   protected abstract P buildProducer() throws IOException;
 
@@ -42,7 +43,7 @@ public abstract class EventSink<P extends Closeable> extends Sink {
     reset();
     super.write(row);
     getSerializer().close();
-    sendEvent();
+    sendEvent(row.keyAsString());
   }
 
   @Override

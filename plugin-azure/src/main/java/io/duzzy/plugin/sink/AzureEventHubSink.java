@@ -17,7 +17,6 @@ import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,9 +121,10 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
   }
 
   @Override
-  protected void sendEvent() throws IOException {
+  protected void sendEvent(String eventKey) throws IOException {
     final EventDataBatch batch = getProducer().createBatch();
-    final EventData eventData = new EventData(getOutputStream().toString(StandardCharsets.UTF_8));
+    final EventData eventData =
+        new EventData(getOutputStream().toByteArray()).setMessageId(eventKey);
     if (batch.tryAdd(eventData)) {
       getProducer().send(batch);
     } else {
