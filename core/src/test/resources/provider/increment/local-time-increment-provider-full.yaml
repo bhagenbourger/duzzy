@@ -1,0 +1,4 @@
+identifier: io.duzzy.plugin.provider.increment.LocalTimeIncrementProvider
+start: "00:00:00"
+step: 1
+unit: HOURS

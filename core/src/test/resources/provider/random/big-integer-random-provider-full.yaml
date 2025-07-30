@@ -1,0 +1,3 @@
+identifier: io.duzzy.plugin.provider.random.BigIntegerRandomProvider
+min: 10
+max: 20
