@@ -110,7 +110,7 @@ public class LocalFileSinkTest {
     final String expected4 =
         Files.readString(getFromResources(getClass(), "result/expected-multi-4.xml").toPath());
 
-    new Duzzy(schema, config, 1234L, 50L, 5, null).generate();
+    new Duzzy(schema, config, 1234L, 10L, null, null, 5, null).generate();
 
     final List<File> files = Arrays
         .stream(Objects.requireNonNull(new File("build/multi").listFiles()))

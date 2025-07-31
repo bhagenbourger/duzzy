@@ -20,6 +20,7 @@ import picocli.CommandLine.Option;
 public class RunCommand implements Callable<Integer> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RunCommand.class);
+  private static final String PARAM_LABEL_LONG = "Long";
 
   @Option(
       names = {"-f", "--schema-file"},
@@ -44,17 +45,31 @@ public class RunCommand implements Callable<Integer> {
 
   @Option(
       names = {"-s", "--seed"},
-      paramLabel = "Long",
+      paramLabel = PARAM_LABEL_LONG,
       description = "Seed used to generate data"
   )
   Long seed;
 
   @Option(
       names = {"-r", "--rows"},
-      paramLabel = "Long",
-      description = "Number of rows to generate"
+      paramLabel = PARAM_LABEL_LONG,
+      description = "Number of rows to generate (per thread), default is 10"
   )
   Long rows;
+
+  @Option(
+      names = {"-z", "--size"},
+      paramLabel = PARAM_LABEL_LONG,
+      description = "Size of data to generate in bytes (per thread), default is unlimited"
+  )
+  Long size;
+
+  @Option(
+      names = {"-d", "--duration"},
+      paramLabel = PARAM_LABEL_LONG,
+      description = "Duration of data generation in seconds (per thread), default is unlimited"
+  )
+  Long duration;
 
   @Option(
       names = {"-o", "--output"},
@@ -78,6 +93,8 @@ public class RunCommand implements Callable<Integer> {
           config,
           seed,
           rows,
+          size,
+          duration,
           threads,
           parser
       ).generate();

@@ -40,17 +40,17 @@ unzip duzzy-${DUZZY_VERSION}.zip
 ```
 Output:
 ```
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"MlPmlTBiF2CLP","DoubleRandomProvider":8.253334924246401E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"Oi8hyywQHTzL","DoubleRandomProvider":1.692914720729387E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"cI9PmIuBGlqLJ2","DoubleRandomProvider":1.2628298023208332E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"9NGrpMPDoT","DoubleRandomProvider":1.507758284837767E308}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"RP2RAqZqnzE","DoubleRandomProvider":1.7268510135708793E308}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"YGzKyAjT0kYk","DoubleRandomProvider":1.5748621166521904E308}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"XZX7oo8caGdT","DoubleRandomProvider":4.939056700087273E306}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"PNboqE54y9SAr","DoubleRandomProvider":8.683934011967188E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"3vK1t5MgRF","DoubleRandomProvider":7.672458763020226E306}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"NDAAkrF4cxPrqWr","DoubleRandomProvider":6.708664661592505E307}
-DuzzyResult[duration=PT0.046S, rows=10, seed=2639303047660090771]
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"39Y2jkN7sey","DoubleRandomProvider":3.4443151307062914E306}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"tJlhVs5kobcEH4","DoubleRandomProvider":7.00263593450126E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"NQzUZeivqbgkNGN","DoubleRandomProvider":4.919350633385859E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"CtvWjl2Rv3BP5","DoubleRandomProvider":9.895943522452931E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"7RWhYpSFRP5J8t","DoubleRandomProvider":8.99398384636745E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"GPuJeZNQfNa3taJ","DoubleRandomProvider":8.414529311331451E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"rnmqEiRrrJyINe","DoubleRandomProvider":4.144963844067495E306}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"2T1p7OdgO9pMy","DoubleRandomProvider":4.381784483832912E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"lKp2hWWtjqxHtDO","DoubleRandomProvider":1.677140353287274E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"SOiQ5bTB9H","DoubleRandomProvider":1.7836945653614943E308}
+DuzzyResult[totalDuration=PT0.041S, processingDuration=PT0.032S, rows=10, size=1221, seed=2285108886562336170]
 ```
 
 > 💡 In examples below, `"duzzy-${DUZZY_VERSION}/bin/duzzy"` is replaced by `duzzy`.
@@ -76,10 +76,12 @@ duzzy run -h
 ```
 Output:
 ```
-Usage: duzzy run [-hV] [-c=File] [-f=File] [-o=OutputFormat] [-p=Class]
-                 [-r=Long] [-s=Long] [-t=Integer]
+Usage: duzzy run [-hV] [-c=File] [-d=Long] [-f=File] [-o=OutputFormat]
+                 [-p=Class] [-r=Long] [-s=Long] [-t=Integer] [-z=Long]
 Generate your test data
   -c, --config-file=File   Config file used to enrich the schema
+  -d, --duration=Long      Duration of data generation in milliseconds (per
+                             thread), default is unlimited
   -f, --schema-file=File   Schema source file
   -h, --help               Show this help message and exit.
   -o, --output=OutputFormat
@@ -88,10 +90,13 @@ Generate your test data
   -p, --schema-parser=Class
                            Qualified name of the parser class used to parse
                              schema file
-  -r, --rows=Long          Number of rows to generate
+  -r, --rows=Long          Number of rows to generate (per thread), default is
+                             10
   -s, --seed=Long          Seed used to generate data
   -t, --threads=Integer    Number of threads to use to generate data
   -V, --version            Print version information and exit.
+  -z, --size=Long          Size of data to generate in bytes (per thread),
+                             default is unlimited
 ```
 
 ### Print help for duzzy plugin
@@ -109,19 +114,56 @@ Commands:
   list       List all installed plugins
   uninstall  Uninstall a plugin
 ```
+### Set limits
+> 💡 When several limits are set, Duzzy stops when one limit is reached.
 
-### Set number of rows to generate
+> 💡Generated rows are always full, 
+> meaning Duzzy doesn't stop strictly at the but limit when the limit is reached or exceeded
+
+#### Set number of rows to generate
 ```
 duzzy run -r 5
 ```
 Output:
 ```
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"1mtRIZDug7wYV","DoubleRandomProvider":8.547228159771215E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"CtFjZVgNJrN2unM","DoubleRandomProvider":1.6531766170784796E308}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"E4562VNY0ohUF","DoubleRandomProvider":4.2061609883509E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"AKmlPZbUj7k","DoubleRandomProvider":4.623123394107451E307}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"BKWKIv6TVsc","DoubleRandomProvider":1.1892869523667485E308}
-DuzzyResult[duration=PT0.048S, rows=5, seed=7513394063918507726]
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"mL1O47KvHIYKJTy","DoubleRandomProvider":7.649987037298262E306}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"Lvjrthzv9x","DoubleRandomProvider":1.538213261065545E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"fFc33wsMUX","DoubleRandomProvider":1.3510109778635097E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"broNTgG7azwI860","DoubleRandomProvider":1.1489755225447667E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"9WIhfsRcjeHZlu","DoubleRandomProvider":1.3599574206137938E308}
+DuzzyResult[totalDuration=PT0.051S, processingDuration=PT0.04S, rows=5, size=608, seed=-4594484013830885479]
+```
+
+#### Set size (in bytes) of date to generate
+```
+duzzy run -z 1000
+```
+Output:
+```
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"7uP3MtPAcnPD42r","DoubleRandomProvider":1.426055674820472E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"mzkjSbpjyr6pZO","DoubleRandomProvider":3.7422019071188695E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"s0L9HGVDi70","DoubleRandomProvider":3.260206849504213E306}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"WsroTMJWH8Vm","DoubleRandomProvider":1.256759653429498E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"qHVF7Day3J2","DoubleRandomProvider":2.0944668090326934E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"kVc1iXy3hHCEZ","DoubleRandomProvider":1.5512212336044818E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"M8M1oi4kV06qg","DoubleRandomProvider":4.024856998275804E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"DOpLzTkm57v","DoubleRandomProvider":1.4789516023754013E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"RFF3n69Sey","DoubleRandomProvider":1.586086361927003E307}
+DuzzyResult[totalDuration=PT0.042S, processingDuration=PT0.032S, rows=9, size=1087, seed=-7508667141858130218]
+```
+
+#### Set generation duration (in seconds)
+> 💡 Duration limit is based on the time spent to processing data. 
+> Initialization time and closing time are not counted in the duration limit.
+```
+duzzy run -d 1
+```
+Output:
+```
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"Ij2jHBVm6uXAdGT","DoubleRandomProvider":1.3827536102424086E308}
+[...]
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"9XnqdDh94Mj1UB","DoubleRandomProvider":1.0963850066868554E308}
+DuzzyResult[totalDuration=PT9.858S, processingDuration=PT1S, rows=469183, size=56969953, seed=1942390080647646563]
 ```
 
 ### Use seed to have idempotent result
@@ -140,7 +182,7 @@ Output:
 {"BooleanRandomProvider":false,"AlphanumericRandomProvider":"22GAbWyGa5JZkrA","DoubleRandomProvider":2.1335952966233372E307}
 {"BooleanRandomProvider":false,"AlphanumericRandomProvider":"wiK8MCBWHnoE","DoubleRandomProvider":1.2138137952960131E308}
 {"BooleanRandomProvider":true,"AlphanumericRandomProvider":"7wqE5d72SdC","DoubleRandomProvider":1.0306199098126328E307}
-DuzzyResult[duration=PT0.046S, rows=10, seed=1234]
+DuzzyResult[totalDuration=PT0.044S, processingDuration=PT0.033S, rows=10, size=1220, seed=1234]
 ```
 
 ### Specify a sink
@@ -159,7 +201,7 @@ duzzy run -c duzzy-config.yaml
 ```
 Output:
 ```
-DuzzyResult[duration=PT0.023S, rows=10, seed=-159643380333419490]
+DuzzyResult[totalDuration=PT0.031S, processingDuration=PT0.017S, rows=10, size=1211, seed=3516556014612409473]
 ```
 
 Check `/tmp/example.json  ` file content.
@@ -168,16 +210,16 @@ cat /tmp/example.json
 ```
 Output:
 ```                         
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"cqVk0FrkQrrH4o","DoubleRandomProvider":1.713387646957952E307}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"b7wuRi76PgEPY","DoubleRandomProvider":4.0183644768130334E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"LAGEIB5GmxK6ns0","DoubleRandomProvider":8.002403781016993E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"jjzULp1gWW9YxVx","DoubleRandomProvider":4.1304014904035556E307}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"saNdAuxEqOMIq","DoubleRandomProvider":4.2601590222894016E307}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"OjcDIsoaZRIx","DoubleRandomProvider":2.8638020021244796E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"Bm8E6JbLdiNV61A","DoubleRandomProvider":1.3392477688899436E308}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"ebWU72pAKU2pL","DoubleRandomProvider":7.553888472798153E306}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"RDqihdkzgnr","DoubleRandomProvider":1.5325798180501981E307}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"zsTDageA7f4Mvp","DoubleRandomProvider":1.7103441809149604E308}%
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"01kNqdylTpxRP","DoubleRandomProvider":6.468097762224575E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"cShwZVy5zzmU5","DoubleRandomProvider":3.7837076971762515E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"K0KJJx2fHvi","DoubleRandomProvider":8.898142971794124E305}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"5J2s1TDFdk","DoubleRandomProvider":1.7592431490301122E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"dT4O9z09A4","DoubleRandomProvider":1.2386013716796864E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"7imKzOwzw8rA","DoubleRandomProvider":3.5593048703828705E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"Gks0D30ig0Bv","DoubleRandomProvider":1.2569898826582618E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"3n7lpj6HNCH","DoubleRandomProvider":2.1648875903342025E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"E7auSmaOWCGP","DoubleRandomProvider":9.294922043959701E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"agibjBDHEQa1THm","DoubleRandomProvider":5.005957353003563E307}
 ```
 
 ### Specify a serializer
@@ -199,8 +241,8 @@ duzzy run -c duzzy-config.yaml
 ```
 Output:
 ```
-<?xml version='1.0' encoding='UTF-8'?><rows><row><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>INDbx5EhMYT</AlphanumericRandomProvider><DoubleRandomProvider>1.2588448979350714E308</DoubleRandomProvider></row><row><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>BgR2FWTpS2MWmQ</AlphanumericRandomProvider><DoubleRandomProvider>2.4051753657710203E307</DoubleRandomProvider></row><row><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>2yKHa4kx384deN</AlphanumericRandomProvider><DoubleRandomProvider>3.4878494076399964E306</DoubleRandomProvider></row><row><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>eArY5y9ojdNvLd</AlphanumericRandomProvider><DoubleRandomProvider>8.529250011924854E307</DoubleRandomProvider></row><row><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>KlknLlRKEmIIvf</AlphanumericRandomProvider><DoubleRandomProvider>9.566748145915126E307</DoubleRandomProvider></row><row><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>daaVvkerY963yJ</AlphanumericRandomProvider><DoubleRandomProvider>9.267243778812058E306</DoubleRandomProvider></row><row><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>heEVv3zup40</AlphanumericRandomProvider><DoubleRandomProvider>1.1738982952017788E308</DoubleRandomProvider></row><row><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>cttfg0Q3lxUin8</AlphanumericRandomProvider><DoubleRandomProvider>7.839907147050345E307</DoubleRandomProvider></row><row><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>SdKzH1RRfU</AlphanumericRandomProvider><DoubleRandomProvider>6.817546621150012E307</DoubleRandomProvider></row><row><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>xg0BLq97mMXERq</AlphanumericRandomProvider><DoubleRandomProvider>7.760943165693689E307</DoubleRandomProvider></row></rows>
-DuzzyResult[duration=PT0.043S, rows=10, seed=-6676110200100127519]
+<?xml version='1.0' encoding='UTF-8'?><myRootTag><myRowTag><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>JBJ2fDwddkVu</AlphanumericRandomProvider><DoubleRandomProvider>4.2953995065998953E307</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>DwWvoz2Vdqi</AlphanumericRandomProvider><DoubleRandomProvider>1.6390261767795804E308</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>8G9qSKVmAPc4Ugn</AlphanumericRandomProvider><DoubleRandomProvider>6.798437676547761E307</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>8PhhqFzPV3kWi</AlphanumericRandomProvider><DoubleRandomProvider>1.5473839366108578E308</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>ZdfOjZqmXq</AlphanumericRandomProvider><DoubleRandomProvider>1.0469257511619842E307</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>true</BooleanRandomProvider><AlphanumericRandomProvider>JhHRWwSjBchYqpf</AlphanumericRandomProvider><DoubleRandomProvider>6.465908728369437E307</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>t6S2fQHxFxr</AlphanumericRandomProvider><DoubleRandomProvider>1.452428137061351E308</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>AurkVMTwjvp</AlphanumericRandomProvider><DoubleRandomProvider>1.0858635476809697E308</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>ZwfumdNVJyRBL</AlphanumericRandomProvider><DoubleRandomProvider>3.9308768460020056E307</DoubleRandomProvider></myRowTag><myRowTag><BooleanRandomProvider>false</BooleanRandomProvider><AlphanumericRandomProvider>BaZQGOpaNI9tqNz</AlphanumericRandomProvider><DoubleRandomProvider>1.5443249936260113E308</DoubleRandomProvider></myRowTag></myRootTag>
+DuzzyResult[totalDuration=PT0.034S, processingDuration=PT0.025S, rows=10, size=2152, seed=-948642641714584412]
 ```
 
 ### Specify your own schema
@@ -238,17 +280,17 @@ duzzy run -f duzzy-schema.yaml
 ```
 Output:
 ```
-{"id":1,"name":"Epdg6I3M2y","gender":"F"}
-{"id":2,"name":"QUlaDywiQsDnvmG","gender":"M"}
-{"id":3,"name":"Zw0w9kz4BdGi8u","gender":"F"}
-{"id":4,"name":"Dxbo9lClQ2W1jQ","gender":"F"}
-{"id":5,"name":"jgunMtTM2OSC9AH","gender":"M"}
-{"id":6,"name":"H1XWQkJ9UEc3","gender":"F"}
-{"id":7,"name":"yXnK5eFctCQuV","gender":"F"}
-{"id":8,"name":"nybs3GD61avuR4","gender":"F"}
-{"id":9,"name":"BCRrEkckINe2W","gender":"M"}
-{"id":10,"name":"CCyC69Adnjem","gender":"F"}
-DuzzyResult[duration=PT0.019S, rows=10, seed=4511034117894600184]
+{"id":1,"name":"PaODmvFKXmgmrDz","gender":"M"}
+{"id":2,"name":"VWrRYn90K0NnnH1","gender":"M"}
+{"id":3,"name":"TPowuuRHUp3tvL","gender":"M"}
+{"id":4,"name":"Vc7vKrpY7G2","gender":"M"}
+{"id":5,"name":"uqs98c9UrA7St","gender":"F"}
+{"id":6,"name":"JG4rJSbJe9W","gender":"F"}
+{"id":7,"name":"kfdYTS5qm6Z0LF","gender":"M"}
+{"id":8,"name":"bWHrrIOuDcvIK","gender":"M"}
+{"id":9,"name":"OplVgtnWC2R4I","gender":"M"}
+{"id":10,"name":"tajxjEz1uF","gender":"F"}
+DuzzyResult[totalDuration=PT0.022S, processingDuration=PT0.014S, rows=10, size=449, seed=-5630598479812439836]
 ```
 
 Example using several options:
@@ -258,11 +300,13 @@ duzzy run -f duzzy-schema.yaml -c duzzy-config.yaml -s 1234 -r 5 -o TXT
 Output:
 ```
 <?xml version='1.0' encoding='UTF-8'?><rows><row><id>1</id><name>i7M95YxRzOB</name><gender>M</gender></row><row><id>2</id><name>ZxIJnpkufuy</name><gender>M</gender></row><row><id>3</id><name>DNir5lwHHUkC</name><gender>M</gender></row><row><id>4</id><name>mTykw0HhqM1b</name><gender>F</gender></row><row><id>5</id><name>3bacagIKM760</name><gender>F</gender></row></rows>
-Duzzy generated 5 rows in PT0.035S with seed 1234
+Duzzy generated 5 rows in PT0.027S (processing time: PT0.019S) which represent 429 bytes of data with seed 1234
 ```
 
 ### Use threads for parallel processing
 > 💡 Some sinks are mono thread, like `io.duzzy.plugin.sink.ConsoleSink`.
+
+> 💡 When using threads, limits are considered by thread. Meaning that if you specify `-t 5` and `-r 10`, you will have 50 rows generated.
 
 Below an example of `DuzzyConfig` to use a local file `sink` that will generate a local file name `/tmp/example.json` with your data:
 ```
@@ -279,7 +323,7 @@ duzzy run -c duzzy-config.yaml -t 5
 ```
 Output:
 ```
-DuzzyResult[duration=PT0.046S, rows=10, seed=-6853482716961021168]
+DuzzyResult[totalDuration=PT0.043S, processingDuration=PT0.11S, rows=50, size=6045, seed=-6378206102201769831]
 ```
 Five files are generated, one by thread.  
 ```
@@ -296,24 +340,64 @@ example_30.json
 Check data:
 ```
 cat /tmp/mutli/example_26.json                               
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"1wV0LjVCUShaE","DoubleRandomProvider":4.9439887579428294E306}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"HAbhaWYhxO12N","DoubleRandomProvider":4.387877860503609E305}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"jLlTePqWmYayHlb","DoubleRandomProvider":1.7154597102424195E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"1xHFwiylYyBIng","DoubleRandomProvider":1.7701769726667074E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"CSEcZ6SCTibIdp","DoubleRandomProvider":5.939848967045316E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"vv71NKkgF6rc","DoubleRandomProvider":8.125563769696271E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"KTMFo6Y540mV8bq","DoubleRandomProvider":4.0392807613766315E305}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"cohTGEMkkR","DoubleRandomProvider":1.7506907272739248E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"C6JaxS4jMXV","DoubleRandomProvider":1.7083509777266206E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"8AHtQYyFphZ","DoubleRandomProvider":7.179680183050588E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"Yt4piWxEgvlW","DoubleRandomProvider":1.2390040097715712E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"h5xBBThNn1","DoubleRandomProvider":7.749315404400667E307}
 
 cat /tmp/mutli/example_27.json
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"ulYdgsC1kD8NDO","DoubleRandomProvider":3.8607919368921267E307}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"1ttWTYuxoy","DoubleRandomProvider":1.8841194591659124E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"qobDQ6p9iqg3P","DoubleRandomProvider":1.7745308196577455E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"gH3YYErqwu3HV","DoubleRandomProvider":9.55087052529657E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"9G0thO4G2m","DoubleRandomProvider":3.81099038978294E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"0xMun4WCoTmEQ","DoubleRandomProvider":8.758921593329242E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"e8B0A2b0bv","DoubleRandomProvider":9.308817596115473E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"u4Wi3qr9Sz","DoubleRandomProvider":1.5256764410241623E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"2GApg9GWzc","DoubleRandomProvider":1.3737627053084292E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"aNj2dzgmmr","DoubleRandomProvider":1.2728002494040472E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"vgT1TOoeP2G","DoubleRandomProvider":6.734504602548767E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"M251HeH6OMz","DoubleRandomProvider":8.639501992218329E307}
 
 cat /tmp/mutli/example_28.json
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"Z8PtiFNQSR7","DoubleRandomProvider":1.0547089282372403E308}
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"fLcXWOmOHvFM","DoubleRandomProvider":1.6165167283424603E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"3K8koFAVom5xlxB","DoubleRandomProvider":1.5150176548873537E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"9Ru1opxSuh","DoubleRandomProvider":2.0463056908836394E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"D9c5HgsDxUznJ","DoubleRandomProvider":1.1305910785855872E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"7cY3u18EF7hz","DoubleRandomProvider":1.3758399653203094E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"LFP5QbPCz3Oq","DoubleRandomProvider":6.072274759114535E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"Fv3SdRfAI9Lg","DoubleRandomProvider":3.3077091510471404E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"sR1JH04BNg2","DoubleRandomProvider":6.746534075706819E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"dgDwCE6FikqZEHC","DoubleRandomProvider":1.1635622620420027E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"8BnRM9rtxe9","DoubleRandomProvider":1.4011992132248453E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"B31BVJrRps","DoubleRandomProvider":1.7551604193421899E308}
 
 cat /tmp/mutli/example_29.json
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"QEb25XV9HFjXs","DoubleRandomProvider":1.0164598663375777E308}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"5eZrCNClOL5AJi","DoubleRandomProvider":1.7549467332152543E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"4B82nkcTEP","DoubleRandomProvider":1.3355257488347639E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"WRVF3QpGPap","DoubleRandomProvider":1.5924435793854302E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"2xtJECDcXVm","DoubleRandomProvider":1.6360720290156174E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"kyQn6jfoA7jvPA","DoubleRandomProvider":6.586957816097621E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"hlv1lTiQ36","DoubleRandomProvider":1.7154243673390171E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"BMJicMhWiYCwWGY","DoubleRandomProvider":1.673721364173853E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"opJQ6rXVtue0Vy","DoubleRandomProvider":1.072555967109656E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"ZJoOi0SA63ZmNJ4","DoubleRandomProvider":1.7047601094399295E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"HW3SybVh3T0","DoubleRandomProvider":6.720467416186199E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"GHFUzT5Kx1wu","DoubleRandomProvider":7.652358130215527E307}
 
 cat /tmp/mutli/example_30.json
-{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"fsx5sfxbA3D","DoubleRandomProvider":1.4925362011050671E308}
-{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"2XZFCXTJefY3E7","DoubleRandomProvider":1.0217917102927391E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"6sYidNh5j2","DoubleRandomProvider":1.4310106954702759E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"xxSGSRYzrr","DoubleRandomProvider":3.114705607421097E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"bTRRFYzXmrldyV","DoubleRandomProvider":1.766301555724653E308}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"xEhBEaB5dvGcvx","DoubleRandomProvider":8.53456487152428E307}
+{"BooleanRandomProvider":false,"AlphanumericRandomProvider":"eKKM2pelcW","DoubleRandomProvider":7.076933646215422E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"SIQetc70Fg4PP","DoubleRandomProvider":8.891617649489153E307}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"PwCGrQmzuzE","DoubleRandomProvider":1.1810877488893049E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"Pyr0Ym15zfATry","DoubleRandomProvider":1.6726604422996763E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"jFgICf3f2B45FS","DoubleRandomProvider":1.1152019996510786E308}
+{"BooleanRandomProvider":true,"AlphanumericRandomProvider":"987OV2rbBVqpfh","DoubleRandomProvider":1.0117032096235709E308}
 ```
 
 ## 📐 Architecture

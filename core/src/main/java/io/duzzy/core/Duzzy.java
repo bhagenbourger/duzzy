@@ -1,6 +1,8 @@
 package io.duzzy.core;
 
 import io.duzzy.core.config.DuzzyConfig;
+import io.duzzy.core.engine.DuzzyEngine;
+import io.duzzy.core.engine.DuzzyEngineResult;
 import io.duzzy.core.parser.Parser;
 import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.parser.DuzzySchemaParser;
@@ -17,6 +19,8 @@ public class Duzzy {
   private final File config;
   private final Long seed;
   private final Long rows;
+  private final Long size;
+  private final Long duration;
   private final Integer threads;
   private final String schemaParser;
 
@@ -25,6 +29,8 @@ public class Duzzy {
       File config,
       Long seed,
       Long rows,
+      Long size,
+      Long duration,
       Integer threads,
       String schemaParser
   ) {
@@ -32,6 +38,8 @@ public class Duzzy {
     this.config = config;
     this.seed = seed;
     this.rows = rows;
+    this.size = size;
+    this.duration = duration;
     this.threads = threads;
     this.schemaParser = schemaParser;
   }
@@ -41,14 +49,15 @@ public class Duzzy {
   }
 
   private static DuzzyResult generate(DuzzyContext duzzyContext) throws Exception {
-    final Long start = Instant.now().toEpochMilli();
-    final long size = new DuzzyEngine(duzzyContext).processing();
-    final Long end = Instant.now().toEpochMilli();
+    final long start = Instant.now().toEpochMilli();
+    final DuzzyEngineResult duzzyEngineResult = new DuzzyEngine(duzzyContext).processing();
+    final long end = Instant.now().toEpochMilli();
 
     return new DuzzyResult(
         Duration.of(end - start, ChronoUnit.MILLIS),
-        duzzyContext.rows(),
-        size,
+        Duration.of(duzzyEngineResult.duration(), ChronoUnit.MILLIS),
+        duzzyEngineResult.rows(),
+        duzzyEngineResult.size(),
         duzzyContext.seed()
     );
   }
@@ -65,6 +74,8 @@ public class Duzzy {
     return new DuzzyContext(duzzySchema)
         .withSeed(this.seed)
         .withRows(this.rows)
+        .withSize(this.size)
+        .withDuration(this.duration)
         .withThreads(this.threads)
         .withSink(duzzyConfig == null ? null : duzzyConfig.sink());
   }

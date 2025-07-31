@@ -3,7 +3,8 @@ package io.duzzy.core;
 import java.time.Duration;
 
 public record DuzzyResult(
-    Duration duration,
+    Duration totalDuration,
+    Duration processingDuration,
     Long rows,
     Long size,
     Long seed

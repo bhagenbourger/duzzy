@@ -1,29 +1,26 @@
-package io.duzzy.core;
+package io.duzzy.core.engine;
 
+import io.duzzy.core.DuzzyContext;
 import java.util.concurrent.Callable;
 
-public class DuzzyThread implements Callable<Long> {
+public class DuzzyThread implements Callable<DuzzyEngineResult> {
 
-  private final Long start;
-  private final Long end;
+  private final int start;
   private final DuzzyContext duzzyContext;
 
-  public DuzzyThread(Long start, Long end, DuzzyContext duzzyContext) {
+  public DuzzyThread(int start, DuzzyContext duzzyContext) {
     this.start = start;
-    this.end = end;
     this.duzzyContext = duzzyContext;
   }
 
   @Override
-  public Long call() {
+  public DuzzyEngineResult call() {
     try {
       return new DuzzyProcessing(
-          start,
-          end,
           duzzyContext.duzzySchema(),
           duzzyContext.sink().fork(Thread.currentThread().threadId()),
           duzzyContext.seed()
-      ).run();
+      ).run(start, duzzyContext.threads(), duzzyContext.duzzyLimit());
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
