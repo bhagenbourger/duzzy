@@ -18,7 +18,7 @@ public abstract class Sink implements Plugin, Forkable<Sink> {
     this.serializer = serializer == null ? new JsonSerializer() : serializer;
   }
 
-  public abstract OutputStream outputStreamSupplier() throws IOException;
+  protected abstract OutputStream outputStreamSupplier() throws IOException;
 
   public void init(DuzzySchema duzzySchema) throws Exception {
     this.serializer.init(getOutputStream(), duzzySchema);
@@ -35,8 +35,12 @@ public abstract class Sink implements Plugin, Forkable<Sink> {
 
   protected OutputStream getOutputStream() throws IOException {
     if (outputStream == null) {
-      outputStream = outputStreamSupplier();
+      outputStream = outputStreamWrapper(outputStreamSupplier());
     }
+    return outputStream;
+  }
+
+  protected OutputStream outputStreamWrapper(OutputStream outputStream) throws IOException {
     return outputStream;
   }
 

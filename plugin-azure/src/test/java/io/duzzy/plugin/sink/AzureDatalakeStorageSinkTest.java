@@ -10,8 +10,6 @@ import static org.mockito.Mockito.spy;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
-import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
 import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
@@ -61,7 +59,8 @@ public class AzureDatalakeStorageSinkTest {
         DataLakeServiceVersion.V2025_01_05.name(),
         true,
         CONTAINER_NAME,
-        path
+        path,
+        null
     ));
 
     doReturn(azurite.getConnectionString()).when(sink).getEndpoint();
@@ -92,12 +91,5 @@ public class AzureDatalakeStorageSinkTest {
 
     assertEquals("{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}", result);
     assertEquals("{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}", result1);
-  }
-
-  private static DataLakeServiceClient client() {
-    return new DataLakeServiceClientBuilder()
-        .connectionString(azurite.getConnectionString())
-        .serviceVersion(DataLakeServiceVersion.V2025_01_05)
-        .buildClient();
   }
 }

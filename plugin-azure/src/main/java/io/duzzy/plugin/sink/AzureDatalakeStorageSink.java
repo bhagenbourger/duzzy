@@ -1,7 +1,5 @@
 package io.duzzy.plugin.sink;
 
-import static io.duzzy.core.sink.FileSink.addFilePart;
-
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
@@ -63,6 +61,14 @@ import java.io.OutputStream;
             name = "blob_name",
             aliases = {"blobName", "blob-name"},
             description = "The name of the blob to write data to"
+        ),
+        @Parameter(
+            name = "compression_algorithm",
+            aliases = {"compressionAlgorithm", "compression-algorithm"},
+            description = "The compression algorithm to use for the file, "
+                + "available options are: NONE, BZIP2, GZIP, ZSTD. "
+                + "If not specified, no compression will be applied.",
+            defaultValue = "NONE"
         )
     },
     example = """
@@ -76,6 +82,7 @@ import java.io.OutputStream;
           createContainerIfNotExists: true
           container: "mycontainer"
           blobName: "myblob.txt"
+          compressionAlgorithm: "NONE"
         """
 )
 public class AzureDatalakeStorageSink extends AzureStorageSink {
@@ -100,7 +107,10 @@ public class AzureDatalakeStorageSink extends AzureStorageSink {
       String container,
       @JsonProperty("blob_name")
       @JsonAlias({"blobName", "blob-name"})
-      String blobName
+      String blobName,
+      @JsonProperty("compression_algorithm")
+      @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
+      CompressionAlgorithm compressionAlgorithm
   ) {
     super(
         serializer,
@@ -110,12 +120,13 @@ public class AzureDatalakeStorageSink extends AzureStorageSink {
         serviceVersion,
         createContainerIfNotExists,
         container,
-        blobName
+        blobName,
+        compressionAlgorithm
     );
   }
 
   @Override
-  public OutputStream outputStreamSupplier() {
+  protected OutputStream outputStreamSupplier() {
     final DataLakeServiceClientBuilder serviceClientBuilder = new DataLakeServiceClientBuilder();
     if (getAzureAuthType() == AzureAuthType.DEFAULT_AZURE_CREDENTIALS) {
       serviceClientBuilder
@@ -147,7 +158,8 @@ public class AzureDatalakeStorageSink extends AzureStorageSink {
         getServiceVersion(),
         getCreateContainerIfNotExists(),
         getContainer(),
-        addFilePart(getBlobName(), threadId)
+        addFilePart(getBlobName(), threadId),
+        getCompressionAlgorithm()
     );
   }
 }

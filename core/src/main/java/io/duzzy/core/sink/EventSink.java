@@ -22,7 +22,7 @@ public abstract class EventSink<P extends Closeable> extends Sink {
   protected abstract P buildProducer() throws IOException;
 
   @Override
-  public OutputStream outputStreamSupplier() {
+  protected OutputStream outputStreamSupplier() {
     return new ByteArrayOutputStream();
   }
 

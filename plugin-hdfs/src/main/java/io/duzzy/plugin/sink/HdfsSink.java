@@ -1,12 +1,10 @@
 package io.duzzy.plugin.sink;
 
-import static io.duzzy.core.sink.FileSink.addFilePart;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.FileSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
@@ -39,6 +37,14 @@ import org.apache.hadoop.fs.Path;
         @Parameter(
             name = "filename",
             description = "The filename to write to"
+        ),
+        @Parameter(
+            name = "compression_algorithm",
+            aliases = {"compressionAlgorithm", "compression-algorithm"},
+            description = "The compression algorithm to use for the file, "
+                + "available options are: NONE, BZIP2, GZIP, ZSTD. "
+                + "If not specified, no compression will be applied.",
+            defaultValue = "NONE"
         )
     },
     example = """
@@ -50,9 +56,10 @@ import org.apache.hadoop.fs.Path;
           coreSiteFile: "/path/to/core-site.xml"
           hdfsSitePath: "/path/to/hdfs-site.xml"
           filename: "/path/to/file"
+          compressionAlgorithm: "NONE"
         """
 )
-public class HdfsSink extends Sink {
+public class HdfsSink extends FileSink {
 
   private final String coreSitePath;
   private final String hdfsSitePath;
@@ -67,16 +74,19 @@ public class HdfsSink extends Sink {
       @JsonProperty("hdfs_site_path")
       @JsonAlias({"hdfsSiteFile", "hdfs-site-file"})
       String hdfsSitePath,
-      @JsonProperty("filename") String filename
+      @JsonProperty("filename") String filename,
+      @JsonProperty("compression_algorithm")
+      @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
+      FileSink.CompressionAlgorithm compressionAlgorithm
   ) {
-    super(serializer);
+    super(serializer, compressionAlgorithm);
     this.coreSitePath = coreSitePath;
     this.hdfsSitePath = hdfsSitePath;
     this.filename = filename;
   }
 
   @Override
-  public OutputStream outputStreamSupplier() throws IOException {
+  protected OutputStream outputStreamSupplier() throws IOException {
     final Configuration configuration = new Configuration();
     if (coreSitePath != null) {
       configuration.addResource(new Path(coreSitePath));
@@ -93,7 +103,8 @@ public class HdfsSink extends Sink {
         getSerializer().fork(threadId),
         coreSitePath,
         hdfsSitePath,
-        addFilePart(filename, threadId)
+        addFilePart(filename, threadId),
+        getCompressionAlgorithm()
     );
   }
 }

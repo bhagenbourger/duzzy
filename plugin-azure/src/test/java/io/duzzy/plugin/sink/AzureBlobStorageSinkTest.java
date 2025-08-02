@@ -58,7 +58,8 @@ public class AzureBlobStorageSinkTest {
         BlobServiceVersion.V2025_01_05.name(),
         true,
         CONTAINER_NAME,
-        path
+        path,
+        null
     ));
 
     doReturn(azurite.getConnectionString()).when(sink).getEndpoint();

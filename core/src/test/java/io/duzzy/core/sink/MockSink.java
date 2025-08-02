@@ -12,7 +12,7 @@ public class MockSink extends Sink {
   }
 
   @Override
-  public OutputStream outputStreamSupplier() throws IOException {
+  protected OutputStream outputStreamSupplier() throws IOException {
     return new ByteArrayOutputStream();
   }
 

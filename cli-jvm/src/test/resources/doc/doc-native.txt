@@ -630,7 +630,8 @@ serializer:
 | project_id | projectId, project-id | The GCP project ID |  |
 | credentials_file | credentialsFile, credentials-file | Path to the GCP credentials file |  |
 | bucket_name | bucketName, bucket-name | The GCS bucket name |  |
-| object_name | objectName, object-name | The GCS object name |  |  
+| object_name | objectName, object-name | The GCS object name |  |
+| compression_algorithm | compressionAlgorithm, compression-algorithm | The compression algorithm to use for the file, available options are: NONE, BZIP2, GZIP, ZSTD. If not specified, no compression will be applied. | NONE |  
 
 💡 Example: 
 ```
@@ -640,7 +641,8 @@ sink:
   project_id: "my-project-id"
   credentials_file: "/path/to/credentials.json"
   bucket_name: "my-bucket"
-  object_name: "data/output.json"
+  object_name: "data/output.json.gz"
+  compression_algorithm: "GZIP"
   serializer:
     identifier: "io.duzzy.plugin.serializer.JsonSerializer"
 ```
@@ -707,14 +709,16 @@ sink:
 | --- | --- | --- | --- |
 | serializer |  | The serializer to use |  |
 | filename |  | The name of the file to write |  |
-| create_if_not_exists | createIfNotExists, create-if-not-exists | Create the file if it does not exist | false |  
+| create_if_not_exists | createIfNotExists, create-if-not-exists | Create the file if it does not exist | false |
+| compression_algorithm | compressionAlgorithm, compression-algorithm | The compression algorithm to use for the file, available options are: NONE, BZIP2, GZIP, ZSTD. If not specified, no compression will be applied. | NONE |  
 
 💡 Example: 
 ```
 ---
 identifier: "io.duzzy.plugin.sink.LocalFileSink"
-filename: "output.csv"
+filename: "output.csv.gz"
 create_if_not_exists: true
+compression_algorithm: "GZIP"
 serializer:
   identifier: "io.duzzy.plugin.serializer.JsonSerializer"
 ```
