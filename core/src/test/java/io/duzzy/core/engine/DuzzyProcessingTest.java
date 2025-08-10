@@ -1,8 +1,11 @@
-package io.duzzy.core;
+package io.duzzy.core.engine;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import io.duzzy.core.DuzzyCell;
+import io.duzzy.core.DuzzyLimit;
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.DuzzySchema;
@@ -39,8 +42,16 @@ public class DuzzyProcessingTest {
     );
 
     final DuzzySchema duzzySchema = new DuzzySchema(Optional.empty(), List.of(field));
-    final DuzzyProcessing processing = new DuzzyProcessing(0L, 1L, duzzySchema, sink, 1L);
-    processing.run();
+    final DuzzyProcessing processing = new DuzzyProcessing(
+        duzzySchema,
+        sink,
+        1L
+    );
+    processing.run(
+        0,
+        1,
+        new DuzzyLimit(1L, null, null)
+    );
 
     verify(sink).init(duzzySchema);
     verify(sink).write(expected);
@@ -71,8 +82,16 @@ public class DuzzyProcessingTest {
     );
 
     final DuzzySchema duzzySchema = new DuzzySchema(Optional.of(rowKey), List.of(field));
-    final DuzzyProcessing processing = new DuzzyProcessing(0L, 1L, duzzySchema, sink, 1L);
-    processing.run();
+    final DuzzyProcessing processing = new DuzzyProcessing(
+        duzzySchema,
+        sink,
+        1L
+    );
+    processing.run(
+        0,
+        1,
+        new DuzzyLimit(1L, null, null)
+    );
 
     verify(sink).init(duzzySchema);
     verify(sink).write(expected);

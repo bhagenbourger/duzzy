@@ -2,6 +2,7 @@ package io.duzzy.core;
 
 import static io.duzzy.tests.Helper.getFromResources;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -12,6 +13,37 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 public class DuzzyTest {
+
+  @Test
+  void generateThrowsExceptionWhenInvalidParserClassProvided() {
+    final Duzzy duzzy = new Duzzy(
+        getFromResources(getClass(), "schema/duzzy-schema.yaml"),
+        null,
+        1L,
+        null,
+        null,
+        null,
+        null,
+        "io.duzzy.NonExistentParser"
+    );
+    assertThatThrownBy(duzzy::generate).isInstanceOf(ClassNotFoundException.class);
+  }
+
+  @Test
+  void generateUsesCustomParserWhenSchemaParserProvided() throws Exception {
+    final Duzzy duzzy = new Duzzy(
+        getFromResources(getClass(), "schema/duzzy-schema.yaml"),
+        null,
+        1L,
+        null,
+        null,
+        null,
+        null,
+        "io.duzzy.plugin.parser.DuzzySchemaParser"
+    );
+    final DuzzyResult result = duzzy.generate();
+    assertThat(result.rows()).isEqualTo(10L);
+  }
 
   @Test
   void generateJsonInConsoleFromDuzzySchema() throws Exception {
@@ -25,7 +57,8 @@ public class DuzzyTest {
         {"city":"E1lt67oJ6Ne"}
         {"city":"IsUgerpfGgWRl3H"}
         {"city":"rBw98FAPe1"}
-        {"city":"Lri7KqkjVTcL0"}\n""";
+        {"city":"Lri7KqkjVTcL0"}
+        """;
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStreamCaptor, true, StandardCharsets.UTF_8));
 
@@ -35,6 +68,8 @@ public class DuzzyTest {
         duzzySchemaFile,
         null,
         1L,
+        null,
+        null,
         null,
         null,
         null
@@ -61,6 +96,8 @@ public class DuzzyTest {
         null,
         1L,
         42L,
+        null,
+        null,
         null,
         null
     ).generate();
@@ -95,6 +132,8 @@ public class DuzzyTest {
         duzzySchemaFile,
         configFile,
         1L,
+        null,
+        null,
         null,
         null,
         null

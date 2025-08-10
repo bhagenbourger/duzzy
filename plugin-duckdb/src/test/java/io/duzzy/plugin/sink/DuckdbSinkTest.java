@@ -86,7 +86,7 @@ public class DuckdbSinkTest {
     final File schema = getFromResources(getClass(), "schema/duzzy-schema.yaml");
     final File config = getFromResources(getClass(), "config/duzzy-config-duckdb.yaml");
 
-    new Duzzy(schema, config, 1234L, 50L, 5, null).generate();
+    new Duzzy(schema, config, 1234L, 10L, null, null, 5, null).generate();
 
     try (
         final Connection connection = DriverManager.getConnection(URL);

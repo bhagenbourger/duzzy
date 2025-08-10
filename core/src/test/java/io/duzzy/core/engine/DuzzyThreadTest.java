@@ -1,7 +1,8 @@
-package io.duzzy.core;
+package io.duzzy.core.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.duzzy.core.DuzzyContext;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.DuzzySchema;
@@ -43,7 +44,10 @@ public class DuzzyThreadTest {
         Optional.empty(),
         List.of(booleanField, doubleField)
     );
-    final DuzzyThread duzzyThread = new DuzzyThread(3L, 6L, new DuzzyContext(duzzySchema));
+    final DuzzyThread duzzyThread = new DuzzyThread(
+        0,
+        new DuzzyContext(duzzySchema).withRows(3L)
+    );
     duzzyThread.call();
 
     assertThat(byteArrayOutputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
