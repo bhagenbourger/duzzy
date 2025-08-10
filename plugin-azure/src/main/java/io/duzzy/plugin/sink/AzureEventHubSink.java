@@ -10,6 +10,8 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.DuzzyRowKey;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.EventSink;
 import io.duzzy.core.sink.Sink;
@@ -17,7 +19,6 @@ import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +74,7 @@ import org.slf4j.LoggerFactory;
             identifier: "io.duzzy.plugin.serializer.JsonSerializer"
         """
 )
-public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
+public class AzureEventHubSink extends EventSink {
 
   private static final Logger logger = LoggerFactory.getLogger(AzureEventHubSink.class);
 
@@ -81,6 +82,7 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
   private final String fullyQualifiedNamespace;
   private final AzureAuthType azureAuthType;
   private final Boolean failOnError;
+  private EventHubProducerClient producer;
 
   @JsonCreator
   public AzureEventHubSink(
@@ -107,26 +109,20 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
   }
 
   @Override
-  protected EventHubProducerClient buildProducer() {
-    final EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder();
-    if (azureAuthType == DEFAULT_AZURE_CREDENTIALS) {
-      eventHubClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
-    }
-    if (eventHubName != null && !eventHubName.isEmpty()) {
-      eventHubClientBuilder.eventHubName(eventHubName);
-    }
-    if (fullyQualifiedNamespace != null && !fullyQualifiedNamespace.isEmpty()) {
-      eventHubClientBuilder.fullyQualifiedNamespace(fullyQualifiedNamespace);
-    }
-    return eventHubClientBuilder.buildProducerClient();
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    super.init(duzzySchema);
+    this.producer = buildProducer();
   }
 
   @Override
-  protected void sendEvent() throws IOException {
-    final EventDataBatch batch = getProducer().createBatch();
-    final EventData eventData = new EventData(getOutputStream().toString(StandardCharsets.UTF_8));
+  protected void sendEvent(DuzzyRowKey eventKey) throws IOException {
+    final EventDataBatch batch = producer.createBatch();
+    final EventData eventData = new EventData(getOutputStream().toByteArray());
+    if (eventKey.isPresent()) {
+      eventData.setMessageId(eventKey.asString());
+    }
     if (batch.tryAdd(eventData)) {
-      getProducer().send(batch);
+      producer.send(batch);
     } else {
       final String message = "Failed to add event to batch: " + eventData.getBodyAsString();
       logger.warn(message);
@@ -134,6 +130,12 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
         throw new IOException(message);
       }
     }
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    producer.close();
   }
 
   @Override
@@ -145,5 +147,19 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
         fullyQualifiedNamespace,
         failOnError
     );
+  }
+
+  private EventHubProducerClient buildProducer() {
+    final EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder();
+    if (azureAuthType == DEFAULT_AZURE_CREDENTIALS) {
+      eventHubClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+    }
+    if (eventHubName != null && !eventHubName.isEmpty()) {
+      eventHubClientBuilder.eventHubName(eventHubName);
+    }
+    if (fullyQualifiedNamespace != null && !fullyQualifiedNamespace.isEmpty()) {
+      eventHubClientBuilder.fullyQualifiedNamespace(fullyQualifiedNamespace);
+    }
+    return eventHubClientBuilder.buildProducerClient();
   }
 }

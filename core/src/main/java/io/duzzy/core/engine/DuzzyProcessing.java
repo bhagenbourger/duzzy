@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import io.duzzy.core.DuzzyCell;
 import io.duzzy.core.DuzzyLimit;
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.DuzzyRowKey;
 import io.duzzy.core.field.FieldContext;
 import io.duzzy.core.provider.ProviderUtil;
 import io.duzzy.core.schema.DuzzySchema;
@@ -58,7 +59,7 @@ public class DuzzyProcessing {
     );
     sink.write(
         new DuzzyRow(
-            duzzySchema.rowKey().map(f -> f.value(fieldContext)),
+            new DuzzyRowKey(duzzySchema.rowKey().map(f -> f.value(fieldContext))),
             duzzySchema
                 .fields()
                 .stream()

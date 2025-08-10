@@ -39,7 +39,7 @@ public class JsonSerializer extends Serializer<SequenceWriter> {
 
   @Override
   protected void serialize(DuzzyRow row, SequenceWriter writer) throws IOException {
-    writer.write(row.toMap());
+    writer.write(row.valuesAsMap());
   }
 
   @Override
