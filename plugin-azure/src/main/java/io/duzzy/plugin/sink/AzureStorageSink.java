@@ -1,9 +1,9 @@
 package io.duzzy.plugin.sink;
 
 import io.duzzy.core.serializer.Serializer;
-import io.duzzy.core.sink.Sink;
+import io.duzzy.core.sink.FileSink;
 
-public abstract class AzureStorageSink extends Sink {
+public abstract class AzureStorageSink extends FileSink {
 
   private static final String AZURE_STORAGE_CONNECTION_STRING = "AZURE_STORAGE_CONNECTION_STRING";
 
@@ -23,9 +23,10 @@ public abstract class AzureStorageSink extends Sink {
       String serviceVersion,
       Boolean createContainerIfNotExists,
       String container,
-      String blobName
+      String blobName,
+      CompressionAlgorithm compressionAlgorithm
   ) {
-    super(serializer);
+    super(serializer, compressionAlgorithm);
     this.azureAuthType = azureAuthType;
     this.accountName = accountName;
     this.endpoint = endpoint;

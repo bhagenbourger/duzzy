@@ -5,11 +5,13 @@ import static io.duzzy.tests.Data.getDataOne;
 import static io.duzzy.tests.Data.getDataTwo;
 import static io.duzzy.tests.Helper.deleteDirectory;
 import static io.duzzy.tests.Helper.getFromResources;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.duzzy.core.Duzzy;
 import io.duzzy.core.schema.DuzzySchema;
+import io.duzzy.core.sink.FileSink;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.plugin.serializer.XmlSerializer;
@@ -23,8 +25,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.apache.commons.compress.compressors.CompressorInputStream;
+import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 public class LocalFileSinkTest {
 
@@ -60,7 +66,8 @@ public class LocalFileSinkTest {
     final LocalFileSink localFileSink = new LocalFileSink(
         new JsonSerializer(),
         filename,
-        true
+        true,
+        null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
@@ -83,7 +90,8 @@ public class LocalFileSinkTest {
     final LocalFileSink localFileSink = new LocalFileSink(
         new XmlSerializer("rows", "row"),
         filename,
-        true
+        true,
+        null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
@@ -93,6 +101,38 @@ public class LocalFileSinkTest {
 
     assertThat(Files.readString(Path.of(filename))).isEqualTo(expected);
     assertThat(localFileSink.getSerializer().size()).isEqualTo(expected.length());
+  }
+
+  @ParameterizedTest
+  @EnumSource(
+      value = FileSink.CompressionAlgorithm.class,
+      mode = EnumSource.Mode.EXCLUDE,
+      names = {"NONE"}
+  )
+  void writeCompressedJson(FileSink.CompressionAlgorithm compressionAlgorithm) throws Exception {
+    final String filename = "build/test.json" + "." + compressionAlgorithm.getName();
+    final String expected =
+        "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":2,\"c2\":\"two\"}";
+
+    final LocalFileSink localFileSink = new LocalFileSink(
+        new JsonSerializer(),
+        filename,
+        true,
+        compressionAlgorithm
+    );
+    localFileSink.init(new DuzzySchema(Optional.empty(), null));
+    localFileSink.write(getDataOne());
+    localFileSink.write(getDataTwo());
+    localFileSink.write(getDataTwo());
+    localFileSink.close();
+
+    try (final CompressorInputStream compressorInputStream =
+             new CompressorStreamFactory().createCompressorInputStream(
+                 compressionAlgorithm.getName(),
+                 Files.newInputStream(Path.of(filename))
+             )) {
+      assertThat(new String(compressorInputStream.readAllBytes(), UTF_8)).isEqualTo(expected);
+    }
   }
 
   @Test

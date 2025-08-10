@@ -44,7 +44,7 @@ public abstract class JdbcSink extends Sink {
   }
 
   @Override
-  public OutputStream outputStreamSupplier() {
+  protected OutputStream outputStreamSupplier() {
     return new ByteArrayOutputStream();
   }
 

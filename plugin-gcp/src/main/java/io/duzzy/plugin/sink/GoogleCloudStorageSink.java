@@ -1,7 +1,5 @@
 package io.duzzy.plugin.sink;
 
-import static io.duzzy.core.sink.FileSink.addFilePart;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,18 +10,16 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import io.duzzy.core.DuzzyRow;
-import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
+import io.duzzy.core.sink.FileSink;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 
 @Documentation(
     identifier = "io.duzzy.plugin.sink.GoogleCloudStorageSink",
@@ -55,6 +51,14 @@ import java.nio.ByteBuffer;
             name = "object_name",
             aliases = {"objectName", "object-name"},
             description = "The GCS object name"
+        ),
+        @Parameter(
+            name = "compression_algorithm",
+            aliases = {"compressionAlgorithm", "compression-algorithm"},
+            description = "The compression algorithm to use for the file, "
+                + "available options are: NONE, BZIP2, GZIP, ZSTD. "
+                + "If not specified, no compression will be applied.",
+            defaultValue = "NONE"
         )
     },
     example = """
@@ -64,12 +68,13 @@ import java.nio.ByteBuffer;
           project_id: "my-project-id"
           credentials_file: "/path/to/credentials.json"
           bucket_name: "my-bucket"
-          object_name: "data/output.json"
+          object_name: "data/output.json.gz"
+          compression_algorithm: "GZIP"
           serializer:
             identifier: "io.duzzy.plugin.serializer.JsonSerializer"
         """
 )
-public class GoogleCloudStorageSink extends Sink {
+public class GoogleCloudStorageSink extends FileSink {
 
   private WriteChannel writer;
   private Storage storage;
@@ -93,87 +98,47 @@ public class GoogleCloudStorageSink extends Sink {
       String bucketName,
       @JsonProperty("object_name")
       @JsonAlias({"objectName", "object-name"})
-      String objectName
-  ) {
-    super(serializer);
-    this.bucketName = bucketName;
-    this.objectName = objectName;
-    this.projectId = projectId;
-    this.credentialsFile = credentialsFile;
-  }
-
-  GoogleCloudStorageSink(
-      Serializer<?> serializer,
-      String bucketName,
       String objectName,
-      String projectId,
-      String credentialsFile,
-      Storage storage
+      @JsonProperty("compression_algorithm")
+      @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
+      CompressionAlgorithm compressionAlgorithm
   ) {
-    super(serializer);
+    super(serializer, compressionAlgorithm);
     this.bucketName = bucketName;
     this.objectName = objectName;
     this.projectId = projectId;
     this.credentialsFile = credentialsFile;
-    this.storage = storage;
-  }
-
-  @Override
-  public OutputStream outputStreamSupplier() {
-    return new ByteArrayOutputStream();
   }
 
   @Override
   public Sink fork(Long threadId) throws Exception {
     return new GoogleCloudStorageSink(
         getSerializer().fork(threadId),
-        bucketName,
-        addFilePart(objectName, threadId),
         projectId,
         credentialsFile,
-        storage
+        bucketName,
+        addFilePart(objectName, threadId),
+        getCompressionAlgorithm()
     );
   }
 
   @Override
-  protected ByteArrayOutputStream getOutputStream() throws IOException {
-    return (ByteArrayOutputStream) super.getOutputStream();
-  }
-
-  @Override
-  public void init(DuzzySchema duzzySchema) throws Exception {
-    if (storage == null) {
-      storage = buildStorage(projectId, credentialsFile);
-    }
-    writer = buildWriteChannel(bucketName, objectName);
-    super.init(duzzySchema);
-  }
-
-  @Override
-  public void write(DuzzyRow row) throws Exception {
-    super.write(row);
-    writer.write(ByteBuffer.wrap(getOutputStream().toByteArray()));
-    getOutputStream().reset();
+  protected OutputStream outputStreamSupplier() throws IOException {
+    storage = buildStorage();
+    final BlobId blobId = BlobId.of(bucketName, objectName);
+    final BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+    writer = storage.writer(blobInfo, Storage.BlobWriteOption.doesNotExist());
+    return Channels.newOutputStream(writer);
   }
 
   @Override
   public void close() throws Exception {
     getSerializer().close();
-    if (getOutputStream().size() > 0) {
-      writer.write(ByteBuffer.wrap(getOutputStream().toByteArray()));
-    }
-    getOutputStream().close();
     writer.close();
     storage.close();
   }
 
-  private WriteChannel buildWriteChannel(String bucketName, String objectName) {
-    final BlobId blobId = BlobId.of(bucketName, objectName);
-    final BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-    return storage.writer(blobInfo, Storage.BlobWriteOption.doesNotExist());
-  }
-
-  private static Storage buildStorage(String projectId, String credentialsFile) throws IOException {
+  Storage buildStorage() throws IOException {
     final StorageOptions options = StorageOptions.getDefaultInstance();
     final StorageOptions.Builder builder = StorageOptions.newBuilder();
     final Credentials credentials = credentialsFile == null ? options.getCredentials() :
