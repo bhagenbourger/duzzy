@@ -177,8 +177,8 @@ public class ArrowSerializer extends AvroSerializer<ArrowStreamWriter> {
   }
 
   @Override
-  public long size(OutputStream output, ArrowStreamWriter writer) {
-    return writer == null ? 0 : writer.bytesWritten();
+  public long size() {
+    return getWriter() == null ? 0 : getWriter().bytesWritten();
   }
 
   @Override

@@ -25,7 +25,6 @@ import com.google.pubsub.v1.PushConfig;
 import com.google.pubsub.v1.SubscriptionName;
 import com.google.pubsub.v1.TopicName;
 import io.duzzy.core.sink.Sink;
-import io.duzzy.plugin.serializer.CsvSerializer;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import io.duzzy.tests.Data;
 import io.grpc.ManagedChannel;
@@ -59,7 +58,6 @@ public class GooglePubsubSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(GooglePubsubSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(CsvSerializer.class);
   }
 
   @Test

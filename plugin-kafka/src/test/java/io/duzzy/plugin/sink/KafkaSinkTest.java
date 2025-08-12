@@ -61,7 +61,7 @@ public class KafkaSinkTest {
 
       assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected1);
       assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected2);
-      assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
+      assertThat(kafkaSink.size()).isEqualTo(size);
     }
   }
 
@@ -92,7 +92,7 @@ public class KafkaSinkTest {
       final int size = expected1.length() + expected2.length();
       assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected1);
       assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected2);
-      assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
+      assertThat(kafkaSink.size()).isEqualTo(size);
     }
   }
 

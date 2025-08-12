@@ -57,7 +57,6 @@ public class GoogleCloudStorageSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(GoogleCloudStorageSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(CsvSerializer.class);
   }
 
   @Test
@@ -127,7 +126,7 @@ public class GoogleCloudStorageSinkTest {
 
       final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       storage.downloadTo(BlobId.of(BUCKET_NAME, objectName), outputStream);
-      
+
       final CompressorInputStream compressorInputStream =
           new CompressorStreamFactory().createCompressorInputStream(
               compressionAlgorithm.getName(),

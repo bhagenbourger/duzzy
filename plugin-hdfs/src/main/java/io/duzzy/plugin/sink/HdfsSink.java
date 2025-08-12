@@ -63,26 +63,30 @@ public class HdfsSink extends FileSink {
 
   private final String coreSitePath;
   private final String hdfsSitePath;
-  private final String filename;
 
   @JsonCreator
   public HdfsSink(
-      @JsonProperty("serializer") Serializer<?> serializer,
+      @JsonProperty("serializer")
+      Serializer<?> serializer,
       @JsonProperty("core_site_file")
       @JsonAlias({"coreSitePath", "core-site-file"})
       String coreSitePath,
       @JsonProperty("hdfs_site_path")
       @JsonAlias({"hdfsSiteFile", "hdfs-site-file"})
       String hdfsSitePath,
-      @JsonProperty("filename") String filename,
+      @JsonProperty("filename")
+      String filename,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      FileSink.CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size")
+      Long size,
+      @JsonProperty("rows")
+      Long rows
   ) {
-    super(serializer, compressionAlgorithm);
+    super(serializer, filename, compressionAlgorithm, size, rows);
     this.coreSitePath = coreSitePath;
     this.hdfsSitePath = hdfsSitePath;
-    this.filename = filename;
   }
 
   @Override
@@ -94,7 +98,7 @@ public class HdfsSink extends FileSink {
     if (hdfsSitePath != null) {
       configuration.addResource(new Path(hdfsSitePath));
     }
-    return FileSystem.get(configuration).create(new Path(filename));
+    return FileSystem.get(configuration).create(new Path(getName()));
   }
 
   @Override
@@ -103,8 +107,10 @@ public class HdfsSink extends FileSink {
         getSerializer().fork(threadId),
         coreSitePath,
         hdfsSitePath,
-        addFilePart(filename, threadId),
-        getCompressionAlgorithm()
+        addFilePart(getName(), threadId),
+        getCompressionAlgorithm(),
+        getSize(),
+        getRows()
     );
   }
 }

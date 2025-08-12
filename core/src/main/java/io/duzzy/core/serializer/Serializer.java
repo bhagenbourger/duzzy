@@ -16,11 +16,7 @@ public abstract class Serializer<W extends AutoCloseable>
   private DataOutputStream outputStream;
 
   public long size() {
-    return size(outputStream, writer);
-  }
-
-  protected long size(OutputStream outputStream, W writer) {
-    return outputStream instanceof DataOutputStream ? ((DataOutputStream) outputStream).size() : 0;
+    return outputStream.size();
   }
 
   public abstract Boolean hasSchema();

@@ -109,7 +109,11 @@ public class AzureBlobStorageSink extends AzureStorageSink {
       String blobName,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size")
+      Long size,
+      @JsonProperty("rows")
+      Long rows
   ) {
     super(
         serializer,
@@ -120,7 +124,9 @@ public class AzureBlobStorageSink extends AzureStorageSink {
         createContainerIfNotExists,
         container,
         blobName,
-        compressionAlgorithm
+        compressionAlgorithm,
+        size,
+        rows
     );
   }
 
@@ -145,7 +151,7 @@ public class AzureBlobStorageSink extends AzureStorageSink {
 
     return blobServiceClient
         .getBlobContainerClient(getContainer())
-        .getBlobClient(getBlobName())
+        .getBlobClient(getName())
         .getBlockBlobClient()
         .getBlobOutputStream();
   }
@@ -159,8 +165,10 @@ public class AzureBlobStorageSink extends AzureStorageSink {
         getServiceVersion(),
         getCreateContainerIfNotExists(),
         getContainer(),
-        addFilePart(getBlobName(), threadId),
-        getCompressionAlgorithm()
+        addFilePart(getName(), threadId),
+        getCompressionAlgorithm(),
+        getSize(),
+        getRows()
     );
   }
 }

@@ -31,11 +31,24 @@ public abstract class Sink implements Plugin, Forkable<Sink> {
   public void close() throws Exception {
     serializer.close();
     getOutputStream().close();
+    
+  }
+
+  public long size() {
+    return serializer.size();
+  }
+
+  public boolean hasSchema() {
+    return serializer.hasSchema();
+  }
+  
+  protected void resetOutputStream() throws IOException {
+    outputStream = outputStreamWrapper(outputStreamSupplier());
   }
 
   protected OutputStream getOutputStream() throws IOException {
     if (outputStream == null) {
-      outputStream = outputStreamWrapper(outputStreamSupplier());
+      resetOutputStream();
     }
     return outputStream;
   }
@@ -44,7 +57,7 @@ public abstract class Sink implements Plugin, Forkable<Sink> {
     return outputStream;
   }
 
-  public Serializer<?> getSerializer() {
+  protected Serializer<?> getSerializer() {
     return serializer;
   }
 }

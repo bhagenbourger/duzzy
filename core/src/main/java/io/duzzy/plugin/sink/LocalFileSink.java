@@ -56,9 +56,9 @@ import java.nio.file.Path;
 )
 public class LocalFileSink extends FileSink {
 
-  private final String filename;
   private final Boolean createIfNotExists;
-
+  private final Long size;
+  private final Long rows;
 
   @JsonCreator
   public LocalFileSink(
@@ -71,31 +71,38 @@ public class LocalFileSink extends FileSink {
       Boolean createIfNotExists,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size")
+      Long size,
+      @JsonProperty("rows")
+      Long rows
   ) throws IOException {
-    super(serializer, compressionAlgorithm);
-    this.filename = filename;
+    super(serializer, filename, compressionAlgorithm, size, rows);
     this.createIfNotExists = createIfNotExists;
+    this.size = size;
+    this.rows = rows;
   }
 
   @Override
   protected OutputStream outputStreamSupplier() throws IOException {
     if (createIfNotExists != null && createIfNotExists) {
-      final Path folder = Path.of(filename).getParent();
+      final Path folder = Path.of(getName()).getParent();
       if (folder != null && !Files.exists(folder)) {
         Files.createDirectories(folder);
       }
     }
-    return new FileOutputStream(filename);
+    return new FileOutputStream(getName());
   }
 
   @Override
   public LocalFileSink fork(Long threadId) throws Exception {
     return new LocalFileSink(
         getSerializer().fork(threadId),
-        addFilePart(filename, threadId),
+        addFilePart(getName(), threadId),
         createIfNotExists,
-        getCompressionAlgorithm()
+        getCompressionAlgorithm(),
+        size,
+        rows
     );
   }
 }

@@ -79,7 +79,6 @@ public class GoogleCloudStorageSink extends FileSink {
   private WriteChannel writer;
   private Storage storage;
   private final String bucketName;
-  private final String objectName;
   private final String projectId;
   private final String credentialsFile;
 
@@ -101,11 +100,14 @@ public class GoogleCloudStorageSink extends FileSink {
       String objectName,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size")
+      Long size,
+      @JsonProperty("rows")
+      Long rows
   ) {
-    super(serializer, compressionAlgorithm);
+    super(serializer, objectName, compressionAlgorithm, size, rows);
     this.bucketName = bucketName;
-    this.objectName = objectName;
     this.projectId = projectId;
     this.credentialsFile = credentialsFile;
   }
@@ -117,15 +119,17 @@ public class GoogleCloudStorageSink extends FileSink {
         projectId,
         credentialsFile,
         bucketName,
-        addFilePart(objectName, threadId),
-        getCompressionAlgorithm()
+        addFilePart(getName(), threadId),
+        getCompressionAlgorithm(),
+        getSize(),
+        getRows()
     );
   }
 
   @Override
   protected OutputStream outputStreamSupplier() throws IOException {
     storage = buildStorage();
-    final BlobId blobId = BlobId.of(bucketName, objectName);
+    final BlobId blobId = BlobId.of(bucketName, getName());
     final BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
     writer = storage.writer(blobInfo, Storage.BlobWriteOption.doesNotExist());
     return Channels.newOutputStream(writer);

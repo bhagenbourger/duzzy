@@ -67,6 +67,8 @@ public class LocalFileSinkTest {
         new JsonSerializer(),
         filename,
         true,
+        null,
+        null,
         null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
@@ -91,6 +93,8 @@ public class LocalFileSinkTest {
         new XmlSerializer("rows", "row"),
         filename,
         true,
+        null,
+        null,
         null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
@@ -100,7 +104,7 @@ public class LocalFileSinkTest {
     localFileSink.close();
 
     assertThat(Files.readString(Path.of(filename))).isEqualTo(expected);
-    assertThat(localFileSink.getSerializer().size()).isEqualTo(expected.length());
+    assertThat(localFileSink.size()).isEqualTo(expected.length());
   }
 
   @ParameterizedTest
@@ -118,7 +122,9 @@ public class LocalFileSinkTest {
         new JsonSerializer(),
         filename,
         true,
-        compressionAlgorithm
+        compressionAlgorithm,
+        null,
+        null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
@@ -163,4 +169,33 @@ public class LocalFileSinkTest {
     assertThat(Files.readString(files.get(3).toPath())).isEqualTo(expected3);
     assertThat(Files.readString(files.get(4).toPath())).isEqualTo(expected4);
   }
+
+//  @Test
+//  void writeWith100bPerFile() throws Exception {
+//    final File schema = getFromResources(getClass(), "schema/duzzy-schema-three-columns.yaml");
+//    final File config = getFromResources(getClass(), "config/duzzy-config-local-file-100B.yaml");
+//    final String expected0 =
+//        Files.readString(getFromResources(getClass(), "result/expected-multi-0.xml").toPath());
+//    final String expected1 =
+//        Files.readString(getFromResources(getClass(), "result/expected-multi-1.xml").toPath());
+//    final String expected2 =
+//        Files.readString(getFromResources(getClass(), "result/expected-multi-2.xml").toPath());
+//    final String expected3 =
+//        Files.readString(getFromResources(getClass(), "result/expected-multi-3.xml").toPath());
+//    final String expected4 =
+//        Files.readString(getFromResources(getClass(), "result/expected-multi-4.xml").toPath());
+//
+//    new Duzzy(schema, config, 1234L, 10L, null, null, 1, null).generate();
+//
+//    final List<File> files = Arrays
+//        .stream(Objects.requireNonNull(new File("build/size").listFiles()))
+//        .sorted()
+//        .toList();
+//    assertThat(files).hasSize(5);
+//    assertThat(Files.readString(files.get(0).toPath())).isEqualTo(expected0);
+//    assertThat(Files.readString(files.get(1).toPath())).isEqualTo(expected1);
+//    assertThat(Files.readString(files.get(2).toPath())).isEqualTo(expected2);
+//    assertThat(Files.readString(files.get(3).toPath())).isEqualTo(expected3);
+//    assertThat(Files.readString(files.get(4).toPath())).isEqualTo(expected4);
+//  }
 }

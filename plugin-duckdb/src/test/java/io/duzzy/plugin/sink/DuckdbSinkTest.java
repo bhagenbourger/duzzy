@@ -52,7 +52,6 @@ public class DuckdbSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(DuckdbSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(SqlSerializer.class);
   }
 
   @Test
