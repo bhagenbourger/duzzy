@@ -26,7 +26,7 @@ public class JsonSerializerTest {
   }
 
   @Test
-  void serializeJson() throws IOException {
+  void serializeJson() throws Exception {
     final String expected = "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}";
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -36,6 +36,5 @@ public class JsonSerializerTest {
     jsonSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
-    assertThat(jsonSerializer.size()).isEqualTo(expected.length());
   }
 }

@@ -77,7 +77,7 @@ public class AvroWithSchemaSerializer extends AvroSerializer<DataFileWriter<Gene
   }
 
   @Override
-  public AvroWithSchemaSerializer fork(Long threadId) {
+  public AvroWithSchemaSerializer fork(long id) {
     return new AvroWithSchemaSerializer(name, namespace, schemaFile);
   }
 }

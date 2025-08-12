@@ -80,7 +80,7 @@ public class KafkaSinkTest {
       final ConsumerRecord<byte[], String> second = iterator.next();
       assertThat(new String(second.key(), UTF_8)).isEqualTo("key2");
       assertThat(second.value()).isEqualTo(expected2);
-      assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
+      assertThat(kafkaSink.size()).isEqualTo(size);
     }
   }
 
@@ -122,7 +122,7 @@ public class KafkaSinkTest {
       final ConsumerRecord<String, byte[]> second = iterator.next();
       assertThat(second.key()).isEqualTo("key2");
       assertThat(new String(second.value(), UTF_8)).isEqualTo(expected2);
-      assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
+      assertThat(kafkaSink.size()).isEqualTo(size);
     }
   }
 

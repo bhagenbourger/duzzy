@@ -11,14 +11,15 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRowKey;
-import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.EventSink;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +83,7 @@ public class AzureEventHubSink extends EventSink {
   private final String fullyQualifiedNamespace;
   private final AzureAuthType azureAuthType;
   private final Boolean failOnError;
-  private EventHubProducerClient producer;
+  private final EventHubProducerClient producer;
 
   @JsonCreator
   public AzureEventHubSink(
@@ -106,18 +107,16 @@ public class AzureEventHubSink extends EventSink {
     this.fullyQualifiedNamespace = fullyQualifiedNamespace;
     this.azureAuthType = azureAuthType == null ? DEFAULT_AZURE_CREDENTIALS : azureAuthType;
     this.failOnError = failOnError == null || failOnError;
-  }
-
-  @Override
-  public void init(DuzzySchema duzzySchema) throws Exception {
-    super.init(duzzySchema);
     this.producer = buildProducer();
   }
 
   @Override
-  protected void sendEvent(DuzzyRowKey eventKey) throws IOException {
+  protected void sendEvent(
+      DuzzyRowKey eventKey,
+      ByteArrayOutputStream outputStream
+  ) throws IOException {
     final EventDataBatch batch = producer.createBatch();
-    final EventData eventData = new EventData(getOutputStream().toByteArray());
+    final EventData eventData = new EventData(outputStream.toString(StandardCharsets.UTF_8));
     if (eventKey.isPresent()) {
       eventData.setMessageId(eventKey.asString());
     }
@@ -139,9 +138,9 @@ public class AzureEventHubSink extends EventSink {
   }
 
   @Override
-  public Sink fork(Long threadId) throws Exception {
+  public Sink fork(long id) throws Exception {
     return new AzureEventHubSink(
-        getSerializer().fork(threadId),
+        getSerializer().fork(id),
         azureAuthType,
         eventHubName,
         fullyQualifiedNamespace,

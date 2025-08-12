@@ -4,5 +4,7 @@ sink:
   project_id: "duzzy-project"
   bucket_name: "duzzy-test"
   object_name: "example.json"
+  rows_per_file: 5
+  size_of_file: 300
   serializer:
     identifier: "io.duzzy.plugin.serializer.JsonSerializer"

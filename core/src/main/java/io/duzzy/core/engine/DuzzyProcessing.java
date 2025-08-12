@@ -39,20 +39,20 @@ public class DuzzyProcessing {
     long currentRow = 0L;
     long currentDuration = 0L;
     final long startTime = Instant.now().toEpochMilli();
-    while (!duzzyLimit.isReached(currentRow, sink.getSerializer().size(), currentDuration)) {
+    while (!duzzyLimit.isReached(currentRow, sink.size(), currentDuration)) {
       processRow(start + (step * currentRow));
       currentRow++;
       currentDuration = System.currentTimeMillis() - startTime;
     }
     sink.close();
-    return new DuzzyEngineResult(currentRow, sink.getSerializer().size(), currentDuration);
+    return new DuzzyEngineResult(currentRow, sink.size(), currentDuration);
   }
 
   private void processRow(Long index) throws Exception {
     final Long rowId = computeRowId(seed, index);
     final FieldContext fieldContext = new FieldContext(
         ProviderUtil.RANDOM_PROVIDERS,
-        sink.getSerializer().hasSchema(),
+        sink.hasSchema(),
         new Random(rowId),
         rowId,
         index

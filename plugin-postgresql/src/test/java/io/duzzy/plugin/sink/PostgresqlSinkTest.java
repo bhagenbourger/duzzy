@@ -64,7 +64,6 @@ public class PostgresqlSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(PostgresqlSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(SqlSerializer.class);
   }
 
   @Test

@@ -1,7 +1,6 @@
 package io.duzzy.core.engine;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import io.duzzy.core.DuzzyCell;
 import io.duzzy.core.DuzzyLimit;
@@ -12,7 +11,6 @@ import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.plugin.provider.constant.StringConstantProvider;
-import io.duzzy.plugin.serializer.JsonSerializer;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -28,7 +26,6 @@ public class DuzzyProcessingTest {
 
   @Test
   void shouldRunProcessingWithEmptyRowKey() throws Exception {
-    when((JsonSerializer) sink.getSerializer()).thenReturn(new JsonSerializer());
     final DuzzyRow expected = new DuzzyRow(
         new DuzzyRowKey(Optional.empty()),
         List.of(new DuzzyCell("testField", Type.STRING, "value"))
@@ -61,7 +58,6 @@ public class DuzzyProcessingTest {
 
   @Test
   void shouldRunProcessing() throws Exception {
-    when((JsonSerializer) sink.getSerializer()).thenReturn(new JsonSerializer());
 
     final Field rowKey = new Field(
         "key",

@@ -71,9 +71,9 @@ public class PostgresqlSink extends JdbcSink {
   }
 
   @Override
-  public PostgresqlSink fork(Long threadId) throws Exception {
+  public PostgresqlSink fork(long id) throws Exception {
     return new PostgresqlSink(
-        (SqlSerializer) getSerializer().fork(threadId),
+        (SqlSerializer) getSerializer().fork(id),
         url,
         user,
         password,

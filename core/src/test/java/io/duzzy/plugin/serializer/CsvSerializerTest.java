@@ -26,7 +26,7 @@ public class CsvSerializerTest {
   }
 
   @Test
-  void serializeCsvWithDefaultValues() throws IOException {
+  void serializeCsvWithDefaultValues() throws Exception {
     final String expected = "1,one\n2,two\n";
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -36,11 +36,10 @@ public class CsvSerializerTest {
     csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
-    assertThat(csvSerializer.size()).isEqualTo(expected.length());
   }
 
   @Test
-  void serializeCsvWithCustomValues() throws IOException {
+  void serializeCsvWithCustomValues() throws Exception {
     final String expected = "1;\"one\"|2;\"two\"|";
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -51,6 +50,5 @@ public class CsvSerializerTest {
     csvSerializer.serialize(getDataTwo());
 
     assertThat(outputStream.toString(StandardCharsets.UTF_8)).isEqualTo(expected);
-    assertThat(csvSerializer.size()).isEqualTo(expected.length());
   }
 }

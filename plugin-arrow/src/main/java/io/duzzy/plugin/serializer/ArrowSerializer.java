@@ -172,22 +172,19 @@ public class ArrowSerializer extends AvroSerializer<ArrowStreamWriter> {
   }
 
   @Override
-  public ArrowSerializer fork(Long threadId) {
+  public ArrowSerializer fork(long id) {
     return new ArrowSerializer(name, namespace, schemaFile, batchSize);
   }
 
   @Override
-  public long size(OutputStream output, ArrowStreamWriter writer) {
-    return writer == null ? 0 : writer.bytesWritten();
-  }
-
-  @Override
   public void close() throws Exception {
-    writeBatch();
-    getWriter().end();
-    schemaRoot.close();
-    allocator.close();
-    super.close();
+    if (getWriter() != null) {
+      writeBatch();
+      getWriter().end();
+      schemaRoot.close();
+      allocator.close();
+      super.close();
+    }
   }
 
   private void writeBatch() throws IOException {

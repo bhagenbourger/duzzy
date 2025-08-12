@@ -63,7 +63,6 @@ public class MysqlSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(MysqlSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(SqlSerializer.class);
   }
 
   @Test
