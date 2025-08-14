@@ -69,6 +69,8 @@ public class GoogleCloudStorageSinkTest {
           null,
           BUCKET_NAME,
           objectName,
+          null,
+          null,
           null
       ));
 
@@ -107,7 +109,9 @@ public class GoogleCloudStorageSinkTest {
           null,
           BUCKET_NAME,
           objectName,
-          compressionAlgorithm
+          compressionAlgorithm,
+          null,
+          null
       ));
 
       doReturn(storage).when(sink).buildStorage();
@@ -146,6 +150,8 @@ public class GoogleCloudStorageSinkTest {
           null,
           BUCKET_NAME,
           objectName,
+          null,
+          null,
           null
       ));
 
@@ -161,6 +167,8 @@ public class GoogleCloudStorageSinkTest {
           null,
           BUCKET_NAME,
           objectName,
+          null,
+          null,
           null
       ));
 
@@ -182,6 +190,8 @@ public class GoogleCloudStorageSinkTest {
           null,
           BUCKET_NAME,
           objectName,
+          null,
+          null,
           null
       ));
 
@@ -241,6 +251,8 @@ public class GoogleCloudStorageSinkTest {
           null,
           BUCKET_NAME,
           objectName,
+          null,
+          null,
           null
       ));
 

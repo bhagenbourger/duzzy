@@ -58,6 +58,8 @@ public class AzureBlobStorageSinkTest {
         true,
         CONTAINER_NAME,
         path,
+        null,
+        null,
         null
     ));
 
@@ -68,7 +70,7 @@ public class AzureBlobStorageSinkTest {
     sink.write(Data.getDataTwo());
     sink.close();
 
-    final AzureBlobStorageSink fork = (AzureBlobStorageSink) spy(sink.fork(1L));
+    final AzureBlobStorageSink fork = (AzureBlobStorageSink) spy(sink.fork(1));
 
     doReturn(azurite.getConnectionString()).when(fork).getEndpoint();
 

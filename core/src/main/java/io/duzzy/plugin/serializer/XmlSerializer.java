@@ -96,7 +96,7 @@ public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
   }
 
   @Override
-  public XmlSerializer fork(Long threadId) {
+  public XmlSerializer fork(long id) {
     return new XmlSerializer(rootTag, rowTag);
   }
 }

@@ -48,7 +48,7 @@ public class JsonSerializer extends Serializer<SequenceWriter> {
   }
 
   @Override
-  public JsonSerializer fork(Long threadId) {
+  public JsonSerializer fork(long id) {
     return new JsonSerializer();
   }
 }

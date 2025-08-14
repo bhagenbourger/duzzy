@@ -71,9 +71,9 @@ public class MysqlSink extends JdbcSink {
   }
 
   @Override
-  public MysqlSink fork(Long threadId) throws Exception {
+  public MysqlSink fork(long id) throws Exception {
     return new MysqlSink(
-        (SqlSerializer) getSerializer().fork(threadId),
+        (SqlSerializer) getSerializer().fork(id),
         url,
         user,
         password,

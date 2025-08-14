@@ -173,7 +173,7 @@ public class JdbcSinkTest {
     }
 
     @Override
-    public Sink fork(Long threadId) {
+    public Sink fork(long id) {
       return new HsqldbSink((SqlSerializer) getSerializer(), url, user, password, failOnError);
     }
   }

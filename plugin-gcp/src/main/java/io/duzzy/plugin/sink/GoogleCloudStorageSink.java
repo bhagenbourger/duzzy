@@ -10,15 +10,16 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.FileSink;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.channels.Channels;
 
 @Documentation(
@@ -59,6 +60,18 @@ import java.nio.channels.Channels;
                 + "available options are: NONE, BZIP2, GZIP, ZSTD. "
                 + "If not specified, no compression will be applied.",
             defaultValue = "NONE"
+        ),
+        @Parameter(
+            name = "size_of_file",
+            aliases = {"sizeOfFile", "size-of-file"},
+            description = "The size of the file in bytes. "
+                + "If not specified, the file will not be limited by size."
+        ),
+        @Parameter(
+            name = "rows_per_file",
+            aliases = {"rowsPerFile", "rows-per-file"},
+            description = "The number of rows per file. "
+                + "If not specified, the file will not be limited by number of rows."
         )
     },
     example = """
@@ -81,6 +94,7 @@ public class GoogleCloudStorageSink extends FileSink {
   private final String bucketName;
   private final String projectId;
   private final String credentialsFile;
+  private DataOutputStream outputStream;
 
   @JsonCreator
   public GoogleCloudStorageSink(
@@ -101,45 +115,51 @@ public class GoogleCloudStorageSink extends FileSink {
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
       CompressionAlgorithm compressionAlgorithm,
-      @JsonProperty("size")
-      Long size,
-      @JsonProperty("rows")
-      Long rows
+      @JsonProperty("size_of_file")
+      @JsonAlias({"sizeOfFile", "size-of-file"})
+      Long sizeOfFile,
+      @JsonProperty("rows_per_file")
+      @JsonAlias({"rowsPerFile", "rows-per-file"})
+      Long rowsPerFile
   ) {
-    super(serializer, objectName, compressionAlgorithm, size, rows);
+    super(serializer, objectName, compressionAlgorithm, sizeOfFile, rowsPerFile);
     this.bucketName = bucketName;
     this.projectId = projectId;
     this.credentialsFile = credentialsFile;
   }
 
   @Override
-  public Sink fork(Long threadId) throws Exception {
-    return new GoogleCloudStorageSink(
-        getSerializer().fork(threadId),
-        projectId,
-        credentialsFile,
-        bucketName,
-        addFilePart(getName(), threadId),
-        getCompressionAlgorithm(),
-        getSize(),
-        getRows()
-    );
+  protected long outputStreamSize() {
+    return outputStream == null ? 0 : outputStream.size();
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() throws IOException {
-    storage = buildStorage();
-    final BlobId blobId = BlobId.of(bucketName, getName());
-    final BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-    writer = storage.writer(blobInfo, Storage.BlobWriteOption.doesNotExist());
-    return Channels.newOutputStream(writer);
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    this.outputStream = buildOutputStream();
+    getSerializer().init(outputStream, duzzySchema);
   }
 
   @Override
   public void close() throws Exception {
-    getSerializer().close();
+    getSerializer().close(); //TODO CHECK
+    // super.close();
+    // outputStream.close();
     writer.close();
     storage.close();
+  }
+
+  @Override
+  public Sink fork(long id) throws Exception {
+    return new GoogleCloudStorageSink(
+        getSerializer().fork(id),
+        projectId,
+        credentialsFile,
+        bucketName,
+        forkedName(id),
+        getCompressionAlgorithm(),
+        getSizeOfFile(),
+        getRowsPerFile()
+    );
   }
 
   Storage buildStorage() throws IOException {
@@ -154,5 +174,13 @@ public class GoogleCloudStorageSink extends FileSink {
         .setProjectId(projectId == null ? options.getProjectId() : projectId)
         .build()
         .getService();
+  }
+
+  private DataOutputStream buildOutputStream() throws IOException {
+    storage = buildStorage();
+    final BlobId blobId = BlobId.of(bucketName, incrementedName());
+    final BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+    writer = storage.writer(blobInfo, Storage.BlobWriteOption.doesNotExist());
+    return new DataOutputStream(outputStreamCompressor(Channels.newOutputStream(writer)));
   }
 }

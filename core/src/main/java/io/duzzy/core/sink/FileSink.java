@@ -27,29 +27,50 @@ public abstract class FileSink extends Sink {
 
   private final String name;
   private final CompressionAlgorithm compressionAlgorithm;
-  private final Long size;
-  private final Long rows;
+  private final Long sizeOfFile;
+  private final Long rowsPerFile;
 
-  private long currentSize = 0;
-  private long currentRows = 0;
+  private long rowCpt = 0;
+  private long fileCpt = 0;
+  private long totalSize = 0;
 
   public FileSink(
       Serializer<?> serializer,
       String name,
       CompressionAlgorithm compressionAlgorithm,
-      Long size,
-      Long rows
+      Long sizeOfFile,
+      Long rowsPerFile
   ) {
     super(serializer);
     this.name = name;
     this.compressionAlgorithm = compressionAlgorithm == null ? CompressionAlgorithm.NONE :
         compressionAlgorithm;
-    this.size = size;
-    this.rows = rows;
+    this.sizeOfFile = sizeOfFile;
+    this.rowsPerFile = rowsPerFile;
+  }
+
+  protected abstract long outputStreamSize();
+
+  @Override
+  public long size() {
+    return totalSize + outputStreamSize();
   }
 
   @Override
-  protected OutputStream outputStreamWrapper(OutputStream outputStream) throws IOException {
+  public void write(DuzzyRow row) throws Exception {
+    if ((getSizeOfFile() != null && outputStreamSize() >= getSizeOfFile()) || (
+        getRowsPerFile() != null && rowCpt >= getRowsPerFile())) {
+      rowCpt = 0;
+      fileCpt++;
+      totalSize += outputStreamSize();
+      close();
+      init(null);
+    }
+    super.write(row);
+    rowCpt++;
+  }
+
+  protected OutputStream outputStreamCompressor(OutputStream outputStream) throws IOException {
     if (compressionAlgorithm == CompressionAlgorithm.NONE) {
       return outputStream;
     }
@@ -57,43 +78,29 @@ public abstract class FileSink extends Sink {
         .createCompressorOutputStream(compressionAlgorithm.getName(), outputStream);
   }
 
-  @Override
-  public void write(DuzzyRow row) throws Exception {
-    super.write(row);
-    currentRows++;
-    if ((size != null && getSerializer().size() >= size) || (rows != null && currentRows >= rows)) {
-      currentRows = 0;
-      currentSize += getSerializer().size();
-      close();
-      resetOutputStream();
-      getSerializer().reset();
-    }
+  protected String forkedName(long id) {
+    return computeName(name, id);
   }
 
-  @Override
-  public long size() {
-    return super.size() + currentSize;
-  }
-
-  protected String getName() {
-    return name;
+  protected String incrementedName() {
+    return rowsPerFile == null && sizeOfFile == null ? name : computeName(name, fileCpt);
   }
 
   protected CompressionAlgorithm getCompressionAlgorithm() {
     return compressionAlgorithm;
   }
 
-  protected Long getSize() {
-    return size;
+  protected Long getSizeOfFile() {
+    return sizeOfFile;
   }
 
-  protected Long getRows() {
-    return rows;
+  protected Long getRowsPerFile() {
+    return rowsPerFile;
   }
 
-  public static String addFilePart(String filename, Long threadId) {
-    final int ext = filename.lastIndexOf(".");
-    return ext > 0 ? filename.substring(0, ext) + "_" + threadId + filename.substring(ext) :
-        filename + "_" + threadId;
+  static String computeName(String name, long id) {
+    final int ext = name.lastIndexOf(".");
+    return ext > 0 ? name.substring(0, ext) + "_" + id + name.substring(ext) :
+        name + "_" + id;
   }
 }

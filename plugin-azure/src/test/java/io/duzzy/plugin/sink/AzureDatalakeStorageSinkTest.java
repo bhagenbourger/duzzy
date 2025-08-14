@@ -59,6 +59,8 @@ public class AzureDatalakeStorageSinkTest {
         true,
         CONTAINER_NAME,
         path,
+        null,
+        null,
         null
     ));
 

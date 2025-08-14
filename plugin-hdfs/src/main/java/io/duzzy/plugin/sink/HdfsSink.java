@@ -3,13 +3,14 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.FileSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -45,6 +46,18 @@ import org.apache.hadoop.fs.Path;
                 + "available options are: NONE, BZIP2, GZIP, ZSTD. "
                 + "If not specified, no compression will be applied.",
             defaultValue = "NONE"
+        ),
+        @Parameter(
+            name = "size_of_file",
+            aliases = {"sizeOfFile", "size-of-file"},
+            description = "The size of the file in bytes. "
+                + "If not specified, the file will not be limited by size."
+        ),
+        @Parameter(
+            name = "rows_per_file",
+            aliases = {"rowsPerFile", "rows-per-file"},
+            description = "The number of rows per file. "
+                + "If not specified, the file will not be limited by number of rows."
         )
     },
     example = """
@@ -63,6 +76,7 @@ public class HdfsSink extends FileSink {
 
   private final String coreSitePath;
   private final String hdfsSitePath;
+  private DataOutputStream outputStream;
 
   @JsonCreator
   public HdfsSink(
@@ -79,18 +93,49 @@ public class HdfsSink extends FileSink {
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
       CompressionAlgorithm compressionAlgorithm,
-      @JsonProperty("size")
-      Long size,
-      @JsonProperty("rows")
-      Long rows
+      @JsonProperty("size_of_file")
+      @JsonAlias({"sizeOfFile", "size-of-file"})
+      Long sizeOfFile,
+      @JsonProperty("rows_per_file")
+      @JsonAlias({"rowsPerFile", "rows-per-file"})
+      Long rowsPerFile
   ) {
-    super(serializer, filename, compressionAlgorithm, size, rows);
+    super(serializer, filename, compressionAlgorithm, sizeOfFile, rowsPerFile);
     this.coreSitePath = coreSitePath;
     this.hdfsSitePath = hdfsSitePath;
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() throws IOException {
+  protected long outputStreamSize() {
+    return outputStream == null ? 0 : outputStream.size();
+  }
+
+  @Override
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    this.outputStream = buildOutputStream();
+    getSerializer().init(outputStream, duzzySchema);
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    outputStream.close();
+  }
+
+  @Override
+  public HdfsSink fork(long id) throws Exception {
+    return new HdfsSink(
+        getSerializer().fork(id),
+        coreSitePath,
+        hdfsSitePath,
+        forkedName(id),
+        getCompressionAlgorithm(),
+        getSizeOfFile(),
+        getRowsPerFile()
+    );
+  }
+
+  private DataOutputStream buildOutputStream() throws IOException {
     final Configuration configuration = new Configuration();
     if (coreSitePath != null) {
       configuration.addResource(new Path(coreSitePath));
@@ -98,19 +143,8 @@ public class HdfsSink extends FileSink {
     if (hdfsSitePath != null) {
       configuration.addResource(new Path(hdfsSitePath));
     }
-    return FileSystem.get(configuration).create(new Path(getName()));
-  }
-
-  @Override
-  public HdfsSink fork(Long threadId) throws Exception {
-    return new HdfsSink(
-        getSerializer().fork(threadId),
-        coreSitePath,
-        hdfsSitePath,
-        addFilePart(getName(), threadId),
-        getCompressionAlgorithm(),
-        getSize(),
-        getRows()
-    );
+    return new DataOutputStream(outputStreamCompressor(
+        FileSystem.get(configuration).create(new Path(incrementedName()))
+    ));
   }
 }
