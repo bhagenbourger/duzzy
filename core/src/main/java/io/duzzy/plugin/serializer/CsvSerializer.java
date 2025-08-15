@@ -107,7 +107,7 @@ public class CsvSerializer extends Serializer<SequenceWriter> {
   }
 
   @Override
-  public CsvSerializer fork(Long threadId) {
+  public CsvSerializer fork(long id) {
     return new CsvSerializer(quoteChar, columnSeparator, lineSeparator);
   }
 }

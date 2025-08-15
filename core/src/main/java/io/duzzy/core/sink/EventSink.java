@@ -4,37 +4,30 @@ import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.concurrent.ExecutionException;
 
-public abstract class EventSink<P extends Closeable> extends Sink {
+public abstract class EventSink extends Sink {
 
-  private P producer;
+  private final ByteArrayOutputStream outputStream;
+  private long currentSize = 0;
 
   public EventSink(Serializer<?> serializer) {
     super(serializer);
+    this.outputStream = new ByteArrayOutputStream();
   }
 
-  protected abstract void sendEvent() throws IOException, ExecutionException, InterruptedException;
-
-  protected abstract P buildProducer() throws IOException;
-
-  @Override
-  protected OutputStream outputStreamSupplier() {
-    return new ByteArrayOutputStream();
-  }
+  protected abstract void sendEvent(ByteArrayOutputStream outputStream)
+      throws ExecutionException, InterruptedException, IOException;
 
   @Override
-  protected ByteArrayOutputStream getOutputStream() throws IOException {
-    return (ByteArrayOutputStream) super.getOutputStream();
+  public long size() {
+    return currentSize;
   }
 
   @Override
   public void init(DuzzySchema duzzySchema) throws Exception {
-    super.init(duzzySchema);
-    this.producer = buildProducer();
+    getSerializer().init(outputStream, duzzySchema);
   }
 
   @Override
@@ -42,25 +35,20 @@ public abstract class EventSink<P extends Closeable> extends Sink {
     reset();
     super.write(row);
     getSerializer().close();
-    sendEvent();
+    sendEvent(outputStream);
   }
 
   @Override
   public void close() throws Exception {
     super.close();
-    if (producer != null) {
-      producer.close();
-    }
+    outputStream.close();
   }
 
-  protected P getProducer() {
-    return producer;
-  }
-
-  private void reset() throws IOException {
-    if (getOutputStream().size() > 0) {
-      getOutputStream().reset();
-      getSerializer().reset();
+  private void reset() throws Exception {
+    if (outputStream.size() > 0) {
+      currentSize += outputStream.size();
+      outputStream.reset();
+      getSerializer().initWriter(outputStream); //TODO: check if this is needed
     }
   }
 }

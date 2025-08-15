@@ -18,7 +18,7 @@ public class DuzzyThread implements Callable<DuzzyEngineResult> {
     try {
       return new DuzzyProcessing(
           duzzyContext.duzzySchema(),
-          duzzyContext.sink().fork(Thread.currentThread().threadId()),
+          duzzyContext.sink().fork(start),
           duzzyContext.seed()
       ).run(start, duzzyContext.threads(), duzzyContext.duzzyLimit());
     } catch (Exception e) {

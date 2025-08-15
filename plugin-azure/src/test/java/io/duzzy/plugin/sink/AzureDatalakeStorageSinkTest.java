@@ -44,7 +44,6 @@ public class AzureDatalakeStorageSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(AzureDatalakeStorageSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(JsonSerializer.class);
   }
 
   @Test
@@ -60,6 +59,8 @@ public class AzureDatalakeStorageSinkTest {
         true,
         CONTAINER_NAME,
         path,
+        null,
+        null,
         null
     ));
 

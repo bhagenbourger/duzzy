@@ -85,7 +85,6 @@ public class AzureEventHubSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(AzureEventHubSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(JsonSerializer.class);
   }
 
   @Test

@@ -16,6 +16,7 @@ import io.duzzy.core.sink.Sink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
@@ -73,7 +74,7 @@ import org.slf4j.LoggerFactory;
             identifier: "io.duzzy.plugin.serializer.JsonSerializer"
         """
 )
-public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
+public class AzureEventHubSink extends EventSink {
 
   private static final Logger logger = LoggerFactory.getLogger(AzureEventHubSink.class);
 
@@ -81,6 +82,7 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
   private final String fullyQualifiedNamespace;
   private final AzureAuthType azureAuthType;
   private final Boolean failOnError;
+  private final EventHubProducerClient producer;
 
   @JsonCreator
   public AzureEventHubSink(
@@ -104,10 +106,42 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
     this.fullyQualifiedNamespace = fullyQualifiedNamespace;
     this.azureAuthType = azureAuthType == null ? DEFAULT_AZURE_CREDENTIALS : azureAuthType;
     this.failOnError = failOnError == null || failOnError;
+    this.producer = buildProducer();
   }
 
   @Override
-  protected EventHubProducerClient buildProducer() {
+  protected void sendEvent(ByteArrayOutputStream outputStream) throws IOException {
+    final EventDataBatch batch = producer.createBatch();
+    final EventData eventData = new EventData(outputStream.toString(StandardCharsets.UTF_8));
+    if (batch.tryAdd(eventData)) {
+      producer.send(batch);
+    } else {
+      final String message = "Failed to add event to batch: " + eventData.getBodyAsString();
+      logger.warn(message);
+      if (failOnError) {
+        throw new IOException(message);
+      }
+    }
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    producer.close();
+  }
+
+  @Override
+  public Sink fork(long id) throws Exception {
+    return new AzureEventHubSink(
+        getSerializer().fork(id),
+        azureAuthType,
+        eventHubName,
+        fullyQualifiedNamespace,
+        failOnError
+    );
+  }
+
+  private EventHubProducerClient buildProducer() {
     final EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder();
     if (azureAuthType == DEFAULT_AZURE_CREDENTIALS) {
       eventHubClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
@@ -119,31 +153,5 @@ public class AzureEventHubSink extends EventSink<EventHubProducerClient> {
       eventHubClientBuilder.fullyQualifiedNamespace(fullyQualifiedNamespace);
     }
     return eventHubClientBuilder.buildProducerClient();
-  }
-
-  @Override
-  protected void sendEvent() throws IOException {
-    final EventDataBatch batch = getProducer().createBatch();
-    final EventData eventData = new EventData(getOutputStream().toString(StandardCharsets.UTF_8));
-    if (batch.tryAdd(eventData)) {
-      getProducer().send(batch);
-    } else {
-      final String message = "Failed to add event to batch: " + eventData.getBodyAsString();
-      logger.warn(message);
-      if (failOnError) {
-        throw new IOException(message);
-      }
-    }
-  }
-
-  @Override
-  public Sink fork(Long threadId) throws Exception {
-    return new AzureEventHubSink(
-        getSerializer().fork(threadId),
-        azureAuthType,
-        eventHubName,
-        fullyQualifiedNamespace,
-        failOnError
-    );
   }
 }

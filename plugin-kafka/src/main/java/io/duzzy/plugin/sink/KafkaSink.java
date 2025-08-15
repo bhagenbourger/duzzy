@@ -8,7 +8,7 @@ import io.duzzy.core.sink.EventSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -45,10 +45,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
           bootstrapServers: "localhost:9092"
         """
 )
-public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
+public class KafkaSink extends EventSink {
 
   private final String topic;
   private final String bootstrapServers;
+  private final KafkaProducer<String, byte[]> producer;
 
   @JsonCreator
   public KafkaSink(
@@ -63,26 +64,28 @@ public class KafkaSink extends EventSink<KafkaProducer<String, byte[]>> {
     super(serializer);
     this.topic = topic;
     this.bootstrapServers = bootstrapServers;
+    this.producer = new KafkaProducer<>(buildProperties(bootstrapServers));
   }
 
   @Override
-  protected KafkaProducer<String, byte[]> buildProducer() {
-    return new KafkaProducer<>(buildProperties(bootstrapServers));
-  }
-
-  @Override
-  protected void sendEvent() throws IOException {
+  protected void sendEvent(ByteArrayOutputStream outputStream) {
     final ProducerRecord<String, byte[]> record = new ProducerRecord<>(
         topic,
         null,
-        getOutputStream().toByteArray()
+        outputStream.toByteArray()
     );
-    getProducer().send(record);
+    producer.send(record);
   }
 
   @Override
-  public KafkaSink fork(Long threadId) throws Exception {
-    return new KafkaSink(getSerializer().fork(threadId), topic, bootstrapServers);
+  public void close() throws Exception {
+    super.close();
+    producer.close();
+  }
+
+  @Override
+  public KafkaSink fork(long id) throws Exception {
+    return new KafkaSink(getSerializer().fork(id), topic, bootstrapServers);
   }
 
   private static Properties buildProperties(String bootstrapServers) {

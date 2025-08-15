@@ -1,5 +1,6 @@
 package io.duzzy.core.sink;
 
+import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.serializer.Serializer;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,18 +25,52 @@ public abstract class FileSink extends Sink {
     }
   }
 
+  private final String name;
   private final CompressionAlgorithm compressionAlgorithm;
+  private final Long sizeOfFile;
+  private final Long rowsPerFile;
+
+  private long rowCpt = 0;
+  private long fileCpt = 0;
+  private long totalSize = 0;
 
   public FileSink(
       Serializer<?> serializer,
-      CompressionAlgorithm compressionAlgorithm) {
+      String name,
+      CompressionAlgorithm compressionAlgorithm,
+      Long sizeOfFile,
+      Long rowsPerFile
+  ) {
     super(serializer);
+    this.name = name;
     this.compressionAlgorithm = compressionAlgorithm == null ? CompressionAlgorithm.NONE :
         compressionAlgorithm;
+    this.sizeOfFile = sizeOfFile;
+    this.rowsPerFile = rowsPerFile;
+  }
+
+  protected abstract long outputStreamSize();
+
+  @Override
+  public long size() {
+    return totalSize + outputStreamSize();
   }
 
   @Override
-  protected OutputStream outputStreamWrapper(OutputStream outputStream) throws IOException {
+  public void write(DuzzyRow row) throws Exception {
+    if ((getSizeOfFile() != null && outputStreamSize() >= getSizeOfFile()) || (
+        getRowsPerFile() != null && rowCpt >= getRowsPerFile())) {
+      rowCpt = 0;
+      fileCpt++;
+      totalSize += outputStreamSize();
+      close();
+      init(null);
+    }
+    super.write(row);
+    rowCpt++;
+  }
+
+  protected OutputStream outputStreamCompressor(OutputStream outputStream) throws IOException {
     if (compressionAlgorithm == CompressionAlgorithm.NONE) {
       return outputStream;
     }
@@ -43,13 +78,29 @@ public abstract class FileSink extends Sink {
         .createCompressorOutputStream(compressionAlgorithm.getName(), outputStream);
   }
 
+  protected String forkedName(long id) {
+    return computeName(name, id);
+  }
+
+  protected String incrementedName() {
+    return rowsPerFile == null && sizeOfFile == null ? name : computeName(name, fileCpt);
+  }
+
   protected CompressionAlgorithm getCompressionAlgorithm() {
     return compressionAlgorithm;
   }
 
-  public static String addFilePart(String filename, Long threadId) {
-    final int ext = filename.lastIndexOf(".");
-    return ext > 0 ? filename.substring(0, ext) + "_" + threadId + filename.substring(ext) :
-        filename + "_" + threadId;
+  protected Long getSizeOfFile() {
+    return sizeOfFile;
+  }
+
+  protected Long getRowsPerFile() {
+    return rowsPerFile;
+  }
+
+  static String computeName(String name, long id) {
+    final int ext = name.lastIndexOf(".");
+    return ext > 0 ? name.substring(0, ext) + "_" + id + name.substring(ext) :
+        name + "_" + id;
   }
 }

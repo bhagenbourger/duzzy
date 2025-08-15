@@ -8,12 +8,14 @@ import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
-import java.io.OutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 @Documentation(
     identifier = "io.duzzy.plugin.sink.AzureDatalakeStorageSink",
@@ -69,6 +71,18 @@ import java.io.OutputStream;
                 + "available options are: NONE, BZIP2, GZIP, ZSTD. "
                 + "If not specified, no compression will be applied.",
             defaultValue = "NONE"
+        ),
+        @Parameter(
+            name = "size_of_file",
+            aliases = {"sizeOfFile", "size-of-file"},
+            description = "The size of the file in bytes. "
+                + "If not specified, the file will not be limited by size."
+        ),
+        @Parameter(
+            name = "rows_per_file",
+            aliases = {"rowsPerFile", "rows-per-file"},
+            description = "The number of rows per file. "
+                + "If not specified, the file will not be limited by number of rows."
         )
     },
     example = """
@@ -86,6 +100,8 @@ import java.io.OutputStream;
         """
 )
 public class AzureDatalakeStorageSink extends AzureStorageSink {
+
+  private DataOutputStream outputStream;
 
   @JsonCreator
   public AzureDatalakeStorageSink(
@@ -110,7 +126,13 @@ public class AzureDatalakeStorageSink extends AzureStorageSink {
       String blobName,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size_of_file")
+      @JsonAlias({"sizeOfFile", "size-of-file"})
+      Long sizeOfFile,
+      @JsonProperty("rows_per_file")
+      @JsonAlias({"rowsPerFile", "rows-per-file"})
+      Long rowsPerFile
   ) {
     super(
         serializer,
@@ -121,12 +143,46 @@ public class AzureDatalakeStorageSink extends AzureStorageSink {
         createContainerIfNotExists,
         container,
         blobName,
-        compressionAlgorithm
+        compressionAlgorithm,
+        sizeOfFile,
+        rowsPerFile
     );
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() {
+  protected long outputStreamSize() {
+    return outputStream == null ? 0 : outputStream.size();
+  }
+
+  @Override
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    this.outputStream = buildOutputStream();
+    getSerializer().init(outputStream, duzzySchema);
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    outputStream.close();
+  }
+
+  @Override
+  public Sink fork(long id) throws Exception {
+    return new AzureDatalakeStorageSink(
+        getSerializer().fork(id),
+        getAzureAuthType(),
+        getAccountName(),
+        getServiceVersion(),
+        getCreateContainerIfNotExists(),
+        getContainer(),
+        forkedName(id),
+        getCompressionAlgorithm(),
+        getSizeOfFile(),
+        getRowsPerFile()
+    );
+  }
+
+  private DataOutputStream buildOutputStream() throws IOException {
     final DataLakeServiceClientBuilder serviceClientBuilder = new DataLakeServiceClientBuilder();
     if (getAzureAuthType() == AzureAuthType.DEFAULT_AZURE_CREDENTIALS) {
       serviceClientBuilder
@@ -146,20 +202,8 @@ public class AzureDatalakeStorageSink extends AzureStorageSink {
       fileSystemClient.createIfNotExists();
     }
 
-    return fileSystemClient.getFileClient(getBlobName()).getOutputStream();
-  }
-
-  @Override
-  public Sink fork(Long threadId) throws Exception {
-    return new AzureDatalakeStorageSink(
-        getSerializer().fork(threadId),
-        getAzureAuthType(),
-        getAccountName(),
-        getServiceVersion(),
-        getCreateContainerIfNotExists(),
-        getContainer(),
-        addFilePart(getBlobName(), threadId),
-        getCompressionAlgorithm()
-    );
+    return new DataOutputStream(outputStreamCompressor(
+        fileSystemClient.getFileClient(incrementedName()).getOutputStream()
+    ));
   }
 }

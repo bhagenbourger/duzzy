@@ -29,7 +29,9 @@ public class HdfsSinkTest {
         null,
         null,
         filename,
-        FileSink.CompressionAlgorithm.NONE
+        FileSink.CompressionAlgorithm.NONE,
+        null,
+        null
     );
     hdfsSink.init(new DuzzySchema(Optional.empty(), null));
     hdfsSink.write(getDataOne());
@@ -54,7 +56,9 @@ public class HdfsSinkTest {
         null,
         null,
         filename,
-        compressionAlgorithm
+        compressionAlgorithm,
+        null,
+        null
     );
     hdfsSink.init(new DuzzySchema(Optional.empty(), null));
     hdfsSink.write(getDataOne());

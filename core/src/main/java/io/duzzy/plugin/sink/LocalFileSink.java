@@ -3,14 +3,15 @@ package io.duzzy.plugin.sink;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.FileSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
+import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -42,6 +43,18 @@ import java.nio.file.Path;
                 + "available options are: NONE, BZIP2, GZIP, ZSTD. "
                 + "If not specified, no compression will be applied.",
             defaultValue = "NONE"
+        ),
+        @Parameter(
+            name = "size_of_file",
+            aliases = {"sizeOfFile", "size-of-file"},
+            description = "The size of the file in bytes. "
+                + "If not specified, the file will not be limited by size."
+        ),
+        @Parameter(
+            name = "rows_per_file",
+            aliases = {"rowsPerFile", "rows-per-file"},
+            description = "The number of rows per file. "
+                + "If not specified, the file will not be limited by number of rows."
         )
     },
     example = """
@@ -56,9 +69,8 @@ import java.nio.file.Path;
 )
 public class LocalFileSink extends FileSink {
 
-  private final String filename;
   private final Boolean createIfNotExists;
-
+  private DataOutputStream outputStream;
 
   @JsonCreator
   public LocalFileSink(
@@ -71,31 +83,64 @@ public class LocalFileSink extends FileSink {
       Boolean createIfNotExists,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size_of_file")
+      @JsonAlias({"sizeOfFile", "size-of-file"})
+      Long sizeOfFile,
+      @JsonProperty("rows_per_file")
+      @JsonAlias({"rowsPerFile", "rows-per-file"})
+      Long rowsPerFile
   ) throws IOException {
-    super(serializer, compressionAlgorithm);
-    this.filename = filename;
+    super(serializer, filename, compressionAlgorithm, sizeOfFile, rowsPerFile);
     this.createIfNotExists = createIfNotExists;
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() throws IOException {
+  protected long outputStreamSize() {
+    return outputStream == null ? 0 : outputStream.size();
+  }
+
+  @Override
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    this.outputStream = buildOutputStream();
+    getSerializer().init(outputStream, duzzySchema);
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    outputStream.close();
+  }
+
+  @Override
+  public LocalFileSink fork(long id) throws Exception {
+    return new LocalFileSink(
+        getSerializer().fork(id),
+        forkedName(id),
+        createIfNotExists,
+        getCompressionAlgorithm(),
+        getSizeOfFile(),
+        getRowsPerFile()
+    );
+  }
+
+  private DataOutputStream buildOutputStream() throws IOException {
+    final String fileName = incrementedName();
     if (createIfNotExists != null && createIfNotExists) {
-      final Path folder = Path.of(filename).getParent();
+      final Path folder = Path.of(fileName).getParent();
       if (folder != null && !Files.exists(folder)) {
         Files.createDirectories(folder);
       }
     }
-    return new FileOutputStream(filename);
-  }
-
-  @Override
-  public LocalFileSink fork(Long threadId) throws Exception {
-    return new LocalFileSink(
-        getSerializer().fork(threadId),
-        addFilePart(filename, threadId),
-        createIfNotExists,
-        getCompressionAlgorithm()
-    );
+    FileOutputStream fos = null;
+    try {
+      fos = new FileOutputStream(fileName);
+      return new DataOutputStream(outputStreamCompressor(fos));
+    } catch (IOException e) {
+      if (fos != null) {
+        fos.close();
+      }
+      throw e;
+    }
   }
 }

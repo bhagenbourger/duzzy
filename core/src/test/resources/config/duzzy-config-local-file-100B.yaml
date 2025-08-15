@@ -1,0 +1,10 @@
+---
+sink:
+  identifier: "io.duzzy.plugin.sink.LocalFileSink"
+  filename: "build/multi/size.xml"
+  create_if_not_exists: true
+  size_of_file: 100
+  serializer:
+    identifier: "io.duzzy.plugin.serializer.XmlSerializer"
+    rootTag: countries
+    rowTag: country

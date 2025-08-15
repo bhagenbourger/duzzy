@@ -105,7 +105,7 @@ public class JdbcSinkTest {
       final String q2 = "INSERT INTO " + TABLE_NAME + " VALUES (2, 'two')";
       final int size =
           q1.getBytes(StandardCharsets.UTF_8).length + q2.getBytes(StandardCharsets.UTF_8).length;
-      assertThat(sink.getSerializer().size()).isEqualTo(size);
+      assertThat(sink.size()).isEqualTo(size);
     }
   }
 
@@ -173,7 +173,7 @@ public class JdbcSinkTest {
     }
 
     @Override
-    public Sink fork(Long threadId) {
+    public Sink fork(long id) {
       return new HsqldbSink((SqlSerializer) getSerializer(), url, user, password, failOnError);
     }
   }

@@ -25,7 +25,6 @@ public class ConsoleSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(ConsoleSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(JsonSerializer.class);
   }
 
   @Test

@@ -12,7 +12,6 @@ public abstract class AzureStorageSink extends FileSink {
   private final String endpoint;
   private final String serviceVersion;
   private final String container;
-  private final String blobName;
   private final Boolean createContainerIfNotExists;
 
   public AzureStorageSink(
@@ -24,15 +23,16 @@ public abstract class AzureStorageSink extends FileSink {
       Boolean createContainerIfNotExists,
       String container,
       String blobName,
-      CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      Long size,
+      Long rows
   ) {
-    super(serializer, compressionAlgorithm);
+    super(serializer, blobName, compressionAlgorithm, size, rows);
     this.azureAuthType = azureAuthType;
     this.accountName = accountName;
     this.endpoint = endpoint;
     this.serviceVersion = serviceVersion;
     this.container = container;
-    this.blobName = blobName;
     this.createContainerIfNotExists =
         createContainerIfNotExists == null || createContainerIfNotExists;
   }
@@ -62,10 +62,6 @@ public abstract class AzureStorageSink extends FileSink {
 
   protected String getContainer() {
     return container;
-  }
-
-  protected String getBlobName() {
-    return blobName;
   }
 
   protected Boolean getCreateContainerIfNotExists() {
