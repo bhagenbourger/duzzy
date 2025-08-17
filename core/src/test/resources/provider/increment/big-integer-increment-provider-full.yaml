@@ -1,0 +1,3 @@
+identifier: io.duzzy.plugin.provider.increment.BigIntegerIncrementProvider
+start: 10
+step: 2

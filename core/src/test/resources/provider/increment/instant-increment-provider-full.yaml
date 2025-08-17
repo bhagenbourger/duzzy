@@ -1,0 +1,4 @@
+identifier: io.duzzy.plugin.provider.increment.InstantIncrementProvider
+start: 2023-01-01T00:00:00Z
+step: 1
+unit: DAYS
