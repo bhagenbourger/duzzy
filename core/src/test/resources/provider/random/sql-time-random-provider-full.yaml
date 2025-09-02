@@ -1,0 +1,3 @@
+identifier: io.duzzy.plugin.provider.random.SqlTimeRandomProvider
+min: 10:00:00
+max: 11:00:00

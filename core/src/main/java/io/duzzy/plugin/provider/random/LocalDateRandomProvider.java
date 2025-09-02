@@ -5,7 +5,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.field.FieldContext;
-import io.duzzy.core.provider.Provider;
+import io.duzzy.core.provider.corrupted.LocalDateCorruptedProvider;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
@@ -20,11 +20,13 @@ import java.time.LocalDate;
     parameters = {
         @Parameter(
             name = "min",
-            description = "The minimum local date, inclusive"
+            description = "The minimum local date, inclusive",
+            defaultValue = "1970-01-01"
         ),
         @Parameter(
             name = "max",
-            description = "The maximum local date, exclusive"
+            description = "The maximum local date, exclusive",
+            defaultValue = "9999-12-31"
         )
     },
     example = """
@@ -34,7 +36,7 @@ import java.time.LocalDate;
         max: "2021-01-01"
         """
 )
-public final class LocalDateRandomProvider implements Provider<LocalDate> {
+public final class LocalDateRandomProvider implements LocalDateCorruptedProvider {
 
   private static final Long DEFAULT_MAX = 2932891L; //9999-12-31 + 1 day
 
@@ -58,10 +60,5 @@ public final class LocalDateRandomProvider implements Provider<LocalDate> {
   @Override
   public LocalDate value(FieldContext fieldContext) {
     return LocalDate.ofEpochDay(fieldContext.random().nextLong(this.min, this.max));
-  }
-
-  @Override
-  public LocalDate corruptedValue(FieldContext fieldContext) {
-    return LocalDate.ofEpochDay(fieldContext.random().nextLong(-365243219162L, 365241780471L));
   }
 }

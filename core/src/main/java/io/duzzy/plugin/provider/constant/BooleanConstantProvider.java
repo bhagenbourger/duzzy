@@ -9,7 +9,7 @@ import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
 
 @Documentation(
-    identifier = "io.duzzy.plugin.column.constant.BooleanConstantColumn",
+    identifier = "io.duzzy.plugin.provider.constant.BooleanConstantColumn",
     description = "Provide a boolean constant value",
     module = "io.duzzy.core",
     duzzyType = DuzzyType.PROVIDER,
@@ -22,7 +22,7 @@ import io.duzzy.documentation.Parameter;
     },
     example = """
         ---
-        identifier: "io.duzzy.plugin.column.constant.BooleanConstantColumn"
+        identifier: "io.duzzy.plugin.provider.constant.BooleanConstantColumn"
         value: false
         """
 )

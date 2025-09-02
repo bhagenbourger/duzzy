@@ -3,7 +3,7 @@ package io.duzzy.plugin.provider.random;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.field.FieldContext;
-import io.duzzy.core.provider.Provider;
+import io.duzzy.core.provider.corrupted.InstantCorruptedProvider;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
@@ -36,7 +36,7 @@ import java.time.Instant;
         max: "2021-01-01T00:00:00Z"
         """
 )
-public final class InstantRandomProvider implements Provider<Instant> {
+public final class InstantRandomProvider implements InstantCorruptedProvider {
 
   private static final Long DEFAULT_MAX = 253402300800000L; //9999-12-31 + 1 day
 
@@ -60,10 +60,5 @@ public final class InstantRandomProvider implements Provider<Instant> {
   @Override
   public Instant value(FieldContext fieldContext) {
     return Instant.ofEpochMilli(fieldContext.random().nextLong(this.min, this.max));
-  }
-
-  @Override
-  public Instant corruptedValue(FieldContext fieldContext) {
-    return Instant.ofEpochMilli(fieldContext.random().nextLong(Long.MIN_VALUE, Long.MAX_VALUE));
   }
 }
