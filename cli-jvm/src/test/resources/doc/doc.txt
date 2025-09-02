@@ -1359,7 +1359,10 @@ sink:
 | --- | --- | --- | --- |
 | serializer |  | The serializer to use |  |
 | topic |  | The Kafka topic |  |
-| bootstrap_servers | bootstrapServers, bootstrap-servers | The Kafka bootstrap servers |  |  
+| bootstrap_servers | bootstrapServers, bootstrap-servers | The Kafka bootstrap servers |  |
+| key_serializer | keySerializer, key-serializer | The serializer for the key (default: org.apache.kafka.common.serialization.StringSerializer) |  |
+| value_serializer | valueSerializer, value-serializer | The serializer for the value (default: org.apache.kafka.common.serialization.ByteArraySerializer) |  |
+| custom_properties | customProperties, custom-properties | Custom properties for the Kafka producer |  |  
 
 💡 Example: 
 ```
@@ -1370,6 +1373,8 @@ sink:
     identifier: "io.duzzy.plugin.serializer.JsonSerializer"
   topic: "my-topic"
   bootstrapServers: "localhost:9092"
+  keySerializer: "org.apache.kafka.common.serialization.StringSerializer"
+  valueSerializer: "org.apache.kafka.common.serialization.ByteArraySerializer"
 ```
 
 ### io.duzzy.plugin.sink.LocalFileSink ♨️ 🧬  

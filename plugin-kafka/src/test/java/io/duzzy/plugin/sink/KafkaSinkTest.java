@@ -1,8 +1,13 @@
 package io.duzzy.plugin.sink;
 
-import static io.duzzy.tests.Data.getDataOne;
-import static io.duzzy.tests.Data.getDataTwo;
+import static io.duzzy.tests.Data.getDataOneWithKey;
+import static io.duzzy.tests.Data.getDataTwoWithKey;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.AUTO_OFFSET_RESET_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.duzzy.plugin.serializer.JsonSerializer;
@@ -11,10 +16,13 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,25 +50,36 @@ public class KafkaSinkTest {
     final KafkaSink kafkaSink = new KafkaSink(
         new JsonSerializer(),
         topic,
-        kafka.getBootstrapServers()
+        kafka.getBootstrapServers(),
+        ByteArraySerializer.class.getName(),
+        StringSerializer.class.getName(),
+        null
     );
     kafkaSink.init(null);
-    kafkaSink.write(getDataOne());
-    kafkaSink.write(getDataTwo());
+    kafkaSink.write(getDataOneWithKey());
+    kafkaSink.write(getDataTwoWithKey());
     kafkaSink.close();
 
     try (
-        final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties("json"))
+        final KafkaConsumer<byte[], String> consumer = new KafkaConsumer<>(getProperties(
+            "json",
+            ByteArrayDeserializer.class.getName(),
+            StringDeserializer.class.getName()
+        ))
     ) {
       consumer.subscribe(Collections.singleton(topic));
-      final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
-      final Iterator<ConsumerRecord<String, byte[]>> iterator = records.iterator();
+      final ConsumerRecords<byte[], String> records = consumer.poll(Duration.ofSeconds(10));
+      final Iterator<ConsumerRecord<byte[], String>> iterator = records.iterator();
       final String expected1 = "{\"c1\":1,\"c2\":\"one\"}";
       final String expected2 = "{\"c1\":2,\"c2\":\"two\"}";
       final int size = expected1.length() + expected2.length();
 
-      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected1);
-      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected2);
+      final ConsumerRecord<byte[], String> first = iterator.next();
+      assertThat(new String(first.key(), UTF_8)).isEqualTo("key1");
+      assertThat(first.value()).isEqualTo(expected1);
+      final ConsumerRecord<byte[], String> second = iterator.next();
+      assertThat(new String(second.key(), UTF_8)).isEqualTo("key2");
+      assertThat(second.value()).isEqualTo(expected2);
       assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
     }
   }
@@ -72,15 +91,22 @@ public class KafkaSinkTest {
     final KafkaSink kafkaSink = new KafkaSink(
         new XmlSerializer(null, null),
         topic,
-        kafka.getBootstrapServers()
+        kafka.getBootstrapServers(),
+        null,
+        null,
+        null
     );
     kafkaSink.init(null);
-    kafkaSink.write(getDataOne());
-    kafkaSink.write(getDataTwo());
+    kafkaSink.write(getDataOneWithKey());
+    kafkaSink.write(getDataTwoWithKey());
     kafkaSink.close();
 
     try (
-        final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties("xml"))
+        final KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(getProperties(
+            "xml",
+            StringDeserializer.class.getName(),
+            ByteArrayDeserializer.class.getName()
+        ))
     ) {
       consumer.subscribe(Collections.singleton(topic));
       final ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
@@ -90,28 +116,27 @@ public class KafkaSinkTest {
       final String expected2 =
           "<?xml version='1.0' encoding='UTF-8'?><rows><row><c1>2</c1><c2>two</c2></row></rows>";
       final int size = expected1.length() + expected2.length();
-      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected1);
-      assertThat(new String(iterator.next().value(), UTF_8)).isEqualTo(expected2);
+      final ConsumerRecord<String, byte[]> first = iterator.next();
+      assertThat(first.key()).isEqualTo("key1");
+      assertThat(new String(first.value(), UTF_8)).isEqualTo(expected1);
+      final ConsumerRecord<String, byte[]> second = iterator.next();
+      assertThat(second.key()).isEqualTo("key2");
+      assertThat(new String(second.value(), UTF_8)).isEqualTo(expected2);
       assertThat(kafkaSink.getSerializer().size()).isEqualTo(size);
     }
   }
 
-  private static @NotNull Properties getProperties(String groupId) {
+  private static @NotNull Properties getProperties(
+      String groupId,
+      String keyDeserializer,
+      String valueDeserializer
+  ) {
     final Properties props = new Properties();
-    props.put(
-        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-        kafka.getBootstrapServers()
-    );
-    props.put(
-        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-        "org.apache.kafka.common.serialization.StringDeserializer"
-    );
-    props.put(
-        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-        "org.apache.kafka.common.serialization.ByteArrayDeserializer"
-    );
-    props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-    props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+    props.put(BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
+    props.put(KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
+    props.put(VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
+    props.put(GROUP_ID_CONFIG, groupId);
+    props.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
     return props;
   }
 }

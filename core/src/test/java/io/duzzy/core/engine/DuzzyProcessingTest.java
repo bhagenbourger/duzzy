@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import io.duzzy.core.DuzzyCell;
 import io.duzzy.core.DuzzyLimit;
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.DuzzyRowKey;
 import io.duzzy.core.field.Field;
 import io.duzzy.core.field.Type;
 import io.duzzy.core.schema.DuzzySchema;
@@ -29,7 +30,7 @@ public class DuzzyProcessingTest {
   void shouldRunProcessingWithEmptyRowKey() throws Exception {
     when((JsonSerializer) sink.getSerializer()).thenReturn(new JsonSerializer());
     final DuzzyRow expected = new DuzzyRow(
-        Optional.empty(),
+        new DuzzyRowKey(Optional.empty()),
         List.of(new DuzzyCell("testField", Type.STRING, "value"))
     );
 
@@ -77,7 +78,7 @@ public class DuzzyProcessingTest {
         List.of(new StringConstantProvider("myValue"))
     );
     final DuzzyRow expected = new DuzzyRow(
-        Optional.of("myKey"),
+        new DuzzyRowKey(Optional.of("myKey")),
         List.of(new DuzzyCell("myField", Type.STRING, "myValue"))
     );
 

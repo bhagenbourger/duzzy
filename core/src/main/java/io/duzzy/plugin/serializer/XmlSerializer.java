@@ -87,7 +87,7 @@ public class XmlSerializer extends Serializer<XmlCustomStreamWriter> {
   @Override
   protected void serialize(DuzzyRow row, XmlCustomStreamWriter xmlStreamWriter)
       throws IOException {
-    mapper.writeValue(xmlStreamWriter.xmlStreamWriter(), row.toMap());
+    mapper.writeValue(xmlStreamWriter.xmlStreamWriter(), row.valuesAsMap());
   }
 
   @Override
