@@ -1150,7 +1150,9 @@ serializer:
 | credentials_file | credentialsFile, credentials-file | Path to the GCP credentials file |  |
 | bucket_name | bucketName, bucket-name | The GCS bucket name |  |
 | object_name | objectName, object-name | The GCS object name |  |
-| compression_algorithm | compressionAlgorithm, compression-algorithm | The compression algorithm to use for the file, available options are: NONE, BZIP2, GZIP, ZSTD. If not specified, no compression will be applied. | NONE |  
+| compression_algorithm | compressionAlgorithm, compression-algorithm | The compression algorithm to use for the file, available options are: NONE, BZIP2, GZIP, ZSTD. If not specified, no compression will be applied. | NONE |
+| size_of_file | sizeOfFile, size-of-file | The size of the file in bytes. If not specified, the file will not be limited by size. |  |
+| rows_per_file | rowsPerFile, rows-per-file | The number of rows per file. If not specified, the file will not be limited by number of rows. |  |  
 
 💡 Example: 
 ```
@@ -1234,7 +1236,9 @@ sink:
 | serializer |  | The serializer to use |  |
 | filename |  | The name of the file to write |  |
 | create_if_not_exists | createIfNotExists, create-if-not-exists | Create the file if it does not exist | false |
-| compression_algorithm | compressionAlgorithm, compression-algorithm | The compression algorithm to use for the file, available options are: NONE, BZIP2, GZIP, ZSTD. If not specified, no compression will be applied. | NONE |  
+| compression_algorithm | compressionAlgorithm, compression-algorithm | The compression algorithm to use for the file, available options are: NONE, BZIP2, GZIP, ZSTD. If not specified, no compression will be applied. | NONE |
+| size_of_file | sizeOfFile, size-of-file | The size of the file in bytes. If not specified, the file will not be limited by size. |  |
+| rows_per_file | rowsPerFile, rows-per-file | The number of rows per file. If not specified, the file will not be limited by number of rows. |  |  
 
 💡 Example: 
 ```

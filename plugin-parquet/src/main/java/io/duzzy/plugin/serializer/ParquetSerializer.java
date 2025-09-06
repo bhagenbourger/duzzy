@@ -78,7 +78,7 @@ public class ParquetSerializer extends AvroSerializer<ParquetWriter<GenericData.
   }
 
   @Override
-  public ParquetSerializer fork(Long threadId) {
+  public ParquetSerializer fork(long id) {
     return new ParquetSerializer(name, namespace, schemaFile);
   }
 }

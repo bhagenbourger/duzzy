@@ -1,9 +1,9 @@
 package io.duzzy.core.sink;
 
 import io.duzzy.core.DuzzyRow;
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.serializer.SqlSerializer;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,6 +22,8 @@ public abstract class JdbcSink extends Sink {
   protected final Boolean failOnError;
   private Connection connection;
   private Statement statement;
+  private final ByteArrayOutputStream outputStream;
+  private long currentSize = 0;
 
   public JdbcSink(
       SqlSerializer serializer,
@@ -35,6 +37,7 @@ public abstract class JdbcSink extends Sink {
     this.user = user;
     this.password = password;
     this.failOnError = failOnError == null || failOnError;
+    this.outputStream = new ByteArrayOutputStream();
     try {
       this.connection = DriverManager.getConnection(url, user, password);
       this.statement = connection.createStatement();
@@ -44,23 +47,28 @@ public abstract class JdbcSink extends Sink {
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() {
-    return new ByteArrayOutputStream();
+  public long size() {
+    return currentSize;
+  }
+
+  @Override
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    getSerializer().init(outputStream, duzzySchema);
   }
 
   @Override
   public void write(DuzzyRow data) throws Exception {
     super.write(data);
     try {
-      statement.execute(
-          ((ByteArrayOutputStream) getOutputStream()).toString(StandardCharsets.UTF_8));
+      statement.execute(outputStream.toString(StandardCharsets.UTF_8));
     } catch (SQLException e) {
       logger.warn("Error while writing data", e);
       if (failOnError) {
         throw e;
       }
     }
-    ((ByteArrayOutputStream) getOutputStream()).reset();
+    currentSize += data.sizeOfValues();
+    outputStream.reset();
   }
 
   @Override

@@ -6,31 +6,29 @@ import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.concurrent.ExecutionException;
 
 public abstract class EventSink extends Sink {
 
+  private final ByteArrayOutputStream outputStream;
+  private long currentSize = 0;
+
   public EventSink(Serializer<?> serializer) {
     super(serializer);
+    this.outputStream = new ByteArrayOutputStream();
   }
 
-  protected abstract void sendEvent(DuzzyRowKey eventKey)
+  protected abstract void sendEvent(DuzzyRowKey eventKey, ByteArrayOutputStream outputStream)
       throws IOException, ExecutionException, InterruptedException;
 
   @Override
-  protected OutputStream outputStreamSupplier() {
-    return new ByteArrayOutputStream();
-  }
-
-  @Override
-  protected ByteArrayOutputStream getOutputStream() throws IOException {
-    return (ByteArrayOutputStream) super.getOutputStream();
+  public long size() {
+    return currentSize;
   }
 
   @Override
   public void init(DuzzySchema duzzySchema) throws Exception {
-    super.init(duzzySchema);
+    getSerializer().init(outputStream, duzzySchema);
   }
 
   @Override
@@ -38,18 +36,21 @@ public abstract class EventSink extends Sink {
     reset();
     super.write(row);
     getSerializer().close();
-    sendEvent(row.rowKey());
+    sendEvent(row.rowKey(), outputStream);
   }
 
   @Override
   public void close() throws Exception {
     super.close();
+    currentSize += outputStream.size();
+    outputStream.close();
   }
 
-  private void reset() throws IOException {
-    if (getOutputStream().size() > 0) {
-      getOutputStream().reset();
-      getSerializer().reset();
+  private void reset() throws Exception {
+    if (outputStream.size() > 0) {
+      currentSize += outputStream.size();
+      outputStream.reset();
+      init(null);
     }
   }
 }

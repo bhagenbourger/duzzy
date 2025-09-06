@@ -1,23 +1,36 @@
 package io.duzzy.core.sink;
 
+import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.plugin.serializer.JsonSerializer;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class MockSink extends Sink {
 
+  private final ByteArrayOutputStream outputStream;
+
   public MockSink() {
     super(new JsonSerializer());
+    this.outputStream = new ByteArrayOutputStream();
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() throws IOException {
-    return new ByteArrayOutputStream();
+  public long size() {
+    return outputStream.size();
   }
 
   @Override
-  public Sink fork(Long threadId) {
+  public void init(DuzzySchema duzzySchema) throws Exception {
+    getSerializer().init(outputStream, duzzySchema);
+  }
+
+  @Override
+  public void close() throws Exception {
+    super.close();
+    outputStream.close();
+  }
+
+  @Override
+  public Sink fork(long id) {
     return new MockSink();
   }
 

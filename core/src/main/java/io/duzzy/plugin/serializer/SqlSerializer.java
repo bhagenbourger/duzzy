@@ -69,7 +69,7 @@ public class SqlSerializer extends Serializer<OutputStream> {
   }
 
   @Override
-  public SqlSerializer fork(Long threadId) {
+  public SqlSerializer fork(long id) {
     return new SqlSerializer(tableName);
   }
 }

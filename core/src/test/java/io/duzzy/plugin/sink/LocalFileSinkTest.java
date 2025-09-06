@@ -27,16 +27,21 @@ import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 public class LocalFileSinkTest {
 
-  @AfterAll
-  static void afterAll() throws IOException {
-    deleteDirectory(Paths.get("build/multi"));
+  private static final String BUILD_MULTI_PATH = "build/multi";
+  private static final String BUILD_SINGLE_PATH = "build/single";
+  private static final String SCHEMA = "schema/duzzy-schema-three-columns.yaml";
+
+  @AfterEach
+  void afterEach() throws IOException {
+    deleteDirectory(Paths.get(BUILD_MULTI_PATH));
+    deleteDirectory(Paths.get(BUILD_SINGLE_PATH));
   }
 
   @Test
@@ -59,7 +64,7 @@ public class LocalFileSinkTest {
 
   @Test
   void writeJson() throws Exception {
-    final String filename = "build/test.json";
+    final String filename = BUILD_SINGLE_PATH + "/test.json";
     final String expected =
         "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":2,\"c2\":\"two\"}";
 
@@ -67,6 +72,8 @@ public class LocalFileSinkTest {
         new JsonSerializer(),
         filename,
         true,
+        null,
+        null,
         null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
@@ -80,7 +87,7 @@ public class LocalFileSinkTest {
 
   @Test
   void writeXml() throws Exception {
-    final String filename = "build/test.xml";
+    final String filename = BUILD_SINGLE_PATH + "/test.xml";
     final String expected =
         "<?xml version='1.0' encoding='UTF-8'?><rows>"
             + "<row><c1>1</c1><c2>one</c2></row>"
@@ -91,6 +98,8 @@ public class LocalFileSinkTest {
         new XmlSerializer("rows", "row"),
         filename,
         true,
+        null,
+        null,
         null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
@@ -100,7 +109,7 @@ public class LocalFileSinkTest {
     localFileSink.close();
 
     assertThat(Files.readString(Path.of(filename))).isEqualTo(expected);
-    assertThat(localFileSink.getSerializer().size()).isEqualTo(expected.length());
+    assertThat(localFileSink.size()).isEqualTo(expected.length());
   }
 
   @ParameterizedTest
@@ -110,7 +119,7 @@ public class LocalFileSinkTest {
       names = {"NONE"}
   )
   void writeCompressedJson(FileSink.CompressionAlgorithm compressionAlgorithm) throws Exception {
-    final String filename = "build/test.json" + "." + compressionAlgorithm.getName();
+    final String filename = BUILD_SINGLE_PATH + "/test.json" + "." + compressionAlgorithm.getName();
     final String expected =
         "{\"c1\":1,\"c2\":\"one\"}\n{\"c1\":2,\"c2\":\"two\"}\n{\"c1\":2,\"c2\":\"two\"}";
 
@@ -118,7 +127,9 @@ public class LocalFileSinkTest {
         new JsonSerializer(),
         filename,
         true,
-        compressionAlgorithm
+        compressionAlgorithm,
+        null,
+        null
     );
     localFileSink.init(new DuzzySchema(Optional.empty(), null));
     localFileSink.write(getDataOne());
@@ -137,7 +148,7 @@ public class LocalFileSinkTest {
 
   @Test
   void writeWithMultiThreads() throws Exception {
-    final File schema = getFromResources(getClass(), "schema/duzzy-schema-three-columns.yaml");
+    final File schema = getFromResources(getClass(), SCHEMA);
     final File config = getFromResources(getClass(), "config/duzzy-config-local-file.yaml");
     final String expected0 =
         Files.readString(getFromResources(getClass(), "result/expected-multi-0.xml").toPath());
@@ -153,7 +164,7 @@ public class LocalFileSinkTest {
     new Duzzy(schema, config, 1234L, 10L, null, null, 5, null).generate();
 
     final List<File> files = Arrays
-        .stream(Objects.requireNonNull(new File("build/multi").listFiles()))
+        .stream(Objects.requireNonNull(new File(BUILD_MULTI_PATH).listFiles()))
         .sorted()
         .toList();
     assertThat(files).hasSize(5);
@@ -162,5 +173,109 @@ public class LocalFileSinkTest {
     assertThat(Files.readString(files.get(2).toPath())).isEqualTo(expected2);
     assertThat(Files.readString(files.get(3).toPath())).isEqualTo(expected3);
     assertThat(Files.readString(files.get(4).toPath())).isEqualTo(expected4);
+  }
+
+  @Test
+  void writeWith100bPerFile() throws Exception {
+    final File schema = getFromResources(getClass(), SCHEMA);
+    final File config = getFromResources(getClass(), "config/duzzy-config-local-file-100B.yaml");
+    final String expected0 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-0.xml").toPath());
+    final String expected1 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-1.xml").toPath());
+    final String expected2 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-2.xml").toPath());
+    final String expected3 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-3.xml").toPath());
+    final String expected4 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-4.xml").toPath());
+    final String expected5 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-5.xml").toPath());
+    final String expected6 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-6.xml").toPath());
+    final String expected7 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-7.xml").toPath());
+    final String expected8 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-8.xml").toPath());
+    final String expected9 =
+        Files.readString(getFromResources(getClass(), "result/expected-size-9.xml").toPath());
+
+    new Duzzy(schema, config, 1234L, 10L, null, null, 1, null).generate();
+
+    final List<File> files = Arrays
+        .stream(Objects.requireNonNull(new File(BUILD_MULTI_PATH).listFiles()))
+        .sorted()
+        .toList();
+    assertThat(files).hasSize(10);
+    assertThat(Files.readString(files.get(0).toPath())).isEqualTo(expected0);
+    assertThat(Files.readString(files.get(1).toPath())).isEqualTo(expected1);
+    assertThat(Files.readString(files.get(2).toPath())).isEqualTo(expected2);
+    assertThat(Files.readString(files.get(3).toPath())).isEqualTo(expected3);
+    assertThat(Files.readString(files.get(4).toPath())).isEqualTo(expected4);
+    assertThat(Files.readString(files.get(5).toPath())).isEqualTo(expected5);
+    assertThat(Files.readString(files.get(6).toPath())).isEqualTo(expected6);
+    assertThat(Files.readString(files.get(7).toPath())).isEqualTo(expected7);
+    assertThat(Files.readString(files.get(8).toPath())).isEqualTo(expected8);
+    assertThat(Files.readString(files.get(9).toPath())).isEqualTo(expected9);
+  }
+
+  @Test
+  void writeWith100bPerFileAndThreads() throws Exception {
+    final File schema = getFromResources(getClass(), SCHEMA);
+    final File config = getFromResources(getClass(), "config/duzzy-config-local-file-100B.yaml");
+
+    new Duzzy(schema, config, 1234L, 10L, null, null, 3, null).generate();
+
+    final List<File> files = Arrays
+        .stream(Objects.requireNonNull(new File(BUILD_MULTI_PATH).listFiles()))
+        .sorted()
+        .toList();
+    assertThat(files).hasSize(30);
+    assertThat(files.get(0).toPath().getFileName().toString()).isEqualTo("size_0_0.xml");
+    assertThat(files.get(1).toPath().getFileName().toString()).isEqualTo("size_0_1.xml");
+    assertThat(files.get(10).toPath().getFileName().toString()).isEqualTo("size_1_0.xml");
+  }
+
+  @Test
+  void writeWith3rowsPerFile() throws Exception {
+    final File schema = getFromResources(getClass(), SCHEMA);
+    final File config = getFromResources(getClass(), "config/duzzy-config-local-file-3rows.yaml");
+    final String expected0 =
+        Files.readString(getFromResources(getClass(), "result/expected-row-0.xml").toPath());
+    final String expected1 =
+        Files.readString(getFromResources(getClass(), "result/expected-row-1.xml").toPath());
+    final String expected2 =
+        Files.readString(getFromResources(getClass(), "result/expected-row-2.xml").toPath());
+    final String expected3 =
+        Files.readString(getFromResources(getClass(), "result/expected-row-3.xml").toPath());
+
+    new Duzzy(schema, config, 1234L, 10L, null, null, 1, null).generate();
+
+    final List<File> files = Arrays
+        .stream(Objects.requireNonNull(new File(BUILD_MULTI_PATH).listFiles()))
+        .sorted()
+        .toList();
+    assertThat(files).hasSize(4);
+    assertThat(Files.readString(files.get(0).toPath())).isEqualTo(expected0);
+    assertThat(Files.readString(files.get(1).toPath())).isEqualTo(expected1);
+    assertThat(Files.readString(files.get(2).toPath())).isEqualTo(expected2);
+    assertThat(Files.readString(files.get(3).toPath())).isEqualTo(expected3);
+  }
+
+  @Test
+  void writeWith3rowsPerFileAndThreads() throws Exception {
+    final File schema = getFromResources(getClass(), SCHEMA);
+    final File config = getFromResources(getClass(), "config/duzzy-config-local-file-3rows.yaml");
+
+    new Duzzy(schema, config, 1234L, 10L, null, null, 3, null).generate();
+
+    final List<File> files = Arrays
+        .stream(Objects.requireNonNull(new File(BUILD_MULTI_PATH).listFiles()))
+        .sorted()
+        .toList();
+    assertThat(files).hasSize(12);
+    assertThat(files.get(0).toPath().getFileName().toString()).isEqualTo("row_0_0.xml");
+    assertThat(files.get(1).toPath().getFileName().toString()).isEqualTo("row_0_1.xml");
+    assertThat(files.get(11).toPath().getFileName().toString()).isEqualTo("row_2_3.xml");
   }
 }

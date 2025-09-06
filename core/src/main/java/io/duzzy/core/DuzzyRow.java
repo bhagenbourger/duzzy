@@ -1,5 +1,6 @@
 package io.duzzy.core;
 
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,5 +25,12 @@ public record DuzzyRow(
         (m, v) -> m.put(v.name(), v.value()),
         LinkedHashMap::putAll
     );
+  }
+
+  public Integer sizeOfValues() {
+    return cells
+        .stream()
+        .map(c -> c.value().toString().getBytes(StandardCharsets.UTF_8).length)
+        .reduce(0, Integer::sum);
   }
 }

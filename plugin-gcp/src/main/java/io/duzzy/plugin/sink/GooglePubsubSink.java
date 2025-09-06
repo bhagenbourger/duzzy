@@ -9,13 +9,13 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
 import io.duzzy.core.DuzzyRowKey;
-import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.EventSink;
 import io.duzzy.core.sink.Sink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
@@ -55,7 +55,7 @@ public class GooglePubsubSink extends EventSink {
 
   private final String topicName;
   private final String projectId;
-  private Publisher publisher;
+  private final Publisher publisher;
 
   @JsonCreator
   public GooglePubsubSink(
@@ -67,38 +67,42 @@ public class GooglePubsubSink extends EventSink {
       @JsonProperty("topic_name")
       @JsonAlias({"topicName", "topic-name"})
       String topicName
+  ) throws IOException {
+    this(
+        serializer,
+        projectId,
+        topicName,
+        Publisher.newBuilder(TopicName.of(projectId, topicName)).build()
+    );
+  }
+
+  GooglePubsubSink(
+      Serializer<?> serializer,
+      String topicName,
+      String projectId,
+      Publisher publisher
   ) {
     super(serializer);
-    this.projectId = projectId;
     this.topicName = topicName;
+    this.projectId = projectId;
+    this.publisher = publisher;
   }
 
   @Override
-  public void init(DuzzySchema duzzySchema) throws Exception {
-    super.init(duzzySchema);
-    this.publisher = buildPublisher();
-  }
-
-  @Override
-  protected void sendEvent(DuzzyRowKey eventKey)
-      throws IOException, ExecutionException, InterruptedException {
-    final ByteString data = ByteString.copyFrom(getOutputStream().toByteArray());
+  protected void sendEvent(DuzzyRowKey eventKey, ByteArrayOutputStream outputStream)
+      throws ExecutionException, InterruptedException {
+    final ByteString data = ByteString.copyFrom(outputStream.toByteArray());
     final PubsubMessage.Builder builder = PubsubMessage.newBuilder().setData(data);
     if (eventKey.isPresent()) {
       builder.setMessageId(eventKey.asString());
     }
     final PubsubMessage pubsubMessage = builder.build();
-
     final ApiFuture<String> future = publisher.publish(pubsubMessage);
     future.get();
   }
 
   @Override
-  public Sink fork(Long threadId) throws Exception {
-    return new GooglePubsubSink(getSerializer().fork(threadId), projectId, topicName);
-  }
-
-  Publisher buildPublisher() throws IOException {
-    return Publisher.newBuilder(TopicName.of(projectId, topicName)).build();
+  public Sink fork(long id) throws Exception {
+    return new GooglePubsubSink(getSerializer().fork(id), projectId, topicName);
   }
 }

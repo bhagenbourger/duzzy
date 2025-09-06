@@ -45,7 +45,7 @@ public class AvroSchemalessSerializerTest {
   }
 
   @Test
-  void serializeWithDefaultValues() throws IOException {
+  void serializeWithDefaultValues() throws Exception {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     final List<Field> fields = List.of(
         new Field(

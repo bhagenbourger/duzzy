@@ -4,7 +4,6 @@ import io.duzzy.core.DuzzyRow;
 import io.duzzy.core.Forkable;
 import io.duzzy.core.Plugin;
 import io.duzzy.core.schema.DuzzySchema;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -13,15 +12,6 @@ public abstract class Serializer<W extends AutoCloseable>
 
   private W writer;
   private DuzzySchema duzzySchema;
-  private DataOutputStream outputStream;
-
-  public long size() {
-    return size(outputStream, writer);
-  }
-
-  protected long size(OutputStream outputStream, W writer) {
-    return outputStream instanceof DataOutputStream ? ((DataOutputStream) outputStream).size() : 0;
-  }
 
   public abstract Boolean hasSchema();
 
@@ -37,20 +27,18 @@ public abstract class Serializer<W extends AutoCloseable>
     serialize(row, writer);
   }
 
-  public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws IOException {
-    this.duzzySchema = duzzySchema;
-    this.outputStream = new DataOutputStream(outputStream);
-    reset();
+  public void init(OutputStream outputStream, DuzzySchema duzzySchema) throws Exception {
+    if (duzzySchema != null) {
+      this.duzzySchema = duzzySchema;
+    }
+    close();
+    writer = buildWriter(outputStream);
   }
 
   public void close() throws Exception {
     if (writer != null) {
       writer.close();
     }
-  }
-
-  public void reset() throws IOException {
-    writer = buildWriter(outputStream);
   }
 
   protected DuzzySchema getDuzzySchema() {

@@ -43,7 +43,6 @@ public class AzureBlobStorageSinkTest {
     final Sink sink = YAML_MAPPER.readValue(sinkFile, Sink.class);
 
     assertThat(sink).isInstanceOf(AzureBlobStorageSink.class);
-    assertThat(sink.getSerializer()).isInstanceOf(JsonSerializer.class);
   }
 
   @Test
@@ -59,6 +58,8 @@ public class AzureBlobStorageSinkTest {
         true,
         CONTAINER_NAME,
         path,
+        null,
+        null,
         null
     ));
 
@@ -69,7 +70,7 @@ public class AzureBlobStorageSinkTest {
     sink.write(Data.getDataTwo());
     sink.close();
 
-    final AzureBlobStorageSink fork = (AzureBlobStorageSink) spy(sink.fork(1L));
+    final AzureBlobStorageSink fork = (AzureBlobStorageSink) spy(sink.fork(1));
 
     doReturn(azurite.getConnectionString()).when(fork).getEndpoint();
 

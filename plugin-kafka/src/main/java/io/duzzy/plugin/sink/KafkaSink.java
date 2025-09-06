@@ -6,13 +6,12 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.duzzy.core.DuzzyRowKey;
-import io.duzzy.core.schema.DuzzySchema;
 import io.duzzy.core.serializer.Serializer;
 import io.duzzy.core.sink.EventSink;
 import io.duzzy.documentation.Documentation;
 import io.duzzy.documentation.DuzzyType;
 import io.duzzy.documentation.Parameter;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -79,7 +78,7 @@ public class KafkaSink extends EventSink {
   private final String keySerializer;
   private final String valueSerializer;
   private final Map<String, String> customProperties;
-  private KafkaProducer<Object, Object> producer;
+  private final KafkaProducer<Object, Object> producer;
 
   @JsonCreator
   public KafkaSink(
@@ -107,29 +106,27 @@ public class KafkaSink extends EventSink {
     this.valueSerializer =
         valueSerializer != null ? valueSerializer : ByteArraySerializer.class.getName();
     this.customProperties = customProperties != null ? customProperties : Map.of();
-  }
-
-  @Override
-  public void init(DuzzySchema duzzySchema) throws Exception {
-    super.init(duzzySchema);
     this.producer = new KafkaProducer<>(buildProperties());
   }
 
   @Override
-  protected void sendEvent(DuzzyRowKey eventKey) throws IOException {
+  protected void sendEvent(
+      DuzzyRowKey eventKey,
+      ByteArrayOutputStream outputStream
+  ) {
     final ProducerRecord<Object, Object> record = new ProducerRecord<>(
         topic,
         writeEventKey(eventKey),
-        writeEventValue()
+        writeEventValue(outputStream)
     );
     this.producer.send(record);
   }
 
-  private Object writeEventValue() throws IOException {
+  private Object writeEventValue(ByteArrayOutputStream outputStream) {
     if (Objects.equals(valueSerializer, StringSerializer.class.getName())) {
-      return getOutputStream().toString(UTF_8);
+      return outputStream.toString(UTF_8);
     } else if (Objects.equals(valueSerializer, ByteArraySerializer.class.getName())) {
-      return getOutputStream().toByteArray();
+      return outputStream.toByteArray();
     } else {
       throw new IllegalArgumentException("Unsupported value serializer: " + valueSerializer);
     }
@@ -146,15 +143,9 @@ public class KafkaSink extends EventSink {
   }
 
   @Override
-  public void close() throws Exception {
-    super.close();
-    producer.close();
-  }
-
-  @Override
-  public KafkaSink fork(Long threadId) throws Exception {
+  public KafkaSink fork(long id) throws Exception {
     return new KafkaSink(
-        getSerializer().fork(threadId),
+        getSerializer().fork(id),
         topic,
         bootstrapServers,
         keySerializer,

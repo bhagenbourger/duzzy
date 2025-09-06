@@ -45,6 +45,18 @@ import org.apache.hadoop.fs.Path;
                 + "available options are: NONE, BZIP2, GZIP, ZSTD. "
                 + "If not specified, no compression will be applied.",
             defaultValue = "NONE"
+        ),
+        @Parameter(
+            name = "size_of_file",
+            aliases = {"sizeOfFile", "size-of-file"},
+            description = "The size of the file in bytes. "
+                + "If not specified, the file will not be limited by size."
+        ),
+        @Parameter(
+            name = "rows_per_file",
+            aliases = {"rowsPerFile", "rows-per-file"},
+            description = "The number of rows per file. "
+                + "If not specified, the file will not be limited by number of rows."
         )
     },
     example = """
@@ -63,30 +75,36 @@ public class HdfsSink extends FileSink {
 
   private final String coreSitePath;
   private final String hdfsSitePath;
-  private final String filename;
 
   @JsonCreator
   public HdfsSink(
-      @JsonProperty("serializer") Serializer<?> serializer,
+      @JsonProperty("serializer")
+      Serializer<?> serializer,
       @JsonProperty("core_site_file")
       @JsonAlias({"coreSitePath", "core-site-file"})
       String coreSitePath,
       @JsonProperty("hdfs_site_path")
       @JsonAlias({"hdfsSiteFile", "hdfs-site-file"})
       String hdfsSitePath,
-      @JsonProperty("filename") String filename,
+      @JsonProperty("filename")
+      String filename,
       @JsonProperty("compression_algorithm")
       @JsonAlias({"compressionAlgorithm", "compression-algorithm"})
-      FileSink.CompressionAlgorithm compressionAlgorithm
+      CompressionAlgorithm compressionAlgorithm,
+      @JsonProperty("size_of_file")
+      @JsonAlias({"sizeOfFile", "size-of-file"})
+      Long sizeOfFile,
+      @JsonProperty("rows_per_file")
+      @JsonAlias({"rowsPerFile", "rows-per-file"})
+      Long rowsPerFile
   ) {
-    super(serializer, compressionAlgorithm);
+    super(serializer, filename, compressionAlgorithm, sizeOfFile, rowsPerFile);
     this.coreSitePath = coreSitePath;
     this.hdfsSitePath = hdfsSitePath;
-    this.filename = filename;
   }
 
   @Override
-  protected OutputStream outputStreamSupplier() throws IOException {
+  protected OutputStream createOutputStream() throws IOException {
     final Configuration configuration = new Configuration();
     if (coreSitePath != null) {
       configuration.addResource(new Path(coreSitePath));
@@ -94,17 +112,19 @@ public class HdfsSink extends FileSink {
     if (hdfsSitePath != null) {
       configuration.addResource(new Path(hdfsSitePath));
     }
-    return FileSystem.get(configuration).create(new Path(filename));
+    return FileSystem.get(configuration).create(new Path(incrementedName()));
   }
 
   @Override
-  public HdfsSink fork(Long threadId) throws Exception {
+  public HdfsSink fork(long id) throws Exception {
     return new HdfsSink(
-        getSerializer().fork(threadId),
+        getSerializer().fork(id),
         coreSitePath,
         hdfsSitePath,
-        addFilePart(filename, threadId),
-        getCompressionAlgorithm()
+        forkedName(id),
+        getCompressionAlgorithm(),
+        getSizeOfFile(),
+        getRowsPerFile()
     );
   }
 }
