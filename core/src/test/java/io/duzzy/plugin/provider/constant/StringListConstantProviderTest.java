@@ -27,7 +27,7 @@ public class StringListConstantProviderTest {
     final Provider<?> provider = YAML_MAPPER.readValue(providerFile, Provider.class);
 
     assertThat(provider).isInstanceOf(StringListConstantProvider.class);
-    assertThat(provider.value(SEEDED_ONE_FIELD_CONTEXT.get())).isEqualTo(ONE);
+    assertThat(provider.value(SEEDED_ONE_FIELD_CONTEXT.get())).isEqualTo(TWO);
   }
 
   @Test
@@ -46,7 +46,7 @@ public class StringListConstantProviderTest {
   void computeValueIsIdempotent() {
     final String value = new StringListConstantProvider(List.of(ONE, TWO, THREE))
         .value(SEEDED_ONE_FIELD_CONTEXT.get());
-    assertThat(value).isEqualTo(ONE);
+    assertThat(value).isEqualTo(TWO);
   }
 
   @Test

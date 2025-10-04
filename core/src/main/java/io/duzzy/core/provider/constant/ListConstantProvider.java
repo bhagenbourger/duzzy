@@ -14,7 +14,7 @@ public abstract class ListConstantProvider<T> implements Provider<T> {
 
   @Override
   public T value(FieldContext fieldContext) {
-    return values.get(fieldContext.random().nextInt(0, values.size()));
+    return values.get(Math.abs(fieldContext.rowId().intValue() % values.size()));
   }
 
   public List<T> getValues() {

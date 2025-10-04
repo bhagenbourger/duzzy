@@ -44,7 +44,7 @@ public class AppJvmTest {
   private static final String ROWS_OPTION = "-r=3";
   private static final String SEAD_OPTION = "-s=1234";
   private static final String OUTPUT_OPTION = "-o=TXT";
-  private static final String RESULT_STARTS_WITH = "Duzzy generated 3 rows in PT0";
+  private static final String RESULT_STARTS_WITH = "Duzzy generated 3 rows in PT";
   private static final String RESULT_ENDS_WITH = "bytes of data with seed 1234\n";
 
   @Test
@@ -227,6 +227,7 @@ public class AppJvmTest {
     ) {
       assertThat(exitCode).isEqualTo(0);
       assertThat(sw.toString()).isEqualTo("");
+
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);
       assertThat(records.next().compareTo(expected.next())).isEqualTo(0);

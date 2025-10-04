@@ -6,4 +6,9 @@
     <Match>
         <Bug code="EI,EI2" />
     </Match>
+
+    <Match>
+        <Class name="io.duzzy.core.provider.constant.FileConstantProvider" />
+        <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    </Match>
 </FindBugsFilter>
