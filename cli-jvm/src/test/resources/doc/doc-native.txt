@@ -461,6 +461,37 @@ identifier: "io.duzzy.plugin.provider.constant.StringConstantProvider"
 value: "constant"
 ```
 
+### io.duzzy.plugin.provider.constant.StringFileConstantProvider ♨️ 🧬  
+🔑 Identifier: io.duzzy.plugin.provider.constant.StringFileConstantProvider  
+📋 Description: Generate string values from a file  
+📦 Module: io.duzzy.core  
+🧬 Native support: true  
+
+⚙️ Parameters: 
+
+| Name | Aliases | Description | Default value |
+| --- | --- | --- | --- |
+| url_or_path | urlOrPath, url-or-path | The URL or path to the file |  |
+| file_format | fileFormat, file-format | The format of the file, available options are: CSV, JSON, XML, YAML. If CSV is used, header is required, additional properties can be provided to customize the format. |  |
+| column_name | columnName, column-name | The name of the column to read the values from |  |
+| properties |  | Additional properties for the file format, only used for CSV files. Available options are: column_separator (default: ,), line_separator (default: \n) |  |  
+
+💡 Example: 
+```
+---
+fields:
+  - name: first_name
+    type: STRING
+    provider:
+      identifier: "io.duzzy.plugin.provider.constant.StringFileConstantProvider"
+      url_or_path: "/path/to/file/data.csv"
+      file_format: "CSV"
+      column_name: "first_name"
+      properties:
+        column_separator: ";"
+        line_separator: "\n"
+```
+
 ### io.duzzy.plugin.provider.constant.StringListConstantProvider ♨️ 🧬  
 🔑 Identifier: io.duzzy.plugin.provider.constant.StringListConstantProvider  
 📋 Description: Provide a list of string constant values  

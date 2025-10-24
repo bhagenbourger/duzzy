@@ -1,0 +1,5 @@
+---
+identifier: "io.duzzy.plugin.provider.constant.StringFileConstantProvider"
+url_or_Path: "src/test/resources/data/example-comma.csv"
+file_format: "CSV"
+columnName: "c1"
